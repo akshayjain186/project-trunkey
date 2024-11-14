@@ -1,0 +1,80 @@
+# TurnKey Backend
+
+This is a Node.js backend for a TurnKey application that supports both web and mobile clients. The backend is designed to be robust, scalable, and secure.
+
+## Features
+
+- User Authentication (Register and Login)
+- Company Profile Management
+- Public and Private Routes
+- Environment Configuration (Development, Staging, Production)
+- API Documentation with Swagger
+
+## Installation
+
+1. Clone the repository:
+   git clone https://github.com/Shubhras/TurnKey
+   cd TurnKey/Backend
+
+2. Install dependencies:
+   npm install
+
+## Environment Setup
+
+1. Create a `.env` file in the root directory with the following variables:
+
+   JWT_SECRET=your-jwt-secret
+   SESSION_SECRET=your-session-secret
+
+   # Local environment
+
+  LOCAL_PORT=5001
+  LOCAL_DB_NAME=turnKey
+  LOCAL_DB_USER_NAME=root
+  LOCAL_DB_PASSWORD=root
+  LOCAL_DB_HOST=localhost
+
+# Staging environment
+
+  STAGING_PORT=5002
+  STAGING_DB_NAME=turnKey
+  STAGING_DB_USER_NAME=root
+  STAGING_DB_PASSWORD=root
+  STAGING_DB_HOST=localhost
+
+# Production environment
+  PRODUCTION_PORT=5003
+  PRODUCTION_DB_NAME=turnKey
+  PRODUCTION_DB_USER_NAME=root
+  PRODUCTION_DB_PASSWORD=root
+  PRODUCTION_DB_HOST=localhost
+
+2. The application will automatically load the correct environment variables based on `NODE_ENV`.
+
+## Running the Application
+
+- Local development:
+  npm start
+
+- Staging:
+  npm run start:staging
+
+- Production:
+  npm run start:production
+
+## API Documentation
+
+Access Swagger UI at:
+http://localhost:5000/api-docs
+
+## Contributing
+
+1. Fork the repository.
+2. Create a new branch.
+3. Make your changes and commit them.
+4. Push to the branch.
+5. Create a pull request.
+
+## License
+
+This project is licensed under the MIT License.
