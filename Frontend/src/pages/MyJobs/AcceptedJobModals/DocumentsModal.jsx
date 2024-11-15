@@ -1,9 +1,9 @@
 // OffersModal.jsx
 import { useState } from 'react';
 import React from 'react'; 
-// import fileimg1 from '../../../assets/images/fileimg1.png'
-// import buttonimg from '../../../assets/images/button.png'
-// import FileDetailsModal from './FileDetailsModal'
+import fileimg1 from '../../../assets/images/fileimg1.png'
+import buttonimg from '../../../assets/images/button.png'
+import FileDetailsModal from './FileDetailsModal'
 
 import {
     Modal,
@@ -53,12 +53,12 @@ const DocumentsModal = ({ modal, toggleModal, location, description, Company, do
                 <Row className='m-2 d-flex gap-2 rounded-3' style={{ border: "1px solid #EAEEF4" }}>
 
                     <Col xs={12} className='d-flex justify-content-between flex-wrap align-item-center'>
-                        {/* <img src={fileimg1} alt="fg" className='m-2 img-fluid' style={{ maxWidth: '80px', height: 'auto' }} /> */}
+                        <img src={fileimg1} alt="fg" className='m-2 img-fluid' style={{ maxWidth: '80px', height: 'auto' }} />
                         <Col className='p-1 flex-grow-1'>
                             <h6 style={{ marginBottom: '0.5rem' }}>contract.pdf</h6>
                             <span>15 mb</span>
                         </Col>
-                        {/* <button className='m-2 bg-white border-0 h-auto mt-3 'onClick={handleModalShow}><img src={buttonimg} alt='' className='img-fluid' /></button> */}
+                        <button className='m-2 bg-white border-0 h-auto mt-3 'onClick={handleModalShow}><img src={buttonimg} alt='' className='img-fluid' /></button>
                     </Col>
                 </Row>
 
@@ -137,7 +137,7 @@ const DocumentsModal = ({ modal, toggleModal, location, description, Company, do
                 </ModalFooter>
             </Modal>
         )}  */}
-                    {/* <FileDetailsModal showModal={showModal} handleModalClose={handleModalClose} /> */}
+                    <FileDetailsModal showModal={showModal} handleModalClose={handleModalClose} />
 
         </>
     );
