@@ -9,17 +9,19 @@ const register = async (req, res, next) => {
     const {
       firstName,
       lastName,
-      userName,
-      dob,
-      gender,
+      // userName,
+      // dob,
+      // gender,
       email,
       password,
-      language,
-      country,
-      countryCode,
+      // language,
+      // country,
+      // countryCode,
       phone,
       roleName,
       address,
+      city,
+      postalcode,
     } = req.body;
 
     const existingUser = await UserAccount.findOne({ where: { email } });
@@ -31,11 +33,11 @@ const register = async (req, res, next) => {
     }
 
     const role = await Role.findOne({
-      where: { machineName: roleName || 'StandardUser' },
+      where: { machineName: roleName || 'User' },
     });
     if (!role) {
       return res.status(500).json({
-        message: 'Standard User role not found',
+        message: 'User role not found',
         status: 'error',
       });
     }
@@ -45,16 +47,18 @@ const register = async (req, res, next) => {
     const userAccount = await UserAccount.create({
       firstName,
       lastName,
-      userName,
-      dob,
-      gender,
+      // userName,
+      // dob,
+      // gender,
       email,
       password,
-      language,
-      country,
+      // language,
+      // country,
       phone,
       address,
-      countryCode,
+      // countryCode,
+      city,
+      postalcode,
       roleId: role.id,
       isUser: !roleName,
     });
@@ -64,7 +68,10 @@ const register = async (req, res, next) => {
       status: 'success',
     });
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(400).json({
+      statusCode: 400,
+      error: error.message
+    });
   }
 };
 
@@ -72,25 +79,26 @@ const login = async (req, res, next) => {
   try {
     const { email, password, phone } = req.body;
 
-    if (phone) {
-      const user = await UserAccount.findOne({ where: { phone } });
-      if (!user) {
-        return res.status(400).send({
-          message: 'Phone number not registered.',
-          status: 'error',
-        });
-      }
+    // if (phone) {
+    //   const user = await UserAccount.findOne({ where: { phone } });
+    //   if (!user) {
+    //     return res.status(400).send({
+    //       message: 'Phone number not registered.',
+    //       status: 'error',
+    //     });
+    //   }
 
-      const otp = Math.floor(100000 + Math.random() * 900000);
-      user.verificationOtp = otp;
-      user.verificationExpires = new Date(Date.now() + 15 * 60 * 1000);
-      await user.save();
+    //   const otp = Math.floor(100000 + Math.random() * 900000);
+    //   user.verificationOtp = otp;
+    //   user.verificationExpires = new Date(Date.now() + 15 * 60 * 1000);
+    //   await user.save();
 
-      return res.status(200).send({
-        message: 'OTP sent successfully. Please verify to log in.',
-        otp, // For testing purposes; remove in production
-      });
-    } else if (email && password) {
+    //   return res.status(200).send({
+    //     message: 'OTP sent successfully. Please verify to log in.',
+    //     otp, // For testing purposes; remove in production
+    //   });
+    // } else 
+    if (email && password) {
       const userAccount = await UserAccount.findOne({ where: { email } });
       if (!userAccount) {
         return res.status(400).send({
@@ -99,8 +107,12 @@ const login = async (req, res, next) => {
         });
       }
 
-      // Use the instance method to compare passwords
+      let same = JSON.stringify(userAccount)
+      console.log(same, "this is call ")
+
+
       const validPassword = await userAccount.comparePassword(password);
+      // console.log(validPassword, '======================================')
       if (!validPassword) {
         return res.status(400).send({
           message: 'Invalid email or password.',

@@ -1,6 +1,7 @@
 // Import required modules
 const userAccountRoutes = require('./routes/User');
 const rolesRoutes = require('./routes/Roles');
+const categoriesRoutes = require('./routes/CategoriesRoutes');
 
 
 // Import required modules
@@ -92,6 +93,7 @@ app.use(
 //Routes
 app.use('/api/v1/users', userAccountRoutes);
 app.use('/api/v1/roles', rolesRoutes);
+app.use('/api/v1/categories',categoriesRoutes);
 
 
 
