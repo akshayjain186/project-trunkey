@@ -4,35 +4,40 @@ const env = process.env.NODE_ENV || 'development';
 
 const config = {
   development: {
-    port: process.env.LOCAL_PORT,
+    port: process.env.LOCAL_PORT || 3000,
     db: {
-      name: process.env.LOCAL_DB_NAME,
-      user: process.env.LOCAL_DB_USER_NAME,
-      password: process.env.LOCAL_DB_PASSWORD,
-      host: process.env.LOCAL_DB_HOST,
+      name: process.env.LOCAL_DB_NAME ||'turnkey',
+      user: process.env.LOCAL_DB_USER_NAME || 'admin',
+      password: process.env.LOCAL_DB_PASSWORD || 'root',
+      host: process.env.LOCAL_DB_HOST || 'localhost',
+      port: process.env.LOCAL_DB_PORT || 3306,
     },
     jwtSecret: process.env.JWT_SECRET,
   },
   staging: {
-    port: process.env.STAGING_PORT,
+    port: process.env.STAGING_PORT || 4000,
     db: {
       name: process.env.STAGING_DB_NAME,
       user: process.env.STAGING_DB_USER_NAME,
       password: process.env.STAGING_DB_PASSWORD,
-      host: process.env.STAGING_DB_HOST,
+      host: process.env.STAGING_DB_HOST || 'localhost',
+      port: process.env.STAGING_DB_PORT || 3306,
     },
     jwtSecret: process.env.JWT_SECRET,
   },
   production: {
-    port: process.env.PRODUCTION_PORT,
+    port: process.env.PRODUCTION_PORT || 5000,
     db: {
       name: process.env.PRODUCTION_DB_NAME,
       user: process.env.PRODUCTION_DB_USER_NAME,
       password: process.env.PRODUCTION_DB_PASSWORD,
-      host: process.env.PRODUCTION_DB_HOST,
+      host: process.env.PRODUCTION_DB_HOST || 'localhost',
+      port: process.env.PRODUCTION_DB_PORT || 3306,
     },
     jwtSecret: process.env.JWT_SECRET,
   },
 };
 
 module.exports = config[env];
+
+

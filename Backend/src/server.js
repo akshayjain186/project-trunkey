@@ -2,6 +2,8 @@
 const userAccountRoutes = require('./routes/User');
 const rolesRoutes = require('./routes/Roles');
 
+require('dotenv').config();  // Make sure dotenv is loaded at the top
+
 
 // Import required modules
 const express = require('express');
@@ -30,10 +32,20 @@ const sessionStore = new SequelizeStore({
   tableName: 'sessions',
 });
 
+
+///  job 
+
+const jobRoutes = require('./routes/jobRoutes');
+const offerRoutes = require('./routes/offerRoutes') /// offer Routes
+const acceptedRoutes = require('./routes/acceptedRoutes');
+
 // Session configuration
+
+console.log("Session secret: ", process.env.SESSION_SECRET); // Check if it's loaded
+
 app.use(
   session({
-    secret: process.env.SESSION_SECRET,
+    secret: process.env.SESSION_SECRET || 'defaultSecret' ,
     resave: false,
     saveUninitialized: false,
     store: sessionStore,
@@ -46,6 +58,7 @@ sessionStore.sync(); // Sync Sequelize session table
 // Passport setup
 app.use(passport.initialize());
 app.use(passport.session());
+
 
 // Middleware setup
 app.use(helmet());
@@ -92,6 +105,12 @@ app.use(
 //Routes
 app.use('/api/v1/users', userAccountRoutes);
 app.use('/api/v1/roles', rolesRoutes);
+
+app.use('/api/v1/jobs', jobRoutes)
+app.use('/api/v1/offer', offerRoutes)
+app.use('/api/v1/acceptedJobs', acceptedRoutes)
+
+
 
 
 
