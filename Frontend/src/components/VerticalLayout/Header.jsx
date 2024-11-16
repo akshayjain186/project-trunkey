@@ -30,15 +30,15 @@ import {
 const Header = props => {
   const [search, setsearch] = useState(false);
  
-  function tToggle() {
-    var body = document.body;
-    if (window.screen.width <= 998) {
-      body.classList.toggle("sidebar-enable");
-    } else {
-      body.classList.toggle("vertical-collpsed");
-      body.classList.toggle("sidebar-enable");
-    }
-  }
+  // function tToggle() {
+  //   var body = document.body;
+  //   if (window.screen.width <= 998) {
+  //     body.classList.toggle("sidebar-enable");
+  //   } else {
+  //     body.classList.toggle("vertical-collpsed");
+  //     body.classList.toggle("sidebar-enable");
+  //   }
+  // }
 
   return (
     <React.Fragment>
@@ -60,7 +60,7 @@ const Header = props => {
               </Link>
             </div>
 
-            <button
+            {/* <button
               type="button"
               onClick={() => {
                 tToggle();
@@ -69,7 +69,7 @@ const Header = props => {
               id="vertical-menu-btn"
             >
               <i className="fa fa-fw fa-bars" />
-            </button>
+            </button> */}
 
             {/* <form className="app-search d-none d-lg-block">
               <div className="position-relative">

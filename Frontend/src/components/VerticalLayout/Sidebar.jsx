@@ -17,6 +17,16 @@ import Group from "../../assets/images/Group.png"
 import Icon from "../../assets/images/Icon.png"
 
 const Sidebar = (props) => {
+
+  function tToggle() {
+    var body = document.body;
+    if (window.screen.width <= 998) {
+      body.classList.toggle("sidebar-enable");
+    } else {
+      body.classList.toggle("vertical-collpsed");
+      body.classList.toggle("sidebar-enable");
+    }
+  }
   return (
     <React.Fragment>
       <div className="vertical-menu">
@@ -32,7 +42,9 @@ const Sidebar = (props) => {
 
           <Link to="/" className="logo logo-light">
             <span className="me-2 ">
-              <img src={Icon} alt="" height="30" width="30"/>
+              <img src={Icon} alt="" height="30" width="30"  onClick={() => {
+                tToggle();
+              }}/>
             </span>
             <span className="logo-lg ms-2 me-n2">
               <img src={Group} alt="" height="19" />

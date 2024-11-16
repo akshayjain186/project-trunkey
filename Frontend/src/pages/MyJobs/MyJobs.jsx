@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import { useNavigate } from 'react-router-dom';
 import PostJob from './PostedJobs/PostJob';
 import "./MyJobs.css"
 import AcceptedJob from './AcceptedJobs/AcceptedJob';
@@ -12,18 +13,23 @@ import {
   Button,
   Input,
 } from 'reactstrap';
+import { Link } from 'react-router-dom';
 
 
 const JobListPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
-  const [activeLink, setActiveLink] = useState(null);
+  const [activeLink, setActiveLink] = useState("posted");
+  const navigate = useNavigate(); 
 
   const handleLinkClick = (link) => {
     setActiveLink(link);
   };
+  const handleJobClick = (job) => {
+    navigate('/job-details', { state: job }); // Pass job data to the details page
+  };
 
   return (
-    <Container fluid className="py-4 mt-md-5 p-5" style={{ fontFamily: "montserrat" }}>
+    <Container fluid className="py-4 mt-md-5 p-5 my-jo" style={{ fontFamily: "montserrat" }}>
       <Row className="mb-4">
         <Col xs="12" className="d-flex justify-content-between align-items-center">
           <h3 className="mb-0">My jobs</h3>
@@ -50,29 +56,29 @@ const JobListPage = () => {
         <hr className="border  " />
       </Row>
 
-      {/* <Row className="mb-4">
-        <Col xs="3" className='d-flex justify-content-between align-items-center  '>
-          <div className="search-box" style={{ position: 'relative' }}>
-            <Input type="search" placeholder="Search..." />
-            <i className="bx bx-search-alt-2 icon-style"></i>
-
-          </div>
-        </Col>
-        <Col className='d-flex justify-content-between align-items-center  '>
-          <Button color="primary" className='ms-auto' >+ Post new job</Button>
-        </Col>
-      </Row> */}
-
       {activeLink === 'posted' && (
         <Row>
           <Col xs="12">
-            <PostJob
-              title="Big job"
-              location="Venåsvegen 42, 0672 Oslo"
-              description="That is a whole renovation of the bathroom-kitchen sector in the old cottage. It's very small and does not have all facilities. First of all, it needs pipes replacement and new floor. Also there is no hot water there and we need to fix this."
-              tags={['Bathroom', 'Kitchen']}
-              responses={1}
-            />
+        
+          <div
+              onClick={() =>
+                handleJobClick({
+                  title: 'my job',
+                  location: 'Venåsvegen 42, 0672 Oslo',
+                
+                 
+                })
+              }
+              style={{ cursor: 'pointer' }}
+            >
+              <PostJob
+                title="Big job"
+                location="Venåsvegen 42, 0672 Oslo"
+                description="That is a whole renovation of the bathroom-kitchen sector in the old cottage. It's very small and does not have all facilities. First of all, it needs pipes replacement and new floor. Also there is no hot water there and we need to fix this."
+                tags={['Bathroom', 'Kitchen']}
+                responses={1}
+              />
+            </div>
           </Col>
         </Row>
       )}
