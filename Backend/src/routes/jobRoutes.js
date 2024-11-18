@@ -5,12 +5,12 @@ const jobController = require('../controller/jobController');
 
 router.post('/add',jobController.createJob);
 
-router.get('/getall', jobController.getAllJobs);
+router.get('/fetch', jobController.getAllJobs);
 
 router.get('/:id', jobController.getJobById);
 
-router.put('/:id', jobController.updateJob);
+router.put('/:jobId', jobController.updateJob);
 
-router.delete('/:id', jobController.deleteJob);
+router.delete('/:jobId', jobController.deleteJob);
 
 module.exports = router;

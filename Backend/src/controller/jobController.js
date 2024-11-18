@@ -133,9 +133,6 @@ const deleteJob = async (req, res) => {
   }
 };
 
-
-
-
 module.exports = {
   createJob,
   getAllJobs,

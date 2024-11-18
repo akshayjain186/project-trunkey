@@ -1,4 +1,4 @@
-const Offer = require('../model/offerModel');  
+const Offer = require('../model/offerModels');  
 const Job = require('../model/jobModels'); 
 const User = require('../model/User');  
 
@@ -39,13 +39,13 @@ const createOffer = async (req, res) => {
 
   const getOfferById = async (req, res) => {
     try {
-      const { offerId } = req.body; 
+      const { offerId } = req.params; 
       
       if (!offerId) {
         return res.status(400).json({ message: 'Offer ID is required' });
       }
       
-      const offer = await Offer.findByPk(offerId);
+      const offer = await Offer.findByPk(offerId); 
       
       if (!offer) {
         return res.status(404).json({ message: 'Offer not found' });
@@ -55,6 +55,7 @@ const createOffer = async (req, res) => {
       const userData = await User.findByPk(offer.offeredBy);
       
       res.status(200).json({
+        message: "Offer details retrieved successfully.",
         offer: {
           id: offer.id,
           job: jobData,
@@ -63,51 +64,39 @@ const createOffer = async (req, res) => {
           status: offer.status,
         },
       });
+      
     } catch (error) {
       console.error('Error fetching offer:', error);
       res.status(500).json({ message: 'Error fetching offer' });
     }
   };
+  
 
   const getAllOffers = async (req, res) => {
     try {
-      // Log the incoming request body for debugging purposes
-      console.log('Incoming Request Body:', req.body);
-  
-      const offers = await Offer.findAll({
-        include: [
-          {
-            model: Job,
-            as: 'jobs', 
-            required: true
-          },
-          {
-            model: User,
-            as: 'user', 
-            attributes: ['id', 'firstname', 'email']
-          }
-        ]
-      });
+      const offers = await Offer.findAll();
   
       if (offers.length === 0) {
-        return res.status(404).json({ message: 'No offers found' });
+        return res.status(404).json({
+          message: 'No offers found',
+          status: 'error',
+        });
       }
   
       res.status(200).json({
-        message: 'Offers fetched successfully',
-        offers: offers.map(offer => ({
-          id: offer.id,
-          job: offer.jobs,  // Corrected to 'offer.jobs' if 'jobs' is the relationship name
-          offeredBy: offer.user,
-          offerDetails: offer.offerDetails,
-          status: offer.status
-        }))
+        message: 'All Offers retrieved successfully',
+        status: 'success',
+        data: offers,  
       });
     } catch (error) {
       console.error('Error fetching offers:', error);
-      res.status(500).json({ message: 'Error fetching offers' });
+      res.status(500).json({
+        message: 'Failed to fetch offers',
+        error: error.message,
+      });
     }
   };
+  
   
 
   const updateOffer = async (req, res) => {

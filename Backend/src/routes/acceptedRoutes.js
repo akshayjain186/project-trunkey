@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+
 const {
   createAcceptedJob,
   getAcceptedJobById,
@@ -12,7 +13,7 @@ router.post('/create', createAcceptedJob);
 
 router.get('/:id', getAcceptedJobById);
 
-router.get('/fetch/getall', getAllAcceptedJobs);
+router.get('/', getAllAcceptedJobs);
 
 router.put('/update/:id', updateAcceptedJob);
 

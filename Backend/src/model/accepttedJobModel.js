@@ -2,7 +2,7 @@ const { DataTypes } = require('sequelize');
 const sequelize = require('../config/databaseConfig');
 const Job = require('../model/jobModels'); 
 const UserAccount = require('../model/User');
-const Offer = require('../model/offerModel'); 
+const Offer = require('./offerModels'); 
 
 const AcceptedJob = sequelize.define(
     'AcceptedJob',
@@ -24,7 +24,7 @@ const AcceptedJob = sequelize.define(
                 model: Offer, 
                 key: 'id',
             },
-            onDelete: 'SET NULL', 
+            onDelete: 'CASCADE', 
             onUpdate: 'CASCADE',
         },
         acceptedBy: {

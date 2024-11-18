@@ -1,7 +1,7 @@
 const AcceptedJob = require('../model/accepttedJobModel');
 const Job = require('../model/jobModels');
 const UserAccount = require('../model/User');
-const Offer = require('../model/offerModel'); 
+const Offer = require('../model/offerModels'); 
 
 const createAcceptedJob = async (req, res) => {
   try {

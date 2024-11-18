@@ -10,14 +10,21 @@ const Job = sequelize.define('Job', {
 
   userId: {
     type: DataTypes.INTEGER,
-    allowNull: false,
+    allowNull: false, // Keep userId as NOT NULL
     references: {
       model: 'Users', 
       key: 'id'
     },
     onUpdate: 'CASCADE',
-    onDelete: 'SET NULL',
+    onDelete: 'CASCADE', // Will delete jobs when the associated user is deleted
   },
+  
+
+  // typeOfProject: {
+  //   type: DataTypes.ENUM('big', 'small'),
+  //   allowNull: false,
+  //   // defaultValue: 'small',
+  // },
 
   address: {
     type: DataTypes.STRING,
