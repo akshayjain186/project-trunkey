@@ -13,6 +13,7 @@ import Logout from "../pages/Authentication/Logout";
 import Dashboard from "../pages/Dashboard/index";
 
 import MyJobs from "../pages/MyJobs/MyJobs";
+import Signup  from "../pages/Authentication/Signup"
 
 import { element } from "prop-types";
 import PostJobDetails from "../pages/MyJobs/AnswerDetails/PostJobDetails";
@@ -31,6 +32,7 @@ const authProtectedRoutes = [
 const publicRoutes = [
   { path: "/logout", component: <Logout /> },
   { path: "/login", component: <Login/> },
+  { path: "/signup", component: <Signup/>},
   { path: "/home", component: <Home/> },
   
 ];

@@ -6,6 +6,7 @@ import ProfileSaga from "./auth/profile/saga";
 import LayoutSaga from "./layout/saga";
 
 import dashboardSaga from "./dashboard/saga";
+import signupSaga from "./auth/Signup/saga"
 
 
 export default function* rootSaga() {
@@ -14,8 +15,8 @@ export default function* rootSaga() {
     fork(AuthSaga),
     fork(ProfileSaga),
     fork(LayoutSaga),
-  
-     fork(dashboardSaga),
+    fork(signupSaga),
+    fork(dashboardSaga),
 
   ]);
 }
