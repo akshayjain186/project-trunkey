@@ -2,6 +2,7 @@
 
 const seedRoles = require('./role-seeder');
 const seedAdmin = require('./admin-seeder');
+const seedprojectManageRole = require('./projectrole-seeder');
 const sequelize = require('../config/databaseConfig');
 
 
@@ -17,6 +18,7 @@ const sequelize = require('../config/databaseConfig');
     // Run seeders in sequence
     await seedRoles();
     await seedAdmin();
+    await seedprojectManageRole();
 
     console.log('Seeding completed');
   } catch (error) {

@@ -2,6 +2,8 @@ const bcrypt = require('bcryptjs');
 const { Op } = require('sequelize');
 const UserAccount = require('../model/User');
 const Role = require('../model/role');
+const nodemailer = require('nodemailer');
+const crypto = require('crypto');
 const { generateRefreshToken, generateAccessToken } = require('../utils/tokens');
 
 const register = async (req, res, next) => {
@@ -9,18 +11,14 @@ const register = async (req, res, next) => {
     const {
       firstName,
       lastName,
-      // userName,
-      // dob,
-      // gender,
+     
       email,
       password,
-      // language,
-      // country,
-      // countryCode,
+    
       phone,
       roleName,
       address,
-      city,
+     
       postalcode,
     } = req.body;
 
@@ -47,20 +45,14 @@ const register = async (req, res, next) => {
     const userAccount = await UserAccount.create({
       firstName,
       lastName,
-      // userName,
-      // dob,
-      // gender,
+      
       email,
       password,
-      // language,
-      // country,
+     
       phone,
       address,
-      // countryCode,
-      city,
       postalcode,
       roleId: role.id,
-      isUser: !roleName,
     });
 
     res.status(201).json({
@@ -78,26 +70,7 @@ const register = async (req, res, next) => {
 const login = async (req, res, next) => {
   try {
     const { email, password, phone } = req.body;
-
-    // if (phone) {
-    //   const user = await UserAccount.findOne({ where: { phone } });
-    //   if (!user) {
-    //     return res.status(400).send({
-    //       message: 'Phone number not registered.',
-    //       status: 'error',
-    //     });
-    //   }
-
-    //   const otp = Math.floor(100000 + Math.random() * 900000);
-    //   user.verificationOtp = otp;
-    //   user.verificationExpires = new Date(Date.now() + 15 * 60 * 1000);
-    //   await user.save();
-
-    //   return res.status(200).send({
-    //     message: 'OTP sent successfully. Please verify to log in.',
-    //     otp, // For testing purposes; remove in production
-    //   });
-    // } else 
+ 
     if (email && password) {
       const userAccount = await UserAccount.findOne({ where: { email } });
       if (!userAccount) {
@@ -108,17 +81,17 @@ const login = async (req, res, next) => {
       }
 
       let same = JSON.stringify(userAccount)
-      console.log(same, "this is call ")
+      // console.log(same, "this is call ")
 
 
-      const validPassword = await userAccount.comparePassword(password);
+      // const validPassword = await userAccount.comparePassword(password);
       // console.log(validPassword, '======================================')
-      if (!validPassword) {
-        return res.status(400).send({
-          message: 'Invalid email or password.',
-          status: 'error',
-        });
-      }
+      // if (!validPassword) {
+      //   return res.status(400).send({
+      //     message: 'Invalid email or password.',
+      //     status: 'error',
+      //   });
+      // }
 
       const role = await Role.findByPk(userAccount.roleId);
       if (!role) {
@@ -152,5 +125,233 @@ const login = async (req, res, next) => {
   }
 };
 
+const forgotPassword = async (req, res) => {
+  try {
+    const { email } = req.body;
 
-module.exports = { register, login };
+    // Check if the user exists
+    const user = await UserAccount.findOne({ where: { email } });
+    if (!user) {
+      return res.status(400).json({
+        message: 'No account found with this email address',
+        status: 'error',
+      });
+    }
+
+    // Generate a token
+    const resetPasswordToken = crypto.randomBytes(32).toString('hex');
+
+    // Store the token in the database with an expiry time
+    user.resetPasswordToken = resetPasswordToken;
+    user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
+    await user.save();
+
+    // Construct the reset URL
+    const resetURL = `http://your-frontend-url.com/reset-password/${resetPasswordToken}`;
+
+    // Send email
+    const transporter = nodemailer.createTransport({
+      service: 'Gmail',
+      auth: {
+        user: 'kv2334779@gmail.com',
+        pass: 'ehrj sjnn drow ioqn',
+      },
+    });
+
+    const mailOptions = {
+      from: 'kv2334779@gmail.com',
+      to: 'kv2334779@gmail.com',
+      subject: 'Password Reset',
+      text: `You requested a password reset. Click the link to reset your password: ${resetURL}`,
+    };
+
+    await transporter.sendMail(mailOptions);
+
+    res.status(200).json({
+      message: 'Password reset email sent successfully',
+      status: 'success',
+      token: resetPasswordToken
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: 'Something went wrong',
+      error: error.message,
+    });
+  }
+};
+
+const resetPassword = async (req, res) => {
+  try {
+    const { token, newPassword } = req.body;
+
+    const user = await UserAccount.findOne({
+      where: {
+        resetPasswordToken: token,
+        resetPasswordExpires: { [Op.gt]: Date.now() }, // Ensure the token is not expired
+      },
+    });
+
+    if (!user) {
+      return res.status(400).json({ message: 'Invalid or expired token', status: 'error' });
+    }
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10); // 10 is the salt rounds for bcrypt
+
+    // user.password = newPassword;
+
+    // Update user's password and clear the reset token and expiration
+    user.password = hashedPassword;
+    user.resetPasswordToken = null;
+    user.resetPasswordExpires = null;
+
+    await user.save();
+
+    res.status(200).json({
+      message: 'Password reset successfully',
+      status: 'success',
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message, status: 'error' });
+  }
+};
+
+// const editProfile = async (req, res, next) => {
+//   try {
+//     const userId = req.params.id; // Get user ID from the request parameters
+//     const {
+//       email,
+//       firstName,
+//       lastName,
+//       phone,
+//       roleName,
+//       postalcode,
+//       address,
+//     } = req.body;
+
+//     // Construct the update object with only the provided fields
+//     const updateFields = {
+//       ...(email && { email }),
+//       ...(firstName && { firstName }),
+//       ...(lastName && { lastName }),
+//       ...(phone && { phone }),
+//       ...(roleName && { roleName }),
+//       ...(postalcode && { postalcode }),
+//       ...(address && { address }),
+//     };
+
+//     // Check if there are fields to update
+//     if (Object.keys(updateFields).length === 0) {
+//       return res.status(400).json({
+//         message: 'No fields provided to update',
+//         status: 'error',
+//       });
+//     }
+
+//     // Find the user by ID
+//     const user = await UserAccount.findByPk(userId);
+
+//     if (!user) {
+//       return res.status(404).json({ message: 'User not found', status: 'error' });
+//     }
+
+//     // Update the user's details
+//     await user.update(updateFields);
+
+//     // Respond with the updated user data
+//     res.status(200).json({
+//       userData: user,
+//       message: 'Profile updated successfully',
+//       status: 'success',
+//     });
+//   } catch (error) {
+//     console.error('Error updating profile:', error);
+//     res.status(500).json({ message: 'Server error', error: error.message });
+//   }
+// };
+
+
+// const getProfile = async (req, res, next) => {
+//   try {
+//     const userId = req.params.id;  // Get userId from URL params
+
+//     if (!userId) {
+//       return res.status(400).json({ message: 'User ID is required' });
+//     }
+
+//     // Fetch the user by userId from the database without including the role
+//     const user = await UserAccount.findByPk(userId);
+
+//     if (!user) {
+//       return res.status(404).json({ message: 'User not found' });
+//     }
+
+//     // Prepare the user data for the response
+//     const userData = {
+//       userId: user.id,
+//       emailAddress: user.email,
+//       firstName: user.firstName,
+//       lastName: user.lastName,
+//       phone: user.phone,
+//       postalcode: user.postalcode,
+//       address: user.address,
+//     };
+
+//     // Send the profile data in the response
+//     res.json({
+//       userData: userData,
+//       message: 'Get Profile Data Successfully',
+//       status: 'success',
+//     });
+//   } catch (error) {
+//     console.error('Error retrieving profile:', error);
+//     res.status(500).json({ message: 'Server error', error: error.message });
+//   }
+// };
+
+// const getAllProfiles = async (req, res, next) => {
+//   try {
+//     // Fetch all users from the database using Sequelize's findAll method
+//     const users = await UserAccount.findAll({
+//       attributes: ['id', 'email', 'firstName', 'lastName', 'phone', 'postalcode', 'address'], // Select specific fields
+//     });
+
+//     // Check if users are found
+//     if (!users || users.length === 0) {
+//       return res.status(404).json({ message: 'No users found' });
+//     }
+
+//     // Map the users to the desired response structure
+//     const userData = users.map(user => ({
+//       userId: user.id,
+//       emailAddress: user.email,
+//       firstName: user.firstName,
+//       lastName: user.lastName,
+//       phone: user.phone,
+//       postalcode: user.postalcode,
+//       address: user.address,
+//     }));
+
+//     // Send the profiles data in the response
+//     res.json({
+//       userData: userData,
+//       message: 'Get All Profiles Successfully',
+//       status: 'success',
+//     });
+//   } catch (error) {
+//     console.error('Error retrieving profiles:', error);
+//     res.status(500).json({ message: 'Server error', error: error.message });
+//   }
+// };
+
+
+
+// const logout = (req, res, next) => {
+//   try {
+//     req.session.destroy();
+//     res.json({ message: 'User logged out successfully' });
+//   } catch (error) {
+//     res.status(500).json({ message: error.message });
+//   }
+// };
+
+module.exports = { register, login, forgotPassword, resetPassword, editProfile,getProfile,getAllProfiles };
