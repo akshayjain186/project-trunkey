@@ -16,8 +16,19 @@ const Job = sequelize.define('Job', {
       key: 'id'
     },
     onUpdate: 'CASCADE',
-    onDelete: 'CASCADE', // Will delete jobs when the associated user is deleted
+    onDelete: 'CASCADE', 
   },
+
+//   offerId: {
+//     type: DataTypes.INTEGER,
+//     allowNull: true, 
+//     references: {
+//         model: Offer, 
+//         key: 'id',
+//     },
+//     onDelete: 'CASCADE', 
+//     onUpdate: 'CASCADE',
+// },
   
 
   // typeOfProject: {

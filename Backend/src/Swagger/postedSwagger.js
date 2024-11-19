@@ -121,6 +121,8 @@
  *           schema:
  *             type: object
  *             properties:
+ *               jobId:
+ *                   type: string
  *               address:
  *                 type: string
  *               city:
