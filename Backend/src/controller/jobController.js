@@ -1,4 +1,5 @@
-const Job = require('../model/jobModels'); 
+const Job = require('../model/jobModels');
+const UserAccount = require('../model/User') 
 
 
 const createJob = async (req, res) => {
@@ -15,6 +16,7 @@ const createJob = async (req, res) => {
       status
     } = req.body;
 
+    // Create the new job record
     const newJob = await Job.create({
       userId, 
       address,
@@ -27,9 +29,16 @@ const createJob = async (req, res) => {
       status
     });
 
+    const user = await UserAccount.findByPk(userId); // Assuming 'userId' is the primary key
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
     res.status(201).json({
       message: 'Job created successfully',
-      job: newJob
+      job: newJob,
+      user: user 
     });
   } catch (error) {
     console.error('Error creating job:', error);
@@ -37,9 +46,9 @@ const createJob = async (req, res) => {
   }
 };
 
+
 const getAllJobs = async (req, res) => {
   try {
-    // Fetch all jobs without any filters or body data
     const jobs = await Job.findAll();
 
     if (jobs.length === 0) {
@@ -52,7 +61,7 @@ const getAllJobs = async (req, res) => {
     res.status(200).json({
       message: 'Jobs retrieved successfully',
       status: 'success',
-      data: jobs,  // Using 'data' to match the structure of the response
+      data: jobs,  
     });
   } catch (error) {
     console.error('Error fetching jobs:', error);

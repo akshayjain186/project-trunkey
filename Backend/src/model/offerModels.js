@@ -47,7 +47,7 @@ const Offer = sequelize.define('Offer', {
 });
 
 // Define the relationship between Offer and User
-Offer.belongsTo(UserAccount, { foreignKey: 'offeredBy', as: 'user' });
+// Offer.belongsTo(UserAccount, { foreignKey: 'offeredBy', as: 'user' });
 
 // Job model
 Job.hasMany(Offer, { foreignKey: 'jobId', as: 'jobs' });

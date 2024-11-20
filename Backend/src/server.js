@@ -42,6 +42,10 @@ const acceptedRoutes = require('./routes/acceptedRoutes');
 const leadempolyeeRoutes = require('./routes/leadempolyeeRoutes');
 const leadsourceRoutes =  require('./routes/leadsourceRoutes')
 
+const categories = require('./routes/categoryRoutes');
+
+const registerCompanyRoutes = require('./routes/registercompanyRoutes');
+
 // Session configuration
 
 console.log("Session secret: ", process.env.SESSION_SECRET); // Check if it's loaded
@@ -116,6 +120,8 @@ app.use('/api/v1/acceptedJobs', acceptedRoutes)
 app.use('/api/v1/empolyeeleads', leadempolyeeRoutes);
 
 app.use('/api/v1/leadSource',leadsourceRoutes)
+app.use('/api/v1/registerCompany', registerCompanyRoutes);
+app.use('/api/v1/categories', categories);
 
 
 

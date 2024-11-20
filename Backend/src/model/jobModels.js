@@ -1,22 +1,21 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/databaseConfig');
+const User = require('../model/User'); // Import User model
+
 
 const Job = sequelize.define('Job', {
-  id: {
-    type: DataTypes.INTEGER,
-    autoIncrement: true,
-    primaryKey: true
-  },
+  
 
   userId: {
     type: DataTypes.INTEGER,
     allowNull: false, // Keep userId as NOT NULL
     references: {
-      model: 'Users', 
+      model: User,
       key: 'id'
     },
     onUpdate: 'CASCADE',
     onDelete: 'CASCADE', 
+    // onDelete: 'SET NULL',
   },
 
 //   offerId: {
@@ -82,5 +81,8 @@ const Job = sequelize.define('Job', {
   tableName: 'jobs', 
   timestamps: true
 });
+
+// Job.belongsTo(User, { foreignKey: 'userId', targetKey: 'id' });
+
 
 module.exports = Job;

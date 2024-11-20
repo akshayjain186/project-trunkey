@@ -60,7 +60,7 @@ const Lead = sequelize.define('Lead', {
         type: DataTypes.TEXT,
     },
 
-    //   services: {
+    //   services: {   
     //     type: DataTypes.JSON,
     //   },
 },
