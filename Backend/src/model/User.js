@@ -13,7 +13,7 @@ const User = sequelize.define('User', {
   address: { type: DataTypes.STRING, defaultValue: '' },
   lastName: { type: DataTypes.STRING, allowNull: false },
   email: { type: DataTypes.STRING, allowNull: false, unique: true },
-  password: { type: DataTypes.STRING },
+  password: { type: DataTypes.STRING},
   phone: { type: DataTypes.STRING },
   postalcode: { type: DataTypes.STRING },
   resetPasswordToken: { type: DataTypes.STRING, defaultValue: null },

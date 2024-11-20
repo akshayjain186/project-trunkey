@@ -1,6 +1,7 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/databaseConfig');
 
+
 const projectmanagerole = sequelize.define('projectmanagerole', {
     name: {
         type: DataTypes.STRING,

@@ -11,16 +11,23 @@ const register = async (req, res, next) => {
     const {
       firstName,
       lastName,
-     
       email,
       password,
-    
+      confirmPassword,
       phone,
       roleName,
       address,
-     
       postalcode,
     } = req.body;
+
+
+     // Check if passwords match
+     if (password !== confirmPassword) {
+      return res.status(400).json({
+        message: 'Passwords do not match',
+        status: 'error',
+      });
+    }
 
     const existingUser = await UserAccount.findOne({ where: { email } });
     if (existingUser) {
@@ -45,10 +52,8 @@ const register = async (req, res, next) => {
     const userAccount = await UserAccount.create({
       firstName,
       lastName,
-      
       email,
       password,
-     
       phone,
       address,
       postalcode,
@@ -69,8 +74,8 @@ const register = async (req, res, next) => {
 
 const login = async (req, res, next) => {
   try {
-    const { email, password, phone } = req.body;
- 
+    const { email, password } = req.body;
+
     if (email && password) {
       const userAccount = await UserAccount.findOne({ where: { email } });
       if (!userAccount) {
@@ -354,4 +359,5 @@ const resetPassword = async (req, res) => {
 //   }
 // };
 
-module.exports = { register, login, forgotPassword, resetPassword, editProfile,getProfile,getAllProfiles };
+module.exports = { register, login, forgotPassword, resetPassword }
+// editProfile,getProfile,getAllProfiles 

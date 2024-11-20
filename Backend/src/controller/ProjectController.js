@@ -1,7 +1,112 @@
 const SmallProject = require('../model/Project');
+const ProjectSubcategory = require('../model/ProjectSubcategory');
+
 // const Category = require('../model/Categories');
 // const Subcategory = require('../model/Subcategories');
 // const Projectmanagerole = require('../model/Projectmanagerole');
+
+// const createProject = async (req, res) => {
+//     try {
+//         const {
+//             name,
+//             typeOfProject,
+//             categoryId,
+//             subcategoryId,
+//             projectmanageroleId,
+//             typeOfHome,
+//             projectAddress,
+//             city,
+//             generalComment,
+//             contactName,
+//             contactSurname,
+//             contactEmail,
+//             contactMobile,
+//         } = req.body;
+
+//         // Validation check
+//         if (
+//             !name ||
+//             !typeOfProject ||
+//             !categoryId ||
+//             !subcategoryId ||
+//             !projectmanageroleId ||
+//             !typeOfHome ||
+//             !projectAddress ||
+//             !city ||
+//             !contactName ||
+//             !contactSurname ||
+//             !contactEmail ||
+//             !contactMobile
+//         ) {
+//             return res.status(400).json({
+//                 message: 'All fields are required.',
+//                 status: 'error',
+//             });
+//         }
+
+//         // Email validation
+//         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+//         if (!emailRegex.test(contactEmail)) {
+//             return res.status(400).json({
+//                 message: 'Invalid email format.',
+//                 status: 'error',
+//             });
+//         }
+
+//         // Create new project
+//         const project = await SmallProject.create({
+//             name,
+//             typeOfProject,
+//             categoryId: JSON.stringify(categoryId), // Convert array to JSON
+//             subcategoryId: JSON.stringify(subcategoryId), // Convert array to JSON
+//             projectmanageroleId: JSON.stringify(projectmanageroleId), // Convert array to JSON
+//             typeOfHome,
+//             projectAddress,
+//             city,
+//             generalComment,
+//             contactName,
+//             contactSurname,
+//             contactEmail,
+//             contactMobile,
+//         });
+
+//          // Create a new ProjectSubcategory
+
+//         //  const subcategory = await ProjectSubcategory.create({
+//         //     subcategoryId,
+//         //     smallprojectId,
+//         //     description,
+//         //     attachment,
+//         //     floor,
+//         // });
+
+//         //Fetch project with related subcategory data
+//         // const createdProject = await SmallProject.findOne({
+//         //     where: { id: project.id },
+//         //     include: [
+//         //         {
+//         //             model: projectSubcategory,
+//         //             as: 'projectsubcategory',
+//         //         },
+//         //     ],
+//         // });
+
+//         return res.status(201).json({
+//             message: 'Project created successfully',
+//             data: project,
+//             data: createdProject,
+//             status: 'success',
+//         });
+//     } catch (error) {
+//         console.error(error);
+//         return res.status(500).json({
+//             message: 'An error occurred while creating the project',
+//             error: error.message,
+//             status: 'error',
+//         });
+//     }
+// };
+
 
 const createProject = async (req, res) => {
     try {
@@ -19,6 +124,9 @@ const createProject = async (req, res) => {
             contactSurname,
             contactEmail,
             contactMobile,
+            description, // For ProjectSubcategory
+            attachment,  // For ProjectSubcategory
+            floor,       // For ProjectSubcategory
         } = req.body;
 
         // Validation check
@@ -31,6 +139,7 @@ const createProject = async (req, res) => {
             !typeOfHome ||
             !projectAddress ||
             !city ||
+            !generalComment ||
             !contactName ||
             !contactSurname ||
             !contactEmail ||
@@ -55,9 +164,9 @@ const createProject = async (req, res) => {
         const project = await SmallProject.create({
             name,
             typeOfProject,
-            categoryId: JSON.stringify(categoryId), // Convert array to JSON
-            subcategoryId: JSON.stringify(subcategoryId), // Convert array to JSON
-            projectmanageroleId: JSON.stringify(projectmanageroleId), // Convert array to JSON
+            categoryId: JSON.stringify(categoryId),
+            subcategoryId: JSON.stringify(subcategoryId),
+            projectmanageroleId: JSON.stringify(projectmanageroleId),
             typeOfHome,
             projectAddress,
             city,
@@ -67,6 +176,34 @@ const createProject = async (req, res) => {
             contactEmail,
             contactMobile,
         });
+
+     if (Array.isArray(subcategoryId)) {
+    const projectSubcategoryPromises = [];
+
+    // Loop through subcategoryId array
+    // for (let i = 0; i < subcategoryId.length; i++) {
+    //     const subId = subcategoryId[i];
+    //     console.log(`Creating ProjectSubcategory with:`);
+    //     console.log(`subcategoryId: ${subId}`);
+    //     console.log(`smallprojectId: ${project.id}`);
+
+    //     // Create a ProjectSubcategory and push the promise to the array
+    //     projectSubcategoryPromises.push(
+    //         ProjectSubcategory.create({
+
+    //             subcategoryId: subId,
+    //             description: description || null,
+    //             attachment: attachment ? JSON.stringify(attachment) : null,
+    //             floor: floor || null,
+    //         })
+    //     );
+    // }
+
+    // // Wait for all ProjectSubcategory entries to be created
+    // await Promise.all(projectSubcategoryPromises);
+}
+
+
 
         return res.status(201).json({
             message: 'Project created successfully',
@@ -82,6 +219,7 @@ const createProject = async (req, res) => {
         });
     }
 };
+
 
 const getAllProject = async (req, res) => {
     try {

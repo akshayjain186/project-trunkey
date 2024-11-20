@@ -1,8 +1,9 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/databaseConfig');
-const Category = require('./Categories'); // Assuming you have a Category model
-const Subcategory = require('./Subcategories'); // Assuming you have a Subcategory model
-const Projectmanagerole = require('./Projectmanagerole'); // Assuming you have a ProjectManagerRole model
+const Category = require('./Categories');
+const Subcategory = require('./Subcategories');
+const Projectmanagerole = require('./Projectmanagerole');
+// const ProjectSubcategory = require('./ProjectSubcategory');
 
 const SmallProject = sequelize.define('SmallProject', {
     name: {
@@ -14,7 +15,7 @@ const SmallProject = sequelize.define('SmallProject', {
         allowNull: false,
     },
     categoryId: {
-        type: DataTypes.INTEGER, // Foreign key to Category model
+        type: DataTypes.INTEGER,
         allowNull: false,
         references: {
             model: Category,
@@ -22,7 +23,7 @@ const SmallProject = sequelize.define('SmallProject', {
         },
     },
     subcategoryId: {
-        type: DataTypes.INTEGER, // Foreign key to Subcategory model
+        type: DataTypes.INTEGER,
         allowNull: false,
         references: {
             model: Subcategory,
@@ -30,7 +31,7 @@ const SmallProject = sequelize.define('SmallProject', {
         },
     },
     projectmanageroleId: {
-        type: DataTypes.INTEGER, 
+        type: DataTypes.INTEGER,
         allowNull: false,
         references: {
             model: Projectmanagerole,
@@ -83,5 +84,6 @@ const SmallProject = sequelize.define('SmallProject', {
 SmallProject.belongsTo(Category, { foreignKey: 'categoryId', onDelete: 'CASCADE' });
 SmallProject.belongsTo(Subcategory, { foreignKey: 'subcategoryId', onDelete: 'CASCADE' });
 SmallProject.belongsTo(Projectmanagerole, { foreignKey: 'projectmanageroleId', onDelete: 'CASCADE' });
+// SmallProject.belongsTo(ProjectSubcategory, { foreignKey: 'projectsubcategoryId', as: 'projectsubcategory', onDelete: 'CASCADE' });
 
-module.exports = SmallProject;
+module.exports = SmallProject; 
