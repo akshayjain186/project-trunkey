@@ -6,6 +6,7 @@ import { Navigate } from "react-router-dom";
 // // Authentication related pages
 import Login from "../pages/Authentication/Login";
 import Home from "../pages/Authentication/home/Home"
+import Page1 from "../pages/Authentication/Ragister/Page1"
 
 import Logout from "../pages/Authentication/Logout";
 
@@ -14,10 +15,13 @@ import Dashboard from "../pages/Dashboard/index";
 
 import MyJobs from "../pages/MyJobs/MyJobs";
 import Signup  from "../pages/Authentication/Signup"
-
+ import ForgotPassward from "../pages/Authentication/ForgotPassward"
+//import ResetPaassword from "../pages/Authentication/ResetPassward";
 import { element } from "prop-types";
 import PostJobDetails from "../pages/MyJobs/AnswerDetails/PostJobDetails";
-
+import { components } from "react-select";
+import ResetPassward from  "../pages/Authentication/ResetPassward"
+import { fromPairs } from "lodash";
 
 const authProtectedRoutes = [
   { path: "/dashboard", component: <Dashboard /> },
@@ -33,8 +37,10 @@ const publicRoutes = [
   { path: "/logout", component: <Logout /> },
   { path: "/login", component: <Login/> },
   { path: "/signup", component: <Signup/>},
+  { path: "/forgot-password", component: <ForgotPassward/>},
+  { path: "/page1", component: <Page1/>},
   { path: "/home", component: <Home/> },
-  
+  { path: "/reset-password", component: <ResetPassward/> },
 ];
 
 // export { authProtectedRoutes, publicRoutes };
