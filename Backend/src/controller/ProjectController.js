@@ -124,9 +124,7 @@ const createProject = async (req, res) => {
             contactSurname,
             contactEmail,
             contactMobile,
-            description, // For ProjectSubcategory
-            attachment,  // For ProjectSubcategory
-            floor,       // For ProjectSubcategory
+            selectsubcategory, // Subcategories with attachments
         } = req.body;
 
         // Validation check
@@ -143,7 +141,8 @@ const createProject = async (req, res) => {
             !contactName ||
             !contactSurname ||
             !contactEmail ||
-            !contactMobile
+            !contactMobile ||
+            !selectsubcategory || !Array.isArray(selectsubcategory)
         ) {
             return res.status(400).json({
                 message: 'All fields are required.',
@@ -160,13 +159,13 @@ const createProject = async (req, res) => {
             });
         }
 
-        // Create new project
-        const project = await SmallProject.create({
+        // Create the SmallProject
+        const smallproject = await SmallProject.create({
             name,
             typeOfProject,
-            categoryId: JSON.stringify(categoryId),
-            subcategoryId: JSON.stringify(subcategoryId),
-            projectmanageroleId: JSON.stringify(projectmanageroleId),
+            categoryId: categoryId,
+            subcategoryId: subcategoryId,
+            projectmanageroleId: projectmanageroleId,
             typeOfHome,
             projectAddress,
             city,
@@ -177,41 +176,44 @@ const createProject = async (req, res) => {
             contactMobile,
         });
 
-     if (Array.isArray(subcategoryId)) {
-    const projectSubcategoryPromises = [];
+        // Retrieve the project ID
+        const smallprojectId = smallproject.id;
 
-    // Loop through subcategoryId array
-    // for (let i = 0; i < subcategoryId.length; i++) {
-    //     const subId = subcategoryId[i];
-    //     console.log(`Creating ProjectSubcategory with:`);
-    //     console.log(`subcategoryId: ${subId}`);
-    //     console.log(`smallprojectId: ${project.id}`);
+        // Store created ProjectSubcategory data
+        const createdSubcategories = [];
 
-    //     // Create a ProjectSubcategory and push the promise to the array
-    //     projectSubcategoryPromises.push(
-    //         ProjectSubcategory.create({
+        // Iterate over the subcategories and create them
+        for (const subcategory of selectsubcategory) {
+            const { id, description, attachment, floor } = subcategory;
 
-    //             subcategoryId: subId,
-    //             description: description || null,
-    //             attachment: attachment ? JSON.stringify(attachment) : null,
-    //             floor: floor || null,
-    //         })
-    //     );
-    // }
+            if (!id || !description || !attachment || !floor) {
+                return res.status(400).json({
+                    message: 'Each subcategory must have id, description, attachment, and floor.',
+                    status: 'error',
+                });
+            }
 
-    // // Wait for all ProjectSubcategory entries to be created
-    // await Promise.all(projectSubcategoryPromises);
-}
+            const newSubcategory = await ProjectSubcategory.create({
+                smallprojectId,
+                subcategoryId: id,
+                description,
+                attachment, // Attachments provided by the client
+                floor,
+            });
 
+            // Add the created subcategory to the array
+            createdSubcategories.push(newSubcategory);
+        }
 
-
+        // Success response including SmallProject and ProjectSubcategory data
         return res.status(201).json({
             message: 'Project created successfully',
-            data: project,
+            project: smallproject, // SmallProject data
+            subcategories: createdSubcategories, // Array of created subcategories
             status: 'success',
         });
     } catch (error) {
-        console.error(error);
+        console.error('Error creating project:', error);
         return res.status(500).json({
             message: 'An error occurred while creating the project',
             error: error.message,
@@ -219,7 +221,6 @@ const createProject = async (req, res) => {
         });
     }
 };
-
 
 const getAllProject = async (req, res) => {
     try {
@@ -357,10 +358,73 @@ const deleteProject = async (req, res) => {
     }
 };
 
+const uploadAttachment = async (req, res) => {
+    // Check if files are provided
+    if (!req.files || req.files.length === 0) {
+        return res.status(400).json({ message: 'No files uploaded', status: 'error' });
+    }
+
+    const { ProjectSubcategoryId } = req.params;
+
+    // Validate if ProjectSubcategoryId is provided
+    if (!ProjectSubcategoryId) {
+        return res.status(400).json({ message: 'ProjectSubcategory ID is required', status: 'error' });
+    }
+
+    try {
+
+        const findProjectSubcategory = await ProjectSubcategory.findByPk(ProjectSubcategoryId);
+
+        if (!findProjectSubcategory) {
+            return res.status(404).json({ message: 'ProjectSubcategory not found', status: 'error' });
+        }
+
+        // Process and validate each uploaded file
+        const newFileUrls = [];
+        for (const file of req.files) {
+            // Add validation for file type and size
+            if (!file.mimetype.startsWith('image/')) {
+                return res.status(400).json({ message: `Invalid file type for ${file.originalname}. Only images are allowed.`, status: 'error' });
+            }
+
+            if (file.size > 5 * 1024 * 1024) { // 5MB limit for example
+                return res.status(400).json({ message: `File ${file.originalname} is too large. Max size is 5MB.`, status: 'error' });
+            }
+
+            const fileUrl = `${req.protocol}://${req.get('host')}/uploads/${file.filename}`;
+            newFileUrls.push(fileUrl);
+        }
+
+        // If attachment field is missing or not an array, initialize it
+        if (!Array.isArray(findProjectSubcategory.attachment)) {
+            findProjectSubcategory.attachment = [];
+        }
+
+        // Merge existing attachments with the new file URLs dynamically
+        findProjectSubcategory.attachment = [...findProjectSubcategory.attachment, ...newFileUrls];
+
+        // Save the updated ProjectSubcategory with new attachments
+        await findProjectSubcategory.save();
+
+        res.status(200).json({
+            message: 'Files uploaded successfully',
+            data: findProjectSubcategory,
+            attachments: findProjectSubcategory.attachment,
+        });
+    } catch (err) {
+
+        console.error('Error uploading files:', err);
+        res.status(500).json({ message: 'An error occurred while uploading files', status: 'error', error: err.message });
+    }
+};
+
+
+
 module.exports = {
     createProject,
     getAllProject,
     getProjectById,
     updateProject,
     deleteProject,
+    uploadAttachment
 };

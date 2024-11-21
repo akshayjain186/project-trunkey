@@ -1,8 +1,8 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/databaseConfig');
-const Category = require('./Categories');
-const Subcategory = require('./Subcategories');
-const Projectmanagerole = require('./Projectmanagerole');
+// const Category = require('./Categories');
+// const Subcategory = require('./Subcategories');
+// const Projectmanagerole = require('./Projectmanagerole');
 // const ProjectSubcategory = require('./ProjectSubcategory');
 
 const SmallProject = sequelize.define('SmallProject', {
@@ -15,28 +15,28 @@ const SmallProject = sequelize.define('SmallProject', {
         allowNull: false,
     },
     categoryId: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.JSON,
         allowNull: false,
-        references: {
-            model: Category,
-            key: 'id',
-        },
+        // references: {
+        //     model: Category,
+        //     key: 'id',
+        // },
     },
     subcategoryId: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.JSON,
         allowNull: false,
-        references: {
-            model: Subcategory,
-            key: 'id',
-        },
+        // references: {
+        //     model: Subcategory,
+        //     key: 'id',
+        // },
     },
     projectmanageroleId: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.JSON,
         allowNull: false,
-        references: {
-            model: Projectmanagerole,
-            key: 'id',
-        },
+        // references: {
+        //     model: Projectmanagerole,
+        //     key: 'id',
+        // },
     },
     typeOfHome: {
         type: DataTypes.STRING,
@@ -81,9 +81,9 @@ const SmallProject = sequelize.define('SmallProject', {
 });
 
 // Set up associations
-SmallProject.belongsTo(Category, { foreignKey: 'categoryId', onDelete: 'CASCADE' });
-SmallProject.belongsTo(Subcategory, { foreignKey: 'subcategoryId', onDelete: 'CASCADE' });
-SmallProject.belongsTo(Projectmanagerole, { foreignKey: 'projectmanageroleId', onDelete: 'CASCADE' });
+// SmallProject.belongsTo(Category, { foreignKey: 'categoryId', onDelete: 'CASCADE' });
+// SmallProject.belongsTo(Subcategory, { foreignKey: 'subcategoryId', onDelete: 'CASCADE' });
+// SmallProject.belongsTo(Projectmanagerole, { foreignKey: 'projectmanageroleId', onDelete: 'CASCADE' });
 // SmallProject.belongsTo(ProjectSubcategory, { foreignKey: 'projectsubcategoryId', as: 'projectsubcategory', onDelete: 'CASCADE' });
 
 module.exports = SmallProject; 

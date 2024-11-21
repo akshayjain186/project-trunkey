@@ -1,12 +1,12 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/databaseConfig');
 // const Category = require('./Categories'); 
-const Subcategory = require('./Subcategories');
-// const SmallProject = require('./Project');
+// const Subcategory = require('./Subcategories');
+
 
 const ProjectSubcategory = sequelize.define('ProjectSubcategory', {
     subcategoryId: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.JSON,
         allowNull: false,
     },
     smallprojectId: {
@@ -36,9 +36,6 @@ const ProjectSubcategory = sequelize.define('ProjectSubcategory', {
 
 // Set up associations
 // ProjectSubcategory.belongsTo(Category, { foreignKey: 'categoryId', as: 'category', onDelete: 'CASCADE' });
-ProjectSubcategory.belongsTo(Subcategory, { foreignKey: 'subcategoryId', as: 'subcategory', onDelete: 'CASCADE' });
-// ProjectSubcategory.belongsTo(SmallProject, { foreignKey: 'smallprojectId', as: 'smallproject', onDelete: 'CASCADE' });
-
-
+// ProjectSubcategory.belongsTo(Subcategory, { foreignKey: 'subcategoryId', as: 'subcategory', onDelete: 'CASCADE' });
 
 module.exports = ProjectSubcategory;
