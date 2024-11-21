@@ -6,7 +6,8 @@ import { Navigate } from "react-router-dom";
 // // Authentication related pages
 import Login from "../pages/Authentication/Login";
 import Home from "../pages/Authentication/home/Home"
-import Page1 from "../pages/Authentication/Ragister/Page1"
+
+import  Ragisterpage from '../pages/Authentication/Ragister/Ragisterpage'
 
 import Logout from "../pages/Authentication/Logout";
 
@@ -38,7 +39,7 @@ const publicRoutes = [
   { path: "/login", component: <Login/> },
   { path: "/signup", component: <Signup/>},
   { path: "/forgot-password", component: <ForgotPassward/>},
-  { path: "/page1", component: <Page1/>},
+  { path: "/ragister", component: < Ragisterpage/>},
   { path: "/home", component: <Home/> },
   { path: "/reset-password", component: <ResetPassward/> },
 ];
