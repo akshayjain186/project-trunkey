@@ -1,43 +1,72 @@
-const Subcategory = require('../model/subcategoryModel'); // Sequelize model
-const Category = require('../model/categoryModel'); // Sequelize model
+const Subcategory = require('../model/subcategoryModel');
+const Category = require('../model/categoryModel'); 
 
-const createSubcategory = async (req, res, next) => {
+/**
+ * Creates multiple subcategories under a specified category.
+ * Ensures no duplicate subcategories for the same category.
+ * 
+ * @param {Object} req - Request object containing categoryId and subcategories list.
+ * @param {Object} res - Response object to send the results.
+ */
+
+
+const createSubcategories = async (req, res) => {
     try {
-        const { name, CategoryId } = req.body;
+        const { categoryId, subcategories } = req.body;
 
-        const parentCategory = await Category.findByPk(CategoryId); // `findByPk` is used for finding by primary key
+        // Validate input
+        if (!categoryId || !subcategories || !Array.isArray(subcategories) || subcategories.length === 0) {
+            return res.status(400).json({
+                message: 'categoryId and subcategories array are required.',
+                status: 'error',
+            });
+        }
+
+        const parentCategory = await Category.findByPk(categoryId);
         if (!parentCategory) {
-            return res.status(400).json({
-                message: 'Parent category not found',
+            return res.status(404).json({
+                message: 'Parent category not found.',
                 status: 'error',
             });
         }
 
-        // Check if the subcategory with the same name already exists under the parent category
-        const existingSubcategory = await Subcategory.findOne({
-            where: { name, CategoryId },
+        const existingSubcategories = await Subcategory.findAll({
+            where: {
+                name: subcategories,
+                CategoryId: categoryId,
+            },
         });
-        if (existingSubcategory) {
+
+        const existingNames = existingSubcategories.map(sub => sub.name);
+
+        const newSubcategories = subcategories.filter(name => !existingNames.includes(name));
+
+        if (newSubcategories.length === 0) {
             return res.status(400).json({
-                message: 'Subcategory with this name already exists under the specified parent category',
+                message: 'All subcategories already exist for this category.',
                 status: 'error',
             });
         }
 
-        // Create a new subcategory
-        const newSubcategory = await Subcategory.create({
+        const subcategoryData = newSubcategories.map(name => ({
             name,
-            CategoryId,
-        });
+            CategoryId: categoryId,
+        }));
+
+        const createdSubcategories = await Subcategory.bulkCreate(subcategoryData);
+
+        const allSubcategories = [...existingSubcategories, ...createdSubcategories];
 
         res.status(201).json({
-            message: 'Subcategory created successfully',
+            message: 'Subcategories created successfully!',
             status: 'success',
-            data: newSubcategory,
+            data: allSubcategories,
         });
     } catch (error) {
-        res.status(400).json({
-            message: 'Error creating subcategory',
+        console.error('Error creating subcategories:', error);  
+        res.status(500).json({
+            message: 'Error creating subcategories.',
+            status: 'error',
             error: error.message,
         });
     }
@@ -174,7 +203,7 @@ const deleteSubcategory = async (req, res, next) => {
 };
 
 module.exports = {
-    createSubcategory,
+    createSubcategories,
     getSubcategory,
     getAllSubcategory,
     updateSubcategory,

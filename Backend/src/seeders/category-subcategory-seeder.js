@@ -49,9 +49,6 @@ const seedCategoriesAndSubcategories = async () => {
     console.log('Database connected successfully.');
 
     for (const categoryData of categories) {
-
-      
-      
       const [categoryInstance] = await Category.findOrCreate({
         where: { name: categoryData.name }, 
         defaults: { name: categoryData.name }, 
@@ -74,14 +71,7 @@ const seedCategoriesAndSubcategories = async () => {
     console.log('Categories and Subcategories seeded successfully!');
   } catch (error) {
     console.error('Error seeding categories and subcategories:', error);
-  } finally {
-    console.log('Closing the database connection...');
-    await db.close();
   }
 };
 
 module.exports = seedCategoriesAndSubcategories;
-
-
-
-

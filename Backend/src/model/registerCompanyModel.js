@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/databaseConfig');
 const Category = require('./categoryModel');
-
+const projectmanagerole = require('./projectmanagementRole')
 
 const RegisterCompany = sequelize.define('RegisterCompany', {
     companyName: {
@@ -22,7 +22,7 @@ const RegisterCompany = sequelize.define('RegisterCompany', {
     },
     categoryId: {
         type: DataTypes.INTEGER,
-        allowNull: true,
+        allowNull: false,
         references: {
             model: Category,
             key: 'id',
@@ -44,6 +44,9 @@ const RegisterCompany = sequelize.define('RegisterCompany', {
         type: DataTypes.STRING,
         allowNull: false,
     },
+
+// contact information
+
     managerName: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -64,18 +67,33 @@ const RegisterCompany = sequelize.define('RegisterCompany', {
         allowNull: false,
     },
 
+    // contact_person:{
+    //     type:String
+    // }
+
     //   userId: {
     //     type: DataTypes.INTEGER,
     //     allowNull: false,
     //     references: {
-    //       model: 'UserAccount', 
+    //       model: UserAccount, 
     //       key: 'id', 
     //     },
     //   },
 
+    projectManagementRollId: { 
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model: projectmanagerole, 
+            key: 'id', 
+        },
+        onUpdate: 'CASCADE', 
+        onDelete: 'CASCADE', 
+    }
+
 }, {
     timestamps: true,
-    tableName: 'RegisterCompany',
+    tableName: 'RegisterCompanies',
 });
 
 

@@ -1,5 +1,7 @@
 const RegisterCompany = require('../model/registerCompanyModel');
-const { Sequelize } = require('sequelize');
+const {  QueryTypes } = require('sequelize');
+const sequelize = require('../config/databaseConfig');
+
 const createCompany = async (req, res) => {
   try {
     const {
@@ -15,6 +17,7 @@ const createCompany = async (req, res) => {
       managerName,
       managersurname,
       email,
+      projectManagementRollId,
       mobilePhone,
     } = req.body;
 
@@ -30,6 +33,7 @@ const createCompany = async (req, res) => {
       countyCoverage,
       managerName,
       managersurname,
+      projectManagementRollId,
       email,
       mobilePhone,
     });
@@ -38,6 +42,7 @@ const createCompany = async (req, res) => {
       success: true,
       message: 'Company successfully registered!',
       data: newCompany,
+      
     });
   } catch (error) {
     console.error(error);
@@ -51,43 +56,49 @@ const createCompany = async (req, res) => {
   }
 };
 
-const getCompaniesByJobType = async (req, res) => {
+const getCompaniesByJobTypes = async (req, res) => {
   try {
-    const { jobType } = req.query;
+    const { jobTypes } = req.body;
 
-    if (!jobType) {
+    if (!jobTypes) {
       return res.status(400).json({
         success: false,
         message: "Please provide a job type (e.g., 'Big Job' or 'Small Job').",
       });
     }
 
-    const companies = await RegisterCompany.findAll({
-      where: Sequelize.literal(`JSON_CONTAINS(jobTypes, '["${jobType}"]')`),
+    const query = `
+      SELECT * 
+      FROM RegisterCompany
+      WHERE jobTypes LIKE :jobTypes
+    `;
+
+    const companies = await sequelize.query(query, {
+      type: QueryTypes.SELECT,
+      replacements: { jobTypes: `%${jobTypes}%` }, // Pass jobTypes safely
     });
 
     if (companies.length === 0) {
       return res.status(404).json({
         success: false,
-        message: `No companies found with job type "${jobType}".`,
+        message: `No companies found with job type: ${jobTypes}`,
       });
     }
 
     res.status(200).json({
       success: true,
-      message: `Companies with job type "${jobType}" fetched successfully!`,
+      message: `Companies with job type "${jobTypes}" fetched successfully!`,
       data: companies,
     });
   } catch (error) {
-    console.error(error);
+    console.error("Error fetching companies:", error.stack);
     res.status(500).json({
       success: false,
       message: 'Failed to fetch companies by job type.',
       error: error.message,
     });
   }
-};
-
+}
 const updateCompany = async (req, res) => {
   try {
     const { companyId } = req.params;
@@ -236,7 +247,7 @@ const deleteCompanyById = async (req, res) => {
 
 module.exports = {
   createCompany,
-  getCompaniesByJobType,
+  getCompaniesByJobTypes,
   updateCompany,
   getCompanyById,
   getAllCompanies,

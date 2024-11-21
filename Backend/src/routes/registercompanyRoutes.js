@@ -2,9 +2,9 @@ const express = require('express');
 const router = express.Router();
 const registerCompanyController = require('../controller/registerCompanyController');
 
-router.post('/add', registerCompanyController.createCompany);
+router.post('/register', registerCompanyController.createCompany);
 
-router.get('/by-job-type', registerCompanyController.getCompaniesByJobType);
+router.post('/jobTypes', registerCompanyController.getCompaniesByJobTypes);
 
 router.put('/:companyId', registerCompanyController.updateCompany);
 

@@ -45,6 +45,7 @@ const leadsourceRoutes =  require('./routes/leadsourceRoutes')
 const categories = require('./routes/categoryRoutes');
 
 const registerCompanyRoutes = require('./routes/registercompanyRoutes');
+const subcategoryRoutes = require('./routes/subcategoryRoutes'); // Adjust the path
 
 // Session configuration
 
@@ -122,6 +123,9 @@ app.use('/api/v1/empolyeeleads', leadempolyeeRoutes);
 app.use('/api/v1/leadSource',leadsourceRoutes)
 app.use('/api/v1/registerCompany', registerCompanyRoutes);
 app.use('/api/v1/categories', categories);
+
+app.use('/api/v1/categories/subcategories', subcategoryRoutes);
+
 
 
 
