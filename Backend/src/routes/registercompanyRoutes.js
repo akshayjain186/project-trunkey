@@ -6,12 +6,12 @@ router.post('/register', registerCompanyController.createCompany);
 
 router.post('/jobTypes', registerCompanyController.getCompaniesByJobTypes);
 
-router.put('/:companyId', registerCompanyController.updateCompany);
+router.put('/:id', registerCompanyController.updateCompany);
 
-router.get('/:companyId', registerCompanyController.getCompanyById);
+router.get('/:id', registerCompanyController.getCompanyById);
 
-router.get('/', registerCompanyController.getAllCompanies);
+router.get('/', registerCompanyController.getCompanies);
 
-router.delete('/:id', registerCompanyController.deleteCompanyById);
+router.delete('/:id', registerCompanyController.deleteCompany);
 
 module.exports = router;

@@ -1,8 +1,11 @@
-const bcrypt = require('bcryptjs');
-const { Op } = require('sequelize');
-const UserAccount = require('../model/User');
-const Role = require('../model/role');
-const { generateRefreshToken, generateAccessToken } = require('../utils/tokens');
+const bcrypt = require("bcryptjs");
+const { Op } = require("sequelize");
+const UserAccount = require("../model/User");
+const Role = require("../model/role");
+const {
+  generateRefreshToken,
+  generateAccessToken,
+} = require("../utils/tokens");
 
 const register = async (req, res, next) => {
   try {
@@ -25,18 +28,18 @@ const register = async (req, res, next) => {
     const existingUser = await UserAccount.findOne({ where: { email } });
     if (existingUser) {
       return res.status(400).json({
-        message: 'Email address already exists',
-        status: 'error',
+        message: "Email address already exists",
+        status: "error",
       });
     }
 
     const role = await Role.findOne({
-      where: { machineName: roleName || 'StandardUser' },
+      where: { machineName: roleName || "StandardUser" },
     });
     if (!role) {
       return res.status(500).json({
-        message: 'Standard User role not found',
-        status: 'error',
+        message: "Standard User role not found",
+        status: "error",
       });
     }
 
@@ -60,8 +63,8 @@ const register = async (req, res, next) => {
     });
 
     res.status(201).json({
-      message: 'User account created successfully',
-      status: 'success',
+      message: "User account created successfully",
+      status: "success",
     });
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -76,8 +79,8 @@ const login = async (req, res, next) => {
       const user = await UserAccount.findOne({ where: { phone } });
       if (!user) {
         return res.status(400).send({
-          message: 'Phone number not registered.',
-          status: 'error',
+          message: "Phone number not registered.",
+          status: "error",
         });
       }
 
@@ -87,15 +90,15 @@ const login = async (req, res, next) => {
       await user.save();
 
       return res.status(200).send({
-        message: 'OTP sent successfully. Please verify to log in.',
+        message: "OTP sent successfully. Please verify to log in.",
         otp, // For testing purposes; remove in production
       });
     } else if (email && password) {
       const userAccount = await UserAccount.findOne({ where: { email } });
       if (!userAccount) {
         return res.status(400).send({
-          message: 'Invalid email or password.',
-          status: 'error',
+          message: "Invalid email or password.",
+          status: "error",
         });
       }
 
@@ -103,16 +106,16 @@ const login = async (req, res, next) => {
       const validPassword = await userAccount.comparePassword(password);
       if (!validPassword) {
         return res.status(400).send({
-          message: 'Invalid email or password.',
-          status: 'error',
+          message: "Invalid email or password.",
+          status: "error",
         });
       }
 
       const role = await Role.findByPk(userAccount.roleId);
       if (!role) {
         return res.status(400).json({
-          message: 'Role not found',
-          status: 'error',
+          message: "Role not found",
+          status: "error",
         });
       }
 
@@ -125,20 +128,19 @@ const login = async (req, res, next) => {
 
       res.json({
         message: `${role.name} account logged in successfully`,
-        status: 'success',
+        status: "success",
         access_token: accessToken,
         refresh_token: refreshToken,
       });
     } else {
       res.status(400).send({
-        message: 'Email/Password or Phone number is required.',
-        status: 'error',
+        message: "Email/Password or Phone number is required.",
+        status: "error",
       });
     }
   } catch (err) {
     res.status(500).send(err.message);
   }
 };
-
 
 module.exports = { register, login };

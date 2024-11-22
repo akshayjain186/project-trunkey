@@ -1,7 +1,5 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/databaseConfig');
-const Category = require('./categoryModel');
-const projectmanagerole = require('./projectmanagementRole')
 
 const RegisterCompany = sequelize.define('RegisterCompany', {
     companyName: {
@@ -21,19 +19,15 @@ const RegisterCompany = sequelize.define('RegisterCompany', {
         allowNull: false,
     },
     categoryId: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.JSON, 
         allowNull: false,
-        references: {
-            model: Category,
-            key: 'id',
-        },
     },
     jobTypes: {
-        type: DataTypes.JSON,
+        type: DataTypes.JSON, 
         allowNull: false,
     },
     employeeCount: {
-        type: DataTypes.STRING,
+        type: DataTypes.JSON, 
         allowNull: false,
     },
     useSubcontractors: {
@@ -41,12 +35,9 @@ const RegisterCompany = sequelize.define('RegisterCompany', {
         allowNull: false,
     },
     countyCoverage: {
-        type: DataTypes.STRING,
+        type: DataTypes.JSON, 
         allowNull: false,
     },
-
-// contact information
-
     managerName: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -66,36 +57,13 @@ const RegisterCompany = sequelize.define('RegisterCompany', {
         type: DataTypes.STRING,
         allowNull: false,
     },
-
-    // contact_person:{
-    //     type:String
-    // }
-
-    //   userId: {
-    //     type: DataTypes.INTEGER,
-    //     allowNull: false,
-    //     references: {
-    //       model: UserAccount, 
-    //       key: 'id', 
-    //     },
-    //   },
-
-    projectManagementRollId: { 
-        type: DataTypes.INTEGER,
+    projectManagementRollId: {
+        type: DataTypes.JSON, 
         allowNull: false,
-        references: {
-            model: projectmanagerole, 
-            key: 'id', 
-        },
-        onUpdate: 'CASCADE', 
-        onDelete: 'CASCADE', 
-    }
-
+    },
 }, {
     timestamps: true,
-    tableName: 'RegisterCompanies',
+    tableName: 'RegisterCompany',
 });
-
-
 
 module.exports = RegisterCompany;
