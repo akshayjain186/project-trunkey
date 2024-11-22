@@ -16,9 +16,13 @@ import {
   TabPane,
   Button,
 } from "reactstrap"
+import "./progressbar.css"
 
 import classnames from "classnames"
 import { Link } from "react-router-dom"
+
+import electricianicon from "../../../assets/images/icons/electrician-icon.svg"
+import AppraiserIcon from '../../../assets/images/icons/AppraiserIcon.png'
 
 //Import Breadcrumb
 // import Breadcrumbs from "../../components/Common/Breadcrumb"
@@ -27,13 +31,13 @@ const Ragisterpage = () => {
 
   const [data_attr, setData_attr] = useState(56);
   const Rooms = [
-    { id: 1, label: "Bathroom", iconClass: "mdi mdi-bitcoin font-size-24 text-warning align-middle me-2" },
+    { id: 1, label: "Bathroom", iconClass: "bx bx-bath font-size-24 text-warning align-middle me-2" },
     { id: 2, label: "Kitchen", iconClass: "mdi mdi-ethereum font-size-24 text-primary align-middle me-2" },
     { id: 3, label: "Toilet", iconClass: "mdi mdi-litecoin font-size-24 text-secondary align-middle me-2" },
     { id: 4, label: "Washing room", iconClass: "mdi mdi-bitcoin font-size-24 text-warning align-middle me-2" },
     { id: 5, label: "Living room", iconClass: "mdi mdi-ethereum font-size-24 text-primary align-middle me-2" },
     { id: 6, label: "Bedroom", iconClass: "mdi mdi-litecoin font-size-24 text-secondary align-middle me-2" },
-    { id: 7, label: "Children room", iconClass: "mdi mdi-bitcoin font-size-24 text-warning align-middle me-2" },
+    { id: 7, label: "Children room", iconClass: "bx bx-cart font-size-24 text-warning align-middle me-2" },
     { id: 8, label: "Technical room", iconClass: "mdi mdi-ethereum font-size-24 text-primary align-middle me-2" },
     { id: 9, label: "Storage room", iconClass: "mdi mdi-litecoin font-size-24 text-secondary align-middle me-2" },
     { id: 10, label: "Hallway", iconClass: "mdi mdi-litecoin font-size-24 text-secondary align-middle me-2" },
@@ -54,15 +58,23 @@ const Ragisterpage = () => {
 
 
   const workerTypes = [
-    { id: 1, label: "Carpenter and building tradesmen", iconClass: "mdi mdi-bitcoin font-size-24 text-warning align-middle me-2" },
+    { id: 1, label: "Carpenter and building tradesmen", iconClass: "bx bx-brush font-size-24 text-warning align-middle me-2" },
     { id: 2, label: "Cleaner", iconClass: "mdi mdi-ethereum font-size-24 text-primary align-middle me-2" },
-    { id: 3, label: "Demolition, tiling and concrete sawing", iconClass: "mdi mdi-litecoin font-size-24 text-secondary align-middle me-2" },
-    { id: 4, label: "Electrician", iconClass: "mdi mdi-bitcoin font-size-24 text-warning align-middle me-2" },
-    { id: 5, label: "Foundation and landscaping worker", iconClass: "mdi mdi-ethereum font-size-24 text-primary align-middle me-2" },
-    { id: 6, label: "Glass master and glazier", iconClass: "mdi mdi-litecoin font-size-24 text-secondary align-middle me-2" },
+    { id: 3, label: "Demolition, tiling and concrete sawing", iconClass: "mdi-arrow-top-right-bold-outline font-size-24 text-secondary align-middle me-2" },
+    { id: 4, label: "Electrician", iconClass: "electricianicon" },
+    { id: 5, label: "Foundation and landscaping worker", iconClass: "bx bx-grid font-size-24 text-primary align-middle me-2" },
+    { id: 6, label: "Glass master and glazier", iconClass: "bx bx-mouse-alt font-size-24 text-secondary align-middle me-2" },
     { id: 7, label: "Plumber", iconClass: "mdi mdi-bitcoin font-size-24 text-warning align-middle me-2" },
     { id: 8, label: "Roofer and tinsmith", iconClass: "mdi mdi-ethereum font-size-24 text-primary align-middle me-2" },
-    { id: 9, label: "Tiler, bricklayer and plastering", iconClass: "mdi mdi-litecoin font-size-24 text-secondary align-middle me-2" },
+    { id: 9, label: "Tiler, bricklayer and plastering", iconClass: "bx bx-paint-roll font-size-24 text-secondary align-middle me-2" },
+  ];
+  const Projectm = [
+    { id: 1, label: "Appraiser", iconClass: "mdi mdi-bitcoin font-size-24 text-warning align-middle me-2" },
+    { id: 2, label: "Architect", iconClass: "bx bx-dock-left font-size-24 text-primary align-middle me-2" },
+    { id: 3, label: "Builder", iconClass: "mdi mdi-litecoin font-size-24 text-secondary align-middle me-2" },
+    { id: 4, label: "Interior designer", iconClass: "mdi mdi-bitcoin font-size-24 text-warning align-middle me-2" },
+    { id: 5, label: "Project manage", iconClass: "bx bx-clipboard-size-24 text-primary align-middle me-2" },
+
   ];
 
 
@@ -105,7 +117,7 @@ const Ragisterpage = () => {
         <Row>
           <Col lg="12">
             <div className="wizard clearfix">
-              <div className="steps clearfix">
+              {/* <div className="steps clearfix">
                 <ul>
                   <NavItem
                     className={classnames({ current: activeTab === 1 })}
@@ -117,7 +129,7 @@ const Ragisterpage = () => {
                       }}
                       disabled={!(passedSteps || []).includes(1)}
                     >
-                      <span className="number">1.</span> Work Type
+                      <span className="number">1.</span> 
                     </NavLink>
                   </NavItem>
                   <NavItem
@@ -130,7 +142,7 @@ const Ragisterpage = () => {
                       }}
                       disabled={!(passedSteps || []).includes(2)}
                     >
-                      <span className="number">2.</span> Choose Category
+                      <span className="number">2.</span>
                     </NavLink>
                   </NavItem>
                   <NavItem
@@ -143,12 +155,49 @@ const Ragisterpage = () => {
                       }}
                       disabled={!(passedSteps || []).includes(3)}
                     >
-                      <span className="number">3.</span> Description and contact information info
+                      <span className="number">3.</span> 
                     </NavLink>
                   </NavItem>
 
                 </ul>
+              </div> */}
+              <Row className="justify-content-center">
+              <Col lg="6">
+              <div className="progress-bar-container">
+                <div className={`step me-3 ${activeTab >= 1 ? 'completed' : ''}`}>
+                  <div
+                    className={`circle ms-3 ${activeTab === 1 ? 'active' : ''}`}
+                    onClick={() => activeTab >= 1 && setactiveTab(1)}
+                  >
+                    1
+                  </div>
+                  <span className="label">Work type</span>
+                </div>
+                <div className={`line mb-4  ${activeTab > 1 ? 'completed' : ''}`}></div>
+                <div className={`step ${activeTab >= 2 ? 'completed' : ''}`}>
+                  <div
+                    className={`circle ms-4 ${activeTab === 2 ? 'active' : ''}`}
+                    onClick={() => activeTab >= 2 && setactiveTab(2)}
+                  >
+                    2
+                  </div>
+                  <span className="label">Choose categories</span>
+                </div>
+                <div className={`mb-4 line me-3 ${activeTab > 2 ? 'completed' : ''}`}></div>
+                <div className={`step ${activeTab >= 3 ? 'completed' : ''}`}>
+                  <div
+                    className={`circle ${activeTab === 3 ? 'active' : ''}`}
+                    onClick={() => activeTab >= 3 && setactiveTab(3)}
+                  >
+                    3
+                  </div>
+                  <span className="label">Description and contact info</span>
+                </div>
               </div>
+              </Col>
+              </Row>
+              
+
               <div className="content clearfix">
 
 
@@ -169,7 +218,8 @@ const Ragisterpage = () => {
                                   style={{ Width: "180px" }}
                                 >
                                   <div className="card-radio py-3 border rounded d-flex">
-                                    <i className={worker.iconClass} />
+                                 
+                                    <img src={electricianicon} style={{height:"20px", width:"20px" ,marginTop:"7px"}} className="me-2"/>
                                     <div>
                                       <div className="mt-2">{worker.label}</div>
                                     </div>
@@ -180,7 +230,7 @@ const Ragisterpage = () => {
 
                             <span className="text-muted">Project manager</span>
                             <div className="d-flex flex-wrap mt-2 gap-4">
-                              {workerTypes.map((worker) => (
+                              {Projectm.map((worker) => (
                                 <label
                                   className="card-radio-label text-center"
                                   key={worker.id}
@@ -501,9 +551,9 @@ const Ragisterpage = () => {
                                 </Col>
                               </Row>
                               <div class="mb-3">
-                                
+
                                 <a href="#" id="attachment" class="btn btn-link">
-                                  <i class="bi bi-paperclip"></i> Add Attachment
+                                  <i class="bx bx-paperclip"></i> Add Attachment
                                 </a>
                               </div>
                               <div className="mb-3">
@@ -538,30 +588,30 @@ const Ragisterpage = () => {
                                   </div>
                                 </InputGroup> */}
                                 <InputGroup>
-  <div className="input-group">
-    <button
-      type="button"
-      className="btn btn-outline-primary "
-      onClick={() => setData_attr(data_attr - 1)}
-    >
-      <i className="mdi mdi-minus" />
-    </button>
-    <input
-      type="number"
-      className="form-control text-center"
-      value={data_attr}
-      placeholder="number"
-      readOnly
-    />
-    <button
-      type="button"
-      className="btn btn-outline-primary "
-      onClick={() => setData_attr(data_attr + 1)}
-    >
-      <i className="mdi mdi-plus" />
-    </button>
-  </div>
-</InputGroup>
+                                  <div className="input-group">
+                                    <button
+                                      type="button"
+                                      className="btn btn-outline-primary "
+                                      onClick={() => setData_attr(data_attr - 1)}
+                                    >
+                                      <i className="mdi mdi-minus" />
+                                    </button>
+                                    <input
+                                      type="number"
+                                      className="form-control text-center"
+                                      value={data_attr}
+                                      placeholder="number"
+                                      readOnly
+                                    />
+                                    <button
+                                      type="button"
+                                      className="btn btn-outline-primary "
+                                      onClick={() => setData_attr(data_attr + 1)}
+                                    >
+                                      <i className="mdi mdi-plus" />
+                                    </button>
+                                  </div>
+                                </InputGroup>
                               </div>
                             </Form>
                           </CardBody>
@@ -594,9 +644,9 @@ const Ragisterpage = () => {
 
                               </Row>
                               <div class="mb-3">
-                                
+
                                 <a href="#" id="attachment" class="btn btn-link">
-                                  <i class="bi bi-paperclip"></i> Add Attachment
+                                  <i class="bx bx-paperclip"></i> Add Attachment
                                 </a>
                               </div>
                               <div className="mb-3">

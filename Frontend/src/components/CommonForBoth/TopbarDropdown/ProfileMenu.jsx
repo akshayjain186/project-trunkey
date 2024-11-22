@@ -26,10 +26,10 @@ const ProfileMenu = (props) => {
 
   useEffect(() => {
     if (localStorage.getItem("authUser")) {
-      if (import.meta.env.VITE_VITE_APP_DEFAULTAUTH === "fake") {
-        const obj = JSON.parse(localStorage.getItem("authUser"));
-        setusername(obj.username);
-      }
+      // if (import.meta.env.VITE_VITE_APP_DEFAULTAUTH === "fake") {
+      //   const obj = JSON.parse(localStorage.getItem("authUser"));
+      //   setusername(obj.username);
+      // }
     }
   }, [props.success]);
 
