@@ -30,7 +30,7 @@ const JobListPage = () => {
 
   return (
     <Container fluid className="py-4 mt-md-5 p-5 my-jo" style={{ fontFamily: "montserrat" }}>
-      <Row className="mb-4">
+      {/* <Row className="mb-4">
         <Col xs="12" className="d-flex justify-content-between align-items-center">
           <h3 className="mb-0">My jobs</h3>
 
@@ -39,8 +39,6 @@ const JobListPage = () => {
           </span>
         </Col>
       </Row>
-
-
       <Row className="mb-4">
         <Col xs="12" className="d-flex align-items-center ">
           <a href="#"
@@ -96,7 +94,7 @@ const JobListPage = () => {
             />
           </Col>
         </Row>
-      )}
+      )} */}
     </Container>
    
   );
