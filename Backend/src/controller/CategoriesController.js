@@ -1,11 +1,10 @@
-const Category = require('../model/Categories'); 
+const Category = require('../model/Categories');
 
 // Create Category
 const createCategory = async (req, res, next) => {
   try {
     const { title } = req.body;
 
-    // Check if category already exists
     const existingCategory = await Category.findOne({ where: { title } });
     if (existingCategory) {
       return res.status(400).json({
@@ -13,8 +12,6 @@ const createCategory = async (req, res, next) => {
         status: 'error',
       });
     }
-
-    // Create new category
     const newCategory = await Category.create({ title });
 
     return res.status(201).json({
@@ -29,7 +26,6 @@ const createCategory = async (req, res, next) => {
     });
   }
 };
-
 // Get Categories Details
 const getCategoriesDetails = async (req, res) => {
   try {
@@ -41,7 +37,7 @@ const getCategoriesDetails = async (req, res) => {
         statusCode: 404,
         status: true,
         data: [],
-        message: "Categories not found",
+        message: 'Categories not found',
       });
     }
 
@@ -55,7 +51,7 @@ const getCategoriesDetails = async (req, res) => {
         categories: allCategories,
         subcategories: findSubcategories,
       },
-      message: "Categories and subcategories fetched successfully",
+      message: 'Categories and subcategories fetched successfully',
     });
   } catch (error) {
     return res.status(500).json({
@@ -65,7 +61,6 @@ const getCategoriesDetails = async (req, res) => {
     });
   }
 };
-
 // Update Category
 const updateCategory = async (req, res) => {
   try {
@@ -73,7 +68,7 @@ const updateCategory = async (req, res) => {
     const { title } = req.body;
 
     if (!title) {
-      return res.status(400).json({ message: "Title is required" });
+      return res.status(400).json({ message: 'Title is required' });
     }
 
     // Find and update category by ID
@@ -92,7 +87,7 @@ const updateCategory = async (req, res) => {
     res.status(200).json({
       message: 'Category updated successfully',
       status: 'success',
-      data: updatedCategory[1][0], // Returning updated category
+      data: updatedCategory[1][0], 
     });
   } catch (error) {
     res.status(500).json({
@@ -101,7 +96,6 @@ const updateCategory = async (req, res) => {
     });
   }
 };
-
 // Delete Category
 const deleteCategory = async (req, res) => {
   try {
@@ -134,6 +128,5 @@ module.exports = {
   createCategory,
   getCategoriesDetails,
   updateCategory,
-  deleteCategory
+  deleteCategory,
 };
-

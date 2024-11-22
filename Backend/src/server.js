@@ -6,8 +6,7 @@ const subcategoriesRoutes = require('./routes/SubcategoriesRoutes');
 const projectRoutes = require('./routes/ProjectRoutes');
 const projectmanageroleRoutes = require('./routes/ProjectmanageroleRoutes');
 // const projectSubcategoryRoutes = require('./routes/ProjectSubcategory');
-// const bigprojectRoutes = require('./routes/BigProjectRoutes');
-
+const bigprojectRoutes = require('./routes/BigProjectRoutes');
 
 // Import required modules
 const express = require('express');
@@ -68,7 +67,10 @@ const limiter = rateLimit({
 });
 app.use(limiter);
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
-app.use('/categoryimage', express.static(path.join(__dirname, 'categoryimage')));
+app.use(
+  '/categoryimage',
+  express.static(path.join(__dirname, 'categoryimage'))
+);
 
 // Sync Sequelize models and session store
 sequelize.sync().then(() => {
@@ -103,9 +105,7 @@ app.use('/api/v1/subcategories', subcategoriesRoutes);
 app.use('/api/v1/project', projectRoutes);
 app.use('/api/v1/projectmanagerole', projectmanageroleRoutes);
 // app.use('/api/v1/projectsubcategory', projectSubcategoryRoutes);
-// app.use('/api/v1/bigproject',bigprojectRoutes);
-
-
+app.use('/api/v1/bigproject', bigprojectRoutes);
 
 // Example route
 app.get('/', (req, res) => {
@@ -117,7 +117,9 @@ app.get('/', (req, res) => {
 
 const PORT = config.port || 3000;
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT} in ${process.env.NODE_ENV} mode`);
+  console.log(
+    `Server is running on port ${PORT} in ${process.env.NODE_ENV} mode`
+  );
 });
 
 // if (cluster.isMaster) { /* Cluster setup as needed */ }

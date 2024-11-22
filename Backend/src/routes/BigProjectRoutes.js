@@ -1,17 +1,19 @@
-// const express = require('express');
-// const {createBigProject,getAllBigProject,getBigProjectById, updateBigProject,deleteBigProject,uploadAttachment } = require('../controller/ProjectController.js');
-// const { upload } = require('../middlewares/upload.js');
-// const router = express.Router();
+const express = require('express');
+const {createBigProject} = require('../controller/BigProjectController.js');
+    // ,getAllBigProject,getBigProjectById, updateBigProject,deleteBigProject,uploadAttachment }
+    
+const { upload } = require('../middlewares/upload.js');
+const router = express.Router();
 
-// // Routes
+// Routes
 // router.post('/uploadfile/:ProjectSubcategoryId', upload.array('attachment', 10), uploadAttachment);
-// router.post('/add', createBigProject);
+router.post('/add', createBigProject);
 // router.get('/fetch', getAllBigProject);
 // router.get('/fetch/:id', getBigProjectById);
 // router.put('/update/:id', updateBigProject);
 // router.delete('/delete/:id', deleteBigProject);
 
-// module.exports = router;
+module.exports = router;
 
 
 

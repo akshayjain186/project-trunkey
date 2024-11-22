@@ -1,17 +1,18 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/databaseConfig');
 
-const ProjectSubcategory = sequelize.define(
-  'ProjectSubcategory',
+const BigProjectSubcategory = sequelize.define(
+  'BigProjectSubcategory',
   {
     subcategoryId: {
       type: DataTypes.JSON,
       allowNull: false,
     },
-    smallprojectId: {
+    bigprojectId: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
+
     description: {
       type: DataTypes.TEXT,
       allowNull: true,
@@ -26,9 +27,9 @@ const ProjectSubcategory = sequelize.define(
     },
   },
   {
-    tableName: 'project_subcategories',
+    tableName: 'Bigproject_subcategory',
     timestamps: true,
   }
 );
 
-module.exports = ProjectSubcategory;
+module.exports = BigProjectSubcategory;

@@ -1,150 +1,181 @@
-// const BigProject = require('../model/BigProject');
-// const  User  = require('../model/User'); // Assuming User model exists in the models folder.
-// const Category = require('../model/Categories');
-// const Subcategory = require('../model/Subcategories');
-// const Projectmanagerole = require('../model/Projectmanagerole');
+const BigProject = require('../model/BigProject');
+const BigProjectSubcategory = require('../model/BigProjectSubcategory');
+const Category = require('../model/Categories');
+const Subcategory = require('../model/Subcategories');
+const Projectmanagerole = require('../model/Projectmanagerole');
 
 
+const createBigProject = async (req, res) => {
+    try {
+        const {
+            name,
+            typeOfProject,
+            categoryId,
+            subcategoryId,
+            projectmanageroleId,
+            typeOfHome,
+            projectAddress,
+            city,
+            generalComment,
+            contactName,
+            contactSurname,
+            contactEmail,
+            contactMobile,
+            selectbigsubcategory, // Subcategories with attachments
+        } = req.body;
+
+        // Validation check
+        if (
+            !name ||
+            !typeOfProject ||
+            !categoryId ||
+            !subcategoryId ||
+            !projectmanageroleId ||
+            !typeOfHome ||
+            !projectAddress ||
+            !city ||
+            !generalComment ||
+            !contactName ||
+            !contactSurname ||
+            !contactEmail ||
+            !contactMobile ||
+            !selectbigsubcategory || !Array.isArray(selectbigsubcategory)
+        ) {
+            return res.status(400).json({
+                message: 'All fields are required.',
+                status: 'error',
+            });
+        }
+
+        // Email validation
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(contactEmail)) {
+            return res.status(400).json({
+                message: 'Invalid email format.',
+                status: 'error',
+            });
+        }
 
 
+        // Validate categoryId
+        const categories = await Category.findAll({
+            where: { id: categoryId },
+        });
+        if (categories.length !== categoryId.length) {
+            return res.status(400).json({
+                message: 'Invalid categoryId(s) provided.',
+                status: 'error',
+            });
+        }
 
-// const createBigProject = async (req, res) => {
-//     try {
-//         const {
-//             name,
-//             typeOfProject,
-//             categoryId,
-//             subcategoryId,
-//             projectmanageroleId,
-//             typeOfHome,
-//             projectAddress,
-//             city,
-//             generalComment,
-//             contactName,
-//             contactSurname,
-//             contactEmail,
-//             contactMobile,
-//             selectsubcategory, // Subcategories with attachments
-//         } = req.body;
+        // Validate subcategoryId
+        const subcategories = await Subcategory.findAll({
+            where: { id: subcategoryId },
+        });
+        if (subcategories.length !== subcategoryId.length) {
+            return res.status(400).json({
+                message: 'Invalid subcategoryId(s) provided.',
+                status: 'error',
+            });
+        }
 
-//         // Validation check
-//         if (
-//             !name ||
-//             !typeOfProject ||
-//             !categoryId ||
-//             !subcategoryId ||
-//             !projectmanageroleId ||
-//             !typeOfHome ||
-//             !projectAddress ||
-//             !city ||
-//             !generalComment ||
-//             !contactName ||
-//             !contactSurname ||
-//             !contactEmail ||
-//             !contactMobile ||
-//             !selectsubcategory || !Array.isArray(selectsubcategory)
-//         ) {
-//             return res.status(400).json({
-//                 message: 'All fields are required.',
-//                 status: 'error',
-//             });
-//         }
+        // Validate projectmanageroleId
+        const projectManagerRoles = await Projectmanagerole.findAll({
+            where: { id: projectmanageroleId },
+        });
+        if (projectManagerRoles.length !== projectmanageroleId.length) {
+            return res.status(400).json({
+                message: 'Invalid projectmanageroleId(s) provided.',
+                status: 'error',
+            });
+        }
+        // Create the bigProject
+        const bigproject = await  BigProject.create({
+            name,
+            typeOfProject,
+            categoryId: categoryId,
+            subcategoryId: subcategoryId,
+            projectmanageroleId: projectmanageroleId,
+            typeOfHome,
+            projectAddress,
+            city,
+            generalComment,
+            contactName,
+            contactSurname,
+            contactEmail,
+            contactMobile,
+        });
 
-//         // Email validation
-//         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-//         if (!emailRegex.test(contactEmail)) {
-//             return res.status(400).json({
-//                 message: 'Invalid email format.',
-//                 status: 'error',
-//             });
-//         }
+        // Retrieve the project ID
+        const bigprojectId = bigproject.id;
 
-//         // Create the SmallProject
-//         const smallproject = await SmallProject.create({
-//             name,
-//             typeOfProject,
-//             categoryId: categoryId,
-//             subcategoryId: subcategoryId,
-//             projectmanageroleId: projectmanageroleId,
-//             typeOfHome,
-//             projectAddress,
-//             city,
-//             generalComment,
-//             contactName,
-//             contactSurname,
-//             contactEmail,
-//             contactMobile,
-//         });
+        // Store created ProjectSubcategory data
+        const createdBigSubcategories = [];
 
-//         // Retrieve the project ID
-//         const smallprojectId = smallproject.id;
+        // Iterate over the subcategories and create them
+        for (const bigsubcategory of selectbigsubcategory) {
+            const { id, description, attachment, floor } = bigsubcategory;
 
-//         // Store created ProjectSubcategory data
-//         const createdSubcategories = [];
+            if (!id || !description || !attachment || !floor) {
+                return res.status(400).json({
+                    message: 'Each subcategory must have id, description, attachment, and floor.',
+                    status: 'error',
+                });
+            }
 
-//         // Iterate over the subcategories and create them
-//         for (const subcategory of selectsubcategory) {
-//             const { id, description, attachment, floor } = subcategory;
+            const newBigSubcategory = await  BigProjectSubcategory.create({
+                bigprojectId,
+                subcategoryId: id,
+                description,
+                attachment, // Attachments provided by the client
+                floor,
+            });
 
-//             if (!id || !description || !attachment || !floor) {
-//                 return res.status(400).json({
-//                     message: 'Each subcategory must have id, description, attachment, and floor.',
-//                     status: 'error',
-//                 });
-//             }
+            // Add the created subcategory to the array
+            createdBigSubcategories.push(newBigSubcategory);
+        }
 
-//             const newSubcategory = await ProjectSubcategory.create({
-//                 smallprojectId,
-//                 subcategoryId: id,
-//                 description,
-//                 attachment, // Attachments provided by the client
-//                 floor,
-//             });
+        // Success response including Big Project and ProjectSubcategory data
+        return res.status(201).json({
+            message: 'Big Project created successfully',
+            project: bigproject, // BigProject data
+            subcategories: createdBigSubcategories, // Array of created subcategories
+            status: 'success',
+        });
+    } catch (error) {
+        console.error('Error creating project:', error);
+        return res.status(500).json({
+            message: 'An error occurred while creating the project',
+            error: error.message,
+            status: 'error',
+        });
+    }
+};
 
-//             // Add the created subcategory to the array
-//             createdSubcategories.push(newSubcategory);
-//         }
+const getAllBigProject = async (req, res) => {
 
-//         // Success response including SmallProject and ProjectSubcategory data
-//         return res.status(201).json({
-//             message: 'Project created successfully',
-//             project: smallproject, // SmallProject data
-//             subcategories: createdSubcategories, // Array of created subcategories
-//             status: 'success',
-//         });
-//     } catch (error) {
-//         console.error('Error creating project:', error);
-//         return res.status(500).json({
-//             message: 'An error occurred while creating the project',
-//             error: error.message,
-//             status: 'error',
-//         });
-//     }
-// };
-
-// const getAllBigProject = async (req, res) => {
-//     try {
-//         const projects = await SmallProject.findAll();
-//         if (!projects.length) {
-//             return res.status(404).json({
-//                 message: 'No projects found',
-//                 status: 'error',
-//             });
-//         }
-//         res.status(200).json({
-//             message: 'Fetched all projects successfully',
-//             data: projects,
-//             status: 'success',
-//         });
-//     } catch (error) {
-//         console.error(error);
-//         res.status(500).json({
-//             message: 'Error fetching projects',
-//             error: error.message,
-//             status: 'error',
-//         });
-//     }
-// };
+    try {
+        const projects = await SmallProject.findAll();
+        if (!projects.length) {
+            return res.status(404).json({
+                message: 'No projects found',
+                status: 'error',
+            });
+        }
+        res.status(200).json({
+            message: 'Fetched all projects successfully',
+            data: projects,
+            status: 'success',
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            message: 'Error fetching projects',
+            error: error.message,
+            status: 'error',
+        });
+    }
+};
 
 // const getBigProjectById = async (req, res) => {
 //     try {
@@ -320,11 +351,11 @@
 
 
 
-// module.exports = {
-//     createBigProject,
-//     getAllBigProject,
+module.exports = {
+    createBigProject,
+    getAllBigProject,
 //     getBigProjectById,
 //      updateBigProject,
 //      deleteBigProject,
 //      uploadAttachment
-// };
+};
