@@ -6,6 +6,7 @@ const subcategoriesRoutes = require('./routes/SubcategoriesRoutes');
 const projectRoutes = require('./routes/ProjectRoutes');
 const projectmanageroleRoutes = require('./routes/ProjectmanageroleRoutes');
 // const projectSubcategoryRoutes = require('./routes/ProjectSubcategory');
+// const bigprojectRoutes = require('./routes/BigProjectRoutes');
 
 
 // Import required modules
@@ -102,6 +103,7 @@ app.use('/api/v1/subcategories', subcategoriesRoutes);
 app.use('/api/v1/project', projectRoutes);
 app.use('/api/v1/projectmanagerole', projectmanageroleRoutes);
 // app.use('/api/v1/projectsubcategory', projectSubcategoryRoutes);
+// app.use('/api/v1/bigproject',bigprojectRoutes);
 
 
 

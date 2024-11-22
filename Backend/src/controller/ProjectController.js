@@ -1,9 +1,8 @@
 const SmallProject = require('../model/Project');
 const ProjectSubcategory = require('../model/ProjectSubcategory');
-
-// const Category = require('../model/Categories');
-// const Subcategory = require('../model/Subcategories');
-// const Projectmanagerole = require('../model/Projectmanagerole');
+const Category = require('../model/Categories');
+const Subcategory = require('../model/Subcategories');
+const Projectmanagerole = require('../model/Projectmanagerole');
 
 // const createProject = async (req, res) => {
 //     try {
@@ -127,7 +126,7 @@ const createProject = async (req, res) => {
             selectsubcategory, // Subcategories with attachments
         } = req.body;
 
-        // Validation check
+        // Validate required fields
         if (
             !name ||
             !typeOfProject ||
@@ -137,7 +136,6 @@ const createProject = async (req, res) => {
             !typeOfHome ||
             !projectAddress ||
             !city ||
-            !generalComment ||
             !contactName ||
             !contactSurname ||
             !contactEmail ||
@@ -159,13 +157,46 @@ const createProject = async (req, res) => {
             });
         }
 
+        // Validate categoryId
+        const categories = await Category.findAll({
+            where: { id: categoryId },
+        });
+        if (categories.length !== categoryId.length) {
+            return res.status(400).json({
+                message: 'Invalid categoryId(s) provided.',
+                status: 'error',
+            });
+        }
+
+        // Validate subcategoryId
+        const subcategories = await Subcategory.findAll({
+            where: { id: subcategoryId },
+        });
+        if (subcategories.length !== subcategoryId.length) {
+            return res.status(400).json({
+                message: 'Invalid subcategoryId(s) provided.',
+                status: 'error',
+            });
+        }
+
+        // Validate projectmanageroleId
+        const projectManagerRoles = await Projectmanagerole.findAll({
+            where: { id: projectmanageroleId },
+        });
+        if (projectManagerRoles.length !== projectmanageroleId.length) {
+            return res.status(400).json({
+                message: 'Invalid projectmanageroleId(s) provided.',
+                status: 'error',
+            });
+        }
+
         // Create the SmallProject
         const smallproject = await SmallProject.create({
             name,
             typeOfProject,
-            categoryId: categoryId,
-            subcategoryId: subcategoryId,
-            projectmanageroleId: projectmanageroleId,
+            categoryId: categoryId, 
+            subcategoryId: subcategoryId, 
+            projectmanageroleId: projectmanageroleId, 
             typeOfHome,
             projectAddress,
             city,
@@ -176,13 +207,8 @@ const createProject = async (req, res) => {
             contactMobile,
         });
 
-        // Retrieve the project ID
-        const smallprojectId = smallproject.id;
-
-        // Store created ProjectSubcategory data
+        // Process and validate subcategories with attachments
         const createdSubcategories = [];
-
-        // Iterate over the subcategories and create them
         for (const subcategory of selectsubcategory) {
             const { id, description, attachment, floor } = subcategory;
 
@@ -194,22 +220,20 @@ const createProject = async (req, res) => {
             }
 
             const newSubcategory = await ProjectSubcategory.create({
-                smallprojectId,
+                smallprojectId: smallproject.id,
                 subcategoryId: id,
                 description,
-                attachment, // Attachments provided by the client
+                attachment,
                 floor,
             });
 
-            // Add the created subcategory to the array
             createdSubcategories.push(newSubcategory);
         }
 
-        // Success response including SmallProject and ProjectSubcategory data
         return res.status(201).json({
             message: 'Project created successfully',
-            project: smallproject, // SmallProject data
-            subcategories: createdSubcategories, // Array of created subcategories
+            project: smallproject,
+            subcategories: createdSubcategories,
             status: 'success',
         });
     } catch (error) {

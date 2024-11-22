@@ -1,12 +1,9 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/databaseConfig');
+// const User = require('./User');
 
-// const Category = require('./Categories');
-// const Subcategory = require('./Subcategories');
-// const Projectmanagerole = require('./Projectmanagerole');
-// const ProjectSubcategory = require('./ProjectSubcategory');
 
-const SmallProject = sequelize.define('SmallProject', {
+const BigProject = sequelize.define('BigProject', {
     name: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -18,17 +15,18 @@ const SmallProject = sequelize.define('SmallProject', {
     categoryId: {
         type: DataTypes.JSON,
         allowNull: false,
-       
     },
     subcategoryId: {
         type: DataTypes.JSON,
         allowNull: false,
-       
+    },
+    subcategory_type: {
+        type: DataTypes.STRING,
+        allowNull: false,
     },
     projectmanageroleId: {
         type: DataTypes.JSON,
         allowNull: false,
-       
     },
     typeOfHome: {
         type: DataTypes.STRING,
@@ -48,6 +46,10 @@ const SmallProject = sequelize.define('SmallProject', {
             len: [0, 500],
         },
     },
+    // contact_info: {
+    //     type: DataTypes.STRING,
+    //     allowNull:false,
+    // }
     contactName: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -68,14 +70,8 @@ const SmallProject = sequelize.define('SmallProject', {
         allowNull: false,
     },
 }, {
-    tableName: 'small_projects',
+    tableName: 'big_projects',
     timestamps: true,
 });
 
-// Set up associations
-// SmallProject.belongsTo(Category, { foreignKey: 'categoryId', onDelete: 'CASCADE' });
-// SmallProject.belongsTo(Subcategory, { foreignKey: 'subcategoryId', onDelete: 'CASCADE' });
-// SmallProject.belongsTo(Projectmanagerole, { foreignKey: 'projectmanageroleId', onDelete: 'CASCADE' });
-// SmallProject.belongsTo(ProjectSubcategory, { foreignKey: 'projectsubcategoryId', as: 'projectsubcategory', onDelete: 'CASCADE' });
-
-module.exports = SmallProject; 
+module.exports = BigProject; 
