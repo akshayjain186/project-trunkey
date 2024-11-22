@@ -11,6 +11,8 @@ import {
 } from "../../../helpers/fakebackend_helper";
 
 function* loginUser({ payload: { user, history } }) {
+  console.log('hhhhhhhhhhhhhhhhhhhhhhhhhhhhh')
+  console.log
   try {
  
     if (import.meta.env.VITE_VITE_APP_DEFAULTAUTH === "fake") {
@@ -20,11 +22,18 @@ function* loginUser({ payload: { user, history } }) {
         email: user.email,
         password: user.password,
       });
+      console.log("response",response)
+
       localStorage.setItem("authUser", JSON.stringify(response));
+       history('/dashboard');
+
       yield put(loginSuccess(response));
     }
-    history('/dashboard');
+   
   } catch (error) {
+
+    console.error("login erro".error);
+    
     yield put(apiError(error));
   }
 }

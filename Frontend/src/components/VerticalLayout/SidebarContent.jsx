@@ -147,9 +147,9 @@ const SidebarContent = (props) => {
           <ul className="metismenu list-unstyled text-white" id="side-menu">
             <li className="menu-title">{props.t("Menu")} </li>
             <li>
-              <Link to="/my-job">
+              <Link to="/my-jobs">
                 <i className="bx bx-briefcase-alt"></i>
-                <span>{props.t("MYjobs")}</span>
+                <span>{props.t("My Jobs")}</span>
               </Link>
             </li>
             <li>
@@ -186,7 +186,7 @@ const SidebarContent = (props) => {
         </div>
             {/* Profile Section */}
         
-          <div className=" d-flex align-items-center p-3 h-100" style={{ position: 'absolute', bottom: 0, width: '100%' }}>
+          {/* <div className=" d-flex align-items-center p-3 h-100" style={{ position: 'absolute', bottom: 0, width: '100%' }}>
           <img
             src="https://www.shutterstock.com/image-vector/abstract-boy-avtar-character-fiction-260nw-2168819879.jpg"
             alt="Profile"
@@ -197,7 +197,7 @@ const SidebarContent = (props) => {
             <p className="mb-0 text-white">Tyler Hopper</p>
             <small className="text-light">Customer</small>
           </div>
-        </div>
+        </div> */}
         
         
       </SimpleBar>

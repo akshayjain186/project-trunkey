@@ -15,7 +15,16 @@ const isUserAuthenticated = () => {
 };
 
 // Login Method
-const postFakeLogin = data => post(url.POST_FAKE_LOGIN, data);
+const postFakeLogin = data =>{
+  console.log(data)
+  post(url.POST_FAKE_LOGIN, data)
+};
+
+const  SignupApi = data =>{
+  console.log(data,'ppppppppppppppp')
+  return
+  post(url.POST_SIGN_UP,data)
+}
 
 const postFakeProfile = data => post(url.POST_EDIT_PROFILE, data);
 
@@ -24,4 +33,5 @@ export {
   isUserAuthenticated,
   postFakeLogin,
   postFakeProfile,
+  SignupApi,
 };
