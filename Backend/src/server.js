@@ -1,6 +1,11 @@
 // Import required modules
 const userAccountRoutes = require('./routes/User');
 const rolesRoutes = require('./routes/Roles');
+const categoriesRoutes = require('./routes/CategoriesRoutes');
+const subcategoriesRoutes = require('./routes/SubcategoriesRoutes');
+const projectRoutes = require('./routes/ProjectRoutes');
+const projectmanageroleRoutes = require('./routes/ProjectmanageroleRoutes');
+// const projectSubcategoryRoutes = require('./routes/ProjectSubcategory');
 
 
 // Import required modules
@@ -61,7 +66,7 @@ const limiter = rateLimit({
   max: 100,
 });
 app.use(limiter);
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 app.use('/categoryimage', express.static(path.join(__dirname, 'categoryimage')));
 
 // Sync Sequelize models and session store
@@ -92,6 +97,11 @@ app.use(
 //Routes
 app.use('/api/v1/users', userAccountRoutes);
 app.use('/api/v1/roles', rolesRoutes);
+app.use('/api/v1/categories', categoriesRoutes);
+app.use('/api/v1/subcategories', subcategoriesRoutes);
+app.use('/api/v1/project', projectRoutes);
+app.use('/api/v1/projectmanagerole', projectmanageroleRoutes);
+// app.use('/api/v1/projectsubcategory', projectSubcategoryRoutes);
 
 
 

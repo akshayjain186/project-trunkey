@@ -23,6 +23,8 @@ const seedAdmin = async () => {
       category: 'Administrator',
       roleId: adminRole.id, // Associate with the Administrator role
       isUser: false,
+      city: 'washington',
+      postalcode: '98015'
     };
 
     // Use findOrCreate to avoid duplicate records

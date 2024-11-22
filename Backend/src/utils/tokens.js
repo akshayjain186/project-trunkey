@@ -1,6 +1,9 @@
 const jwt = require('jsonwebtoken');
 
 const generateAccessToken = (user, role) => {
+
+  console.log(process.env.ACCESS_TOKEN_SECRET)
+
   return jwt.sign(
     // { id: user._id, role: role.name },
     { id: user._id, role: role.machineName },

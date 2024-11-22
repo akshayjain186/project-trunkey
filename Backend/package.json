@@ -1,5 +1,5 @@
 {
-  "name": "my-turnKey-app",
+  "name": "my-turnkey-app",
   "version": "1.0.0",
   "description": "TurnKey backend application",
   "main": "src/server.js",
