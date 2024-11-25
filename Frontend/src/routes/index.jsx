@@ -9,6 +9,7 @@ import Home from "../pages/Authentication/home/Home"
 
 import  Ragisterpage from '../pages/Authentication/Ragister/Ragisterpage'
 
+
 import Logout from "../pages/Authentication/Logout";
 
 // // // Dashboard
@@ -20,14 +21,17 @@ import Signup  from "../pages/Authentication/Signup"
 //import ResetPaassword from "../pages/Authentication/ResetPassward";
 import { element } from "prop-types";
 import PostJobDetails from "../pages/MyJobs/AnswerDetails/PostJobDetails";
+import InternationalLogin from "../pages/Controlpannel/InternationalLogin";
 import { components } from "react-select";
 import ResetPassward from  "../pages/Authentication/ResetPassward"
 import { fromPairs } from "lodash";
+import BigJobForm from "../pages/Authentication/Ragister/BigJobForm";
 
 const authProtectedRoutes = [
   { path: "/dashboard", component: <Dashboard /> },
   
   { path: "/my-jobs", component: <MyJobs/> },
+ 
    
    { path: "/job-details", component: <PostJobDetails/>},
   { path: "/", exact: true, component: <Navigate to="/dashboard" /> },
@@ -40,6 +44,10 @@ const publicRoutes = [
   { path: "/signup", component: <Signup/>},
   { path: "/forgot-password", component: <ForgotPassward/>},
   { path: "/ragister", component: < Ragisterpage/>},
+
+  { path: "/bigjob", component: < BigJobForm/>},
+  { path: "/internationallogin", component: <InternationalLogin/> },
+ 
   { path: "/home", component: <Home/> },
   { path: "/reset-password", component: <ResetPassward/> },
 ];

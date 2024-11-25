@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
@@ -14,9 +13,7 @@ import * as Yup from "yup";
 import { useFormik } from "formik";
 import { SignupUser } from "../../store/actions";
 
-
-
-import trunkeylogo from '../../assets/images/turnkey logo.png'
+import trunkeylogo from "../../assets/images/turnkey logo.png";
 import {
   Row,
   Col,
@@ -31,14 +28,10 @@ import {
   Button,
 } from "reactstrap";
 
-
 const ResetPassward = (props) => {
-
-
   // document.title = "Signup | Trunkey";
   //   const dispatch = useDispatch();
   //   const navigate = useNavigate();
-
 
   // State for toggling password visibility
   const [showPassword, setShowPassword] = useState(false);
@@ -47,13 +40,11 @@ const ResetPassward = (props) => {
   const validation = useFormik({
     enableReinitialize: true,
     initialValues: {
-
       password: "",
       changepassword: "",
       confirmpassword: "",
     },
     validationSchema: Yup.object({
-
       changepassword: Yup.string().required("Please enter your password"),
       password: Yup.string().required("Please enter your password"),
       confirmpassword: Yup.string()
@@ -62,9 +53,8 @@ const ResetPassward = (props) => {
     }),
     onSubmit: (values) => {
       // dispatch(SignupUser(values, props.router.navigate));
-      console.log(values)
+      console.log(values);
     },
-
   });
 
   const ResetPasswardProperties = createSelector(
@@ -86,29 +76,36 @@ const ResetPassward = (props) => {
     !validation.values.changepassword ||
     !validation.values.password ||
     !validation.values.confirmpassword;
-
-
+    
   return (
     <React.Fragment>
-
-      <div className="container-fluid min-vh-100 align-items-center justify-content-center" style={{ backgroundColor: "#2d3b60" }}>
+      <div
+        className="container-fluid min-vh-100 align-items-center justify-content-center"
+        style={{ backgroundColor: "#2d3b60" }}
+      >
         <div className="text-center pt-md-5 p-4 text-white  align-items-center justify-content-center ">
           <img
             src={trunkeylogo} // Replace with the actual path to your logo
             alt="Logo"
-            style={{ height: '40px', marginRight: '10px' }} // Adjust size and spacing as needed
+            style={{ height: "40px", marginRight: "10px" }} // Adjust size and spacing as needed
           />
           <div className="mt-4">
-            <p className="text-center fs-6 fw-medium text-white lh-base" style={{ fontFamily: 'Montserrat' }}>Manage everything you need for your next project in one place.</p>
+            <p
+              className="text-center fs-6 fw-medium text-white lh-base"
+              style={{ fontFamily: "Montserrat" }}
+            >
+              Manage everything you need for your next project in one place.
+            </p>
           </div>
         </div>
-
         <Container>
           <Row className="justify-content-center">
-
             <Col md={8} lg={4} xl={6}>
-              <Card className="overflow-hidden" >
-                <CardBody className="p-5 mt-4" style={{ fontFamily: 'Montserrat' }}>
+              <Card className="overflow-hidden">
+                <CardBody
+                  className="p-5 mt-4"
+                  style={{ fontFamily: "Montserrat" }}
+                >
                   <div className="p-2 ">
                     <h4 className="mb-md-5">Reset Password</h4>
                     <Form
@@ -129,7 +126,11 @@ const ResetPassward = (props) => {
                               outline: "none",
                               boxShadow: "none",
                               borderRight: "none",
-                              borderColor: validation.touched.password && validation.errors.password ? "#f46a6a" : "#ced4da"
+                              borderColor:
+                                validation.touched.password &&
+                                validation.errors.password
+                                  ? "#f46a6a"
+                                  : "#ced4da",
                             }}
                             autoComplete="off"
                             value={validation.values.password || ""}
@@ -138,10 +139,23 @@ const ResetPassward = (props) => {
                             onChange={validation.handleChange}
                             onBlur={validation.handleBlur}
                             invalid={
-                              validation.touched.password && validation.errors.password ? true : false
+                              validation.touched.password &&
+                              validation.errors.password
+                                ? true
+                                : false
                             }
                           />
-                          <span className="input-group-text" style={{ backgroundColor: "white", borderColor: validation.touched.password && validation.errors.password ? "#f46a6a" : "#ced4da", }}>
+                          <span
+                            className="input-group-text"
+                            style={{
+                              backgroundColor: "white",
+                              borderColor:
+                                validation.touched.password &&
+                                validation.errors.password
+                                  ? "#f46a6a"
+                                  : "#ced4da",
+                            }}
+                          >
                             <div
                               type="button"
                               onClick={togglePasswordVisibility}
@@ -154,15 +168,16 @@ const ResetPassward = (props) => {
                             </div>
                           </span>
                         </div>
-
                         {validation.touched.password &&
-                          validation.errors.password ? (
-                          <FormFeedback type="invalid" style={{ display: "block", }}>
+                        validation.errors.password ? (
+                          <FormFeedback
+                            type="invalid"
+                            style={{ display: "block" }}
+                          >
                             {validation.errors.password}
                           </FormFeedback>
                         ) : null}
                       </div>
-
                       <div className="mb-4">
                         <Label className="form-label">Confirm Password</Label>
                         <div className="input-group">
@@ -172,21 +187,38 @@ const ResetPassward = (props) => {
                               outline: "none",
                               boxShadow: "none",
                               borderRight: "none",
-                              borderColor: validation.touched.password && validation.errors.password ? "#f46a6a" : "#ced4da"
+                              borderColor:
+                                validation.touched.password &&
+                                validation.errors.password
+                                  ? "#f46a6a"
+                                  : "#ced4da",
                             }}
-
                             type={showPassword ? "text" : "password"}
                             placeholder="Confirm your password"
                             value={validation.values.confirmpassword || ""}
                             onChange={validation.handleChange}
                             onBlur={validation.handleBlur}
-                            invalid={validation.touched.confirmpassword && validation.errors.confirmpassword ? true : false}
+                            invalid={
+                              validation.touched.confirmpassword &&
+                              validation.errors.confirmpassword
+                                ? true
+                                : false
+                            }
                           />
-                          <span className="input-group-text" style={{ backgroundColor: "white", borderColor: validation.touched.password && validation.errors.password ? "#f46a6a" : "#ced4da", }}>
+                          <span
+                            className="input-group-text"
+                            style={{
+                              backgroundColor: "white",
+                              borderColor:
+                                validation.touched.password &&
+                                validation.errors.password
+                                  ? "#f46a6a"
+                                  : "#ced4da",
+                            }}
+                          >
                             <div
                               type="button"
                               onClick={togglePasswordVisibility}
-
                             >
                               {showPassword ? (
                                 <i className="mdi mdi-eye-off" />
@@ -198,13 +230,14 @@ const ResetPassward = (props) => {
                         </div>
                         {validation.touched.confirmpassword &&
                           validation.errors.confirmpassword && (
-                            <FormFeedback type="invalid" style={{ display: "block", }}>
+                            <FormFeedback
+                              type="invalid"
+                              style={{ display: "block" }}
+                            >
                               {validation.errors.confirmpassword}
                             </FormFeedback>
                           )}
                       </div>
-
-
                       <Button
                         className="btn w-100 mt-md-5 mb-md-5 text-white"
                         color={isSignupDisabled ? "secondary" : "dark"}
@@ -214,7 +247,6 @@ const ResetPassward = (props) => {
                       >
                         Reset
                       </Button>
-
                     </Form>
                   </div>
                 </CardBody>
@@ -224,7 +256,6 @@ const ResetPassward = (props) => {
         </Container>
       </div>
     </React.Fragment>
-  )
-}
-
-export default ResetPassward
+  );
+};
+export default ResetPassward;

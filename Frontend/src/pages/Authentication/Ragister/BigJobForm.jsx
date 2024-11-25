@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React from 'react'
+import  { useState } from "react";
 import {
   Card,
   CardBody,
@@ -20,7 +21,6 @@ import "./progressbar.css";
 
 import { Link } from "react-router-dom";
 
-
 //images
 import washingroom from "../../../assets/images/washingroom.png";
 import electricianicon from "../../../assets/images/icons/electrician-icon.svg";
@@ -35,7 +35,7 @@ import RooferandtinsmithIcon from "../../../assets/images/icons/Roofer and tinsm
 import TilerIcon from "../../../assets/images/icons/TilerIcon .png";
 import ArchitectIcon from "../../../assets/images/icons/ArchitectIcon.png";
 import Builder from "../../../assets/images/icons/Builder.png";
-import Interiordesigner from "../../../assets/images/icons/Builder.png";
+import Interiordesigner from "../../../assets/images/icons/Interiordesigner.png";
 import ProjectmanagerIcon from "../../../assets/images/icons/Project managerIcon.png";
 import Bathroom from "../../../assets/images/icons/Bathroomicon.png";
 import Kitchen from "../../../assets/images/kItchenicon.png";
@@ -50,78 +50,84 @@ import Groundwork from "../../../assets/images/icons/Groundicon.png";
 import Superstructure from "../../../assets/images/icons/Superstructureicon.png";
 import Garage from "../../../assets/images/icons/Garageicon.png";
 import Newhome from "../../../assets/images/icons/homeicon.png";
+import Appertment from '../../../assets/images/icons/Appertment.png'
 
+function BigJobForm() {
 
-const Ragisterpage = () => {
-  const [data_attr, setData_attr] = useState(56);
-  const Rooms = [
-    { id: 1, label: "Bathroom", iconClass: Bathroom },
-    { id: 2, label: "Kitchen", iconClass: Kitchen },
-    { id: 3, label: "Toilet", iconClass: Toilet },
-    { id: 4, label: "Washing room", iconClass: washingroom },
-    { id: 5, label: "Living room", iconClass: Livingroom },
-    { id: 6, label: "Bedroom", iconClass: Bedroom },
-    { id: 7, label: "Children room", iconClass: Childrenroom },
-    { id: 8, label: "Technical room", iconClass: Technicalroom },
-    { id: 9, label: "Storage room", iconClass: Storageroom },
-    { id: 10, label: "Hallway", iconClass: Hallway },
-  ];
-  const outsidework = [
-    { id: 1, label: "Facade", iconClass: landscapingIcon },
-    { id: 2, label: "Roofing", iconClass: RooferandtinsmithIcon },
-    { id: 3, label: "Ground work", iconClass: Groundwork },
-  ];
-  const newbuilding = [
-    { id: 1, label: "Superstructure and extension", iconClass: Superstructure },
-    { id: 2, label: "Garage", iconClass: Garage },
-    { id: 3, label: "New home", iconClass: Newhome },
-  ];
-  const workerTypes = [
-    {
-      id: 1,
-      label: "Carpenter and building tradesmen",
-      iconClass: CarpenterIcon,
-    },
-    { id: 2, label: "Cleaner", iconClass: CleanerIcon },
-    {
-      id: 3,
-      label: "Demolition, tiling and concrete sawing",
-      iconClass: DemolitionIcon,
-    },
-    { id: 4, label: "Electrician", iconClass: electricianicon },
-    {
-      id: 5,
-      label: "Foundation and landscaping worker",
-      iconClass: landscapingIcon,
-    },
-    { id: 6, label: "Glass master and glazier", iconClass: GlassmasterIcon },
-    { id: 7, label: "Plumber", iconClass: PlumberIcon },
-    { id: 8, label: "Roofer and tinsmith", iconClass: RooferandtinsmithIcon },
-    { id: 9, label: "Tiler, bricklayer and plastering", iconClass: TilerIcon },
-  ];
-  const Projectm = [
-    { id: 1, label: "Appraiser", iconClass: AppraiserIcon },
-    { id: 2, label: "Architect", iconClass: ArchitectIcon },
-    { id: 3, label: "Builder", iconClass: Builder },
-    { id: 4, label: "Interior designer", iconClass: Interiordesigner },
-    { id: 5, label: "Project manage", iconClass: ProjectmanagerIcon },
-  ];
-  //meta title
-  document.title = "Ragister | Trunkey";
-
-  const [activeTab, setactiveTab] = useState(1);
-  const [passedSteps, setPassedSteps] = useState([1]);
-  const [selectedWorker, setSelectedWorker] = useState();
-
-  function toggleTab(tab) {
-    if (activeTab !== tab) {
-      var modifiedSteps = [...passedSteps, tab];
-      if (tab >= 1 && tab <= 4) {
-        setactiveTab(tab);
-        setPassedSteps(modifiedSteps);
+    const [data_attr, setData_attr] = useState(56);
+    const worker = [
+      { id: 1, label: "Carpenter and building tradesmen", iconClass: CarpenterIcon },
+      { id: 2, label: "Cleaner", iconClass: CleanerIcon },
+      { id: 3, label: "Demolition, tiling and concrete sawing", iconClass: DemolitionIcon },
+      { id: 4, label: "Electrician", iconClass: electricianicon},
+      { id: 5, label: "Foundation and landscaping worker", iconClass: landscapingIcon },
+      { id: 6, label: "Glass master and glazier", iconClass: GlassmasterIcon},
+      { id: 7, label: "Plumber", iconClass: PlumberIcon },
+      { id: 8, label: "Roofer and tinsmith", iconClass: RooferandtinsmithIcon},
+      { id: 9, label: "Tiler, bricklayer and plastering", iconClass: TilerIcon },
+     
+    ];
+    const projectmanager = [
+      { id: 1, label: "Appraiser", iconClass: landscapingIcon },
+      { id: 2, label: "Architect", iconClass: RooferandtinsmithIcon },
+      { id: 3, label: "Builder", iconClass:  Builder },
+      { id: 4, label: "interiordesigner", iconClass: Interiordesigner },
+      { id: 5, label: "Projectmanager", iconClass: ProjectmanagerIcon },
+    //   { id: 2, label: "Garage", iconClass: Garage },
+    //   { id: 3, label: "New home", iconClass: Newhome },
+    ];
+  
+    const Roomsrenovation = [
+      {
+        id: 1,
+        label: "Bathroom",
+        iconClass: CarpenterIcon,
+      },
+      { id: 2, label: "Washing room", iconClass: CleanerIcon },
+      {
+        id: 3,
+        label: "Living room",
+        iconClass: DemolitionIcon,
+      },
+      { id: 4, label: "kitchen", iconClass: electricianicon },
+      {
+        id: 5,
+        label: "Toilet",
+        iconClass: landscapingIcon,
+      },
+      { id: 6, label: "Bedroom", iconClass: GlassmasterIcon },
+      { id: 7, label: "Children room", iconClass: PlumberIcon },
+      { id: 8, label: "Technical room", iconClass: RooferandtinsmithIcon },
+      { id: 9, label: "Storage room", iconClass: TilerIcon },
+      { id: 8, label: "Hallway", iconClass: RooferandtinsmithIcon },
+      { id: 9, label: "Other", iconClass: TilerIcon },
+    ];
+    const Outsidework = [
+      { id: 1, label: "Facade", iconClass: AppraiserIcon },
+      { id: 2, label: "Roofing", iconClass: ArchitectIcon },
+      { id: 3, label: "Ground work", iconClass: Builder },
+    ];
+    const Newbuilding = [
+        { id: 1, label: "Superstructure an extension", iconClass: AppraiserIcon },
+        { id: 2, label: "Build a garage", iconClass: ArchitectIcon },
+        { id: 3, label: "New home", iconClass: Builder },
+      ];
+    //meta title
+    document.title = "Ragister | Trunkey";
+  
+    const [activeTab, setactiveTab] = useState(1);
+    const [passedSteps, setPassedSteps] = useState([1]);
+    const [selectedWorker, setSelectedWorker] = useState();
+  
+    function toggleTab(tab) {
+      if (activeTab !== tab) {
+        var modifiedSteps = [...passedSteps, tab];
+        if (tab >= 1 && tab <= 4) {
+          setactiveTab(tab);
+          setPassedSteps(modifiedSteps);
+        }
       }
     }
-  }
   return (
     <React.Fragment>
       <Container fluid={true} style={{ fontFamily: "Montserrat" }}>
@@ -156,7 +162,7 @@ const Ragisterpage = () => {
                       }`}
                     >
                       <div
-                        className={`circle ms-3 ${
+                        className={`circle ms- ${
                           activeTab === 1 ? "active" : ""
                         } ${activeTab >= 1 ? "completed" : ""}`}
                         onClick={() => activeTab >= 1 && setactiveTab(1)}
@@ -216,23 +222,23 @@ const Ragisterpage = () => {
                               Choose type of worker you need
                             </h4>
                             <span className="text-muted">worker</span>
-                            <div className="d-flex flex-wrap gap-3 mt-2">
-                              {workerTypes.map((worker) => (
+                            <div className="d-flex flex-wrap gap-3 mt-2 ">
+                              {Roomsrenovation.map((worker) => (
                                 <label
-                                  className={`card-radio-label text-center ${
+                                  className={`card-radio-label text-start  ${
                                     selectedWorker === worker.id
                                       ? "border-primary"
                                       : ""
                                   }`}
                                   key={worker.id}
                                   style={{
-                                    width: "auto",
+                                    width: "180px",
                                     cursor: "pointer",
                                   }}
                                   onClick={() => setSelectedWorker(worker.id)}
                                 >
                                   <div
-                                    className={`card-radio py-4 border rounded d-flex ${
+                                    className={`card-radio py-4 border rounded d-flex text-start ${
                                       selectedWorker === worker.id
                                         ? "border-primary"
                                         : ""
@@ -257,7 +263,39 @@ const Ragisterpage = () => {
                             </div>
                             <span className="text-muted">Project manager</span>
                             <div className="d-flex flex-wrap mt-2 gap-4">
-                              {Projectm.map((worker) => (
+                              {Outsidework.map((worker) => (
+                                <label
+                                  className="card-radio-label text-center"
+                                  key={worker.id}
+                                  style={{ minWidth: "" }} 
+                                >
+                                  <div className="card-radio py-4 px-5 border rounded  d-flex">
+                                    <img
+                                      src={worker.iconClass}
+                                      style={{
+                                        height: "20px",
+                                        width: "20px",
+                                        marginTop: "7px",
+                                      }}
+                                      className="me-2"
+                                    />
+                                    <div>
+                                      <div className="mt-2">{worker.label}</div>
+                                    </div>
+                                  </div>
+
+                                  <input
+                                    type="radio"
+                                    name="currency"
+                                    id={`workerType${worker.id}`}
+                                    className="card-radio-input"
+                                  />
+                                </label>
+                              ))}
+                            </div>
+                            <span className="text-muted">Project manager</span>
+                            <div className="d-flex flex-wrap mt-2 gap-4">
+                              {Newbuilding.map((worker) => (
                                 <label
                                   className="card-radio-label text-center"
                                   key={worker.id}
@@ -316,7 +354,7 @@ const Ragisterpage = () => {
                           <CardBody className="ms-3">
                             <div>
                               <h4 className="text-start mb-3 fw-semibold">
-                                Choose sercices you need the Electrician for
+                              Choose what workers you need for Bathroom
                               </h4>
                             </div>
 
@@ -325,7 +363,7 @@ const Ragisterpage = () => {
                               className="d-flex flex-wrap gap-3 mt-2"
                               style={{ color: "#41619A" }}
                             >
-                              {Rooms.map((worker) => (
+                              {worker.map((worker) => (
                                 <label
                                   className="card-radio-label  text-center"
                                   key={worker.id}
@@ -357,7 +395,7 @@ const Ragisterpage = () => {
                               className="d-flex flex-wrap  gap-3 mt-2"
                               style={{ color: "#41619A" }}
                             >
-                              {outsidework.map((worker) => (
+                              {projectmanager.map((worker) => (
                                 <label
                                   className="card-radio-label text-center"
                                   key={worker.id}
@@ -365,37 +403,6 @@ const Ragisterpage = () => {
                                 >
                                   <div
                                     className="card-radio py-1 border rounded-5  d-flex"
-                                    style={{ background: "#F4F8FC" }}
-                                  >
-                                    <img
-                                      src={worker.iconClass}
-                                      style={{
-                                        height: "20px",
-                                        width: "20px",
-                                        marginTop: "7px",
-                                      }}
-                                      className="me-2"
-                                    />
-                                    <div>
-                                      <div className="mt-2">{worker.label}</div>
-                                    </div>
-                                  </div>
-                                </label>
-                              ))}
-                            </div>
-                            <span>New building</span>
-                            <div
-                              className="d-flex flex-wrap  gap-3 mt-2"
-                              style={{ color: "#41619A" }}
-                            >
-                              {newbuilding.map((worker) => (
-                                <label
-                                  className="card-radio-label text-center"
-                                  key={worker.id}
-                                  style={{ minWidth: "auto" }}
-                                >
-                                  <div
-                                    className="card-radio py-1 px-3 border rounded-5  d-flex "
                                     style={{ background: "#F4F8FC" }}
                                   >
                                     <img
@@ -424,14 +431,14 @@ const Ragisterpage = () => {
                           <CardBody className="ms-3">
                             <div>
                               <h4 className="text-start mb-3 fw-semibold">
-                                Choose sercices you need the Electrician for
+                              Choose what workers you need for Kitchen
                               </h4>
                             </div>
                             <div
                               className="d-flex flex-wrap gap-3 mt-2"
                               style={{ color: "#41619A" }}
                             >
-                              {Rooms.map((worker) => (
+                              {worker.map((worker) => (
                                 <label
                                   key={worker.id}
                                   className="card-radio-label text-center"
@@ -483,7 +490,7 @@ const Ragisterpage = () => {
                               className="d-flex flex-wrap  gap-3 mt-2"
                               style={{ color: "#41619A" }}
                             >
-                              {outsidework.map((worker) => (
+                              {projectmanager.map((worker) => (
                                 <label
                                   className="card-radio-label text-center"
                                   key={worker.id}
@@ -511,37 +518,7 @@ const Ragisterpage = () => {
                               ))}
                             </div>
 
-                            <span>New building</span>
-                            <div
-                              className="d-flex flex-wrap  gap-3 mt-2"
-                              style={{ color: "#41619A" }}
-                            >
-                              {newbuilding.map((worker) => (
-                                <label
-                                  className="card-radio-label text-center"
-                                  key={worker.id}
-                                  style={{ minWidth: "auto" }} 
-                                >
-                                  <div
-                                    className="card-radio py-1 px-3 border rounded-5  d-flex "
-                                    style={{ background: "#F4F8FC" }}
-                                  >
-                                    <img
-                                      src={worker.iconClass}
-                                      style={{
-                                        height: "20px",
-                                        width: "20px",
-                                        marginTop: "7px",
-                                      }}
-                                      className="me-2"
-                                    />
-                                    <div>
-                                      <div className="mt-2">{worker.label}</div>
-                                    </div>
-                                  </div>
-                                </label>
-                              ))}
-                            </div>
+                           
                           </CardBody>
                         </Card>
                         <div className="actions clearfix text-end">
@@ -581,7 +558,7 @@ const Ragisterpage = () => {
                                       Type of home
                                     </Label>
                                     <span className="input-group-text bg-white">
-                                    <img src={Appertment} style={{height:"25px",width:"25px"}}/>{" "}
+                                      <img src={Appertment} style={{height:"25px",width:"25px"}}/>{" "}
                                       <Input
                                         type="text"
                                         className="form-control border-0"
@@ -923,7 +900,7 @@ const Ragisterpage = () => {
         </Row>
       </Container>
     </React.Fragment>
-  );
-};
+  )
+}
 
-export default Ragisterpage;
+export default BigJobForm;
