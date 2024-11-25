@@ -1,18 +1,15 @@
 // Import required modules
 const userAccountRoutes = require('./routes/User');
 const rolesRoutes = require('./routes/Roles');
-<<<<<<< HEAD
 const categoriesRoutes = require('./routes/CategoriesRoutes');
 const subcategoriesRoutes = require('./routes/SubcategoriesRoutes');
 const projectRoutes = require('./routes/ProjectRoutes');
 const projectmanageroleRoutes = require('./routes/ProjectmanageroleRoutes');
 // const projectSubcategoryRoutes = require('./routes/ProjectSubcategory');
 const bigprojectRoutes = require('./routes/BigProjectRoutes');
-=======
 
 require('dotenv').config();  // Make sure dotenv is loaded at the top
 
->>>>>>> dev-kajal-verma
 
 // Import required modules
 const express = require('express');
@@ -56,7 +53,6 @@ const categories = require('./routes/categoryRoutes');
 const registerCompanyRoutes = require('./routes/registercompanyRoutes');
 const subcategoryRoutes = require('./routes/subcategoryRoutes'); 
 
-const licenseRoutes = require('./routes/licensesRoutes')
 // Session configuration
 
 console.log("Session secret: ", process.env.SESSION_SECRET); // Check if it's loaded
@@ -145,7 +141,6 @@ app.use('/api/v1/categories', categories);
 
 app.use('/api/v1/categories/subcategories', subcategoryRoutes);
 
-app.use('/api/v1/licenses',licenseRoutes)
 
 // Example route
 app.get('/', (req, res) => {

@@ -1,8 +1,9 @@
-const RegisterCompany = require("../model/registerCompanyModel");
-const Category = require("../model/categoryModel");
-const { Sequelize } = require("sequelize");
-
-const ProjectManagementRole = require("../model/projectmanagementRole");
+const RegisterCompany = require('../model/registerCompanyModel');
+const Category = require('../model/categoryModel');
+const ProjectManagementRole = require('../model/projectmanagementRole');
+const Roll = require('../model/role');
+const User = require('../model/User');
+const { Sequelize } = require('sequelize');
 
 const createCompany = async (req, res) => {
   try {
@@ -16,14 +17,51 @@ const createCompany = async (req, res) => {
       employeeCount,
       useSubcontractors,
       countyCoverage,
-      managerName,
-      managersurname,
-      email,
-      mobilePhone,
       projectManagementRollId,
+      continent,
+      country,
+      language,
+      currency,
+      users,
+      roleId,
+      postalcode,
     } = req.body;
 
-    // Validate input fields
+    // Ensure users are provided and valid
+    if (!users || !Array.isArray(users) || users.length === 0) {
+      return res.status(400).json({
+        error: 'At least one user is required to create a company.',
+      });
+    }
+
+    // Validate user fields
+    for (const user of users) {
+      const {
+        managername,
+        managersurname,
+        email,
+        Mobilephone,
+        address,
+        postalcode,
+        roleId,
+      } = user;
+      if (
+        !managername ||
+        !managersurname ||
+        !email ||
+        !Mobilephone ||
+        !address ||
+        !postalcode ||
+        !roleId
+      ) {
+        return res.status(400).json({
+          error:
+            'Each user must have complete details (managername, managersurname, email, Mobilephone, address, postalcode, roleId).',
+        });
+      }
+    }
+
+    // Validate company fields
     if (
       !companyName ||
       !organisationNumber ||
@@ -33,30 +71,38 @@ const createCompany = async (req, res) => {
       !jobTypes ||
       !employeeCount ||
       !countyCoverage ||
-      !managerName ||
-      !managersurname ||
-      !email ||
-      !mobilePhone ||
-      !projectManagementRollId
+      !projectManagementRollId ||
+      !continent ||
+      !country ||
+      !language ||
+      !currency ||
+      !roleId ||
+      !postalcode
     ) {
       return res.status(400).json({
-        error: "All fields are required.",
+        error: 'All fields are required.',
       });
     }
 
-    if (!Array.isArray(categoryId) || !Array.isArray(projectManagementRollId)) {
+    if (
+      !Array.isArray(categoryId) ||
+      !Array.isArray(projectManagementRollId) ||
+      !Array.isArray(jobTypes)
+    ) {
       return res.status(400).json({
-        error: "categoryId and projectManagementRollId must be arrays.",
+        error:
+          'categoryId, jobTypes, and projectManagementRollId must be arrays.',
       });
     }
 
-    // Validate the provided category IDs
+    // Validate categoryId: Check if all provided categories are valid
     const validCategories = await Category.findAll({
-      attributes: ["id", "name"],
+      attributes: ['id', 'name'],
       where: {
         id: categoryId,
       },
     });
+
     const validCategoryIds = validCategories.map((category) => category.id);
     const filteredCategoryId = categoryId.filter((id) =>
       validCategoryIds.includes(id)
@@ -64,16 +110,18 @@ const createCompany = async (req, res) => {
 
     if (filteredCategoryId.length === 0) {
       return res.status(400).json({
-        error: "None of the provided category IDs are valid.",
+        error: 'None of the provided category IDs are valid.',
       });
     }
 
+    // Validate projectManagementRollId: Check if all provided roles are valid
     const validRoles = await ProjectManagementRole.findAll({
-      attributes: ["id", "name"],
+      attributes: ['id', 'name'],
       where: {
         id: projectManagementRollId,
       },
     });
+
     const validRoleIds = validRoles.map((role) => role.id);
     const filteredProjectManagementRollId = projectManagementRollId.filter(
       (id) => validRoleIds.includes(id)
@@ -81,7 +129,16 @@ const createCompany = async (req, res) => {
 
     if (filteredProjectManagementRollId.length === 0) {
       return res.status(400).json({
-        error: "None of the provided project management role IDs are valid.",
+        error: 'None of the provided project management role IDs are valid.',
+      });
+    }
+
+    // Validate roleId
+    const validRoll = await Roll.findOne({ where: { id: roleId } });
+
+    if (!validRoll) {
+      return res.status(400).json({
+        error: 'The provided roleId is invalid.',
       });
     }
 
@@ -90,297 +147,222 @@ const createCompany = async (req, res) => {
       organisationNumber,
       city,
       address,
+      postalcode,
       categoryId: filteredCategoryId,
       jobTypes,
       employeeCount,
       useSubcontractors,
       countyCoverage,
-      managerName,
-      managersurname,
-      email,
-      mobilePhone,
       projectManagementRollId: filteredProjectManagementRollId,
+      continent,
+      country,
+      language,
+      currency,
+      roleId,
     });
+
+    // Create users
+    const createdUsers = [];
+    for (const user of users) {
+      const {
+        managername,
+        managersurname,
+        email,
+        Mobilephone,
+        address,
+        postalcode,
+        roleId,
+      } = user;
+
+      try {
+        const newUser = new User();
+        newUser.set({
+          Name: managername,
+          Surname: managersurname,
+          email,
+          Mobilephone,
+          address,
+          postalcode,
+          roleId,
+        });
+
+        const savedUser = await newUser.save();
+        createdUsers.push(savedUser);
+      } catch (error) {
+        return res.status(500).json({
+          error: 'Error creating user.',
+          details: error.errors
+            ? error.errors.map((e) => e.message)
+            : error.message,
+        });
+      }
+    }
 
     const response = {
       success: true,
-      message: "Company registered successfully!",
+      message: 'Company registered successfully!',
       data: {
         ...company.toJSON(),
         categoryNames: validCategories.map((category) => category.name),
         projectManagementRoleNames: validRoles.map((role) => role.name),
+        createdUsers,
       },
     };
 
     return res.status(201).json(response);
   } catch (error) {
     return res.status(500).json({
-      error: "Internal Server Error",
-    });
-  }
-};
-
-const getCompanies = async (req, res) => {
-  try {
-    const companies = await RegisterCompany.findAll();
-
-    const categoryIds = companies.map((company) => company.categoryId).flat();
-    const roleIds = companies
-      .map((company) => company.projectManagementRollId)
-      .flat();
-
-    const categories = await Category.findAll({
-      where: {
-        id: categoryIds,
-      },
-    });
-
-    const roles = await ProjectManagementRole.findAll({
-      where: {
-        id: roleIds,
-      },
-    });
-
-    const companiesWithDetails = companies.map((company) => {
-      const companyCategories = categories.filter((category) =>
-        company.categoryId.includes(category.id)
-      );
-      const companyRoles = roles.filter((role) =>
-        company.projectManagementRollId.includes(role.id)
-      );
-
-      return {
-        ...company.toJSON(),
-        categoryNames: companyCategories.map((cat) => cat.name),
-        projectManagementRoleNames: companyRoles.map((role) => role.name),
-      };
-    });
-
-    return res.status(200).json({
-      success: true,
-      message: "Companies fetched successfully!",
-      data: companiesWithDetails,
-    });
-  } catch (error) {
-    return res.status(500).json({
-      error: "Internal Server Error",
-    });
-  }
-};
-
-const getCompanyById = async (req, res) => {
-  try {
-    const { id } = req.params;
-
-    const company = await RegisterCompany.findByPk(id);
-
-    if (!company) {
-      return res.status(404).json({
-        success: false,
-        message: "Company not found.",
-      });
-    }
-
-    const categoryIds = Array.isArray(company.categoryId)
-      ? company.categoryId
-      : [company.categoryId];
-    const roleIds = Array.isArray(company.projectManagementRollId)
-      ? company.projectManagementRollId
-      : [company.projectManagementRollId];
-
-    const categories = await Category.findAll({
-      where: {
-        id: categoryIds,
-      },
-    });
-
-    const roles = await ProjectManagementRole.findAll({
-      where: {
-        id: roleIds,
-      },
-    });
-
-    // Map category and role names to the company
-    const companyWithDetails = {
-      success: true,
-      message: "CompanyID fetched successfully!",
-      data: {
-        ...company.toJSON(),
-        categoryNames: categories.map((cat) => cat.name),
-        projectManagementRoleNames: roles.map((role) => role.name),
-      },
-    };
-
-    return res.status(200).json(companyWithDetails);
-  } catch (error) {
-    return res.status(500).json({
-      success: false,
-      message: "Internal Server Error",
+      error: 'Internal Server Error',
     });
   }
 };
 
 const updateCompany = async (req, res) => {
   try {
-    const { id } = req.params;
-    const {
-      companyName,
-      organisationNumber,
-      city,
-      address,
-      categoryId,
-      jobTypes,
-      employeeCount,
-      useSubcontractors,
-      countyCoverage,
-      managerName,
-      managersurname,
-      email,
-      mobilePhone,
-      projectManagementRollId,
-    } = req.body;
+    const { companyId, users, ...updateFields } = req.body;
 
-    const company = await RegisterCompany.findByPk(id);
+    let updatedCompany = null; // Variable to hold updated company details
+    let updatedUsers = []; // Array to hold updated user details
 
-    if (!company) {
-      return res.status(404).json({
-        error: "Company not found.",
+    // Update company details if companyId is provided
+    if (companyId) {
+      const company = await RegisterCompany.findOne({
+        where: { id: companyId },
       });
-    }
 
-    // Build the update data object conditionally
-    const updateData = {};
-
-    if (companyName) updateData.companyName = companyName;
-    if (organisationNumber) updateData.organisationNumber = organisationNumber;
-    if (city) updateData.city = city;
-    if (address) updateData.address = address;
-    if (categoryId) {
-      if (!Array.isArray(categoryId)) {
-        return res.status(400).json({
-          error: "categoryId must be an array.",
-        });
-      }
-      const validCategories = await Category.findAll({
-        attributes: ["id", "name"],
-        where: {
-          id: categoryId,
-        },
-      });
-      const validCategoryIds = validCategories.map((category) => category.id);
-      const filteredCategoryId = categoryId.filter((id) =>
-        validCategoryIds.includes(id)
-      );
-
-      if (filteredCategoryId.length === 0) {
-        return res.status(400).json({
-          error: "None of the provided category IDs are valid.",
+      if (!company) {
+        return res.status(404).json({
+          error: 'Company not found.',
         });
       }
 
-      updateData.categoryId = filteredCategoryId;
-    }
+      // Validate and update specific fields for the company
+      if (updateFields.categoryId) {
+        if (!Array.isArray(updateFields.categoryId)) {
+          return res.status(400).json({
+            error: 'categoryId must be an array.',
+          });
+        }
 
-    if (jobTypes) updateData.jobTypes = jobTypes;
-    if (employeeCount) updateData.employeeCount = employeeCount;
-    if (useSubcontractors !== undefined)
-      updateData.useSubcontractors = useSubcontractors;
-    if (countyCoverage) updateData.countyCoverage = countyCoverage;
-    if (managerName) updateData.managerName = managerName;
-    if (managersurname) updateData.managersurname = managersurname;
-    if (email) updateData.email = email;
-    if (mobilePhone) updateData.mobilePhone = mobilePhone;
-    if (projectManagementRollId) {
-      if (!Array.isArray(projectManagementRollId)) {
-        return res.status(400).json({
-          error: "projectManagementRollId must be an array.",
+        const validCategories = await Category.findAll({
+          attributes: ['id'],
+          where: { id: updateFields.categoryId },
         });
-      }
-      const validRoles = await ProjectManagementRole.findAll({
-        attributes: ["id", "name"],
-        where: {
-          id: projectManagementRollId,
-        },
-      });
-      const validRoleIds = validRoles.map((role) => role.id);
-      const filteredProjectManagementRollId = projectManagementRollId.filter(
-        (id) => validRoleIds.includes(id)
-      );
 
-      if (filteredProjectManagementRollId.length === 0) {
-        return res.status(400).json({
-          error: "None of the provided project management role IDs are valid.",
-        });
+        const validCategoryIds = validCategories.map((category) => category.id);
+        updateFields.categoryId = updateFields.categoryId.filter((id) =>
+          validCategoryIds.includes(id)
+        );
+
+        if (updateFields.categoryId.length === 0) {
+          return res.status(400).json({
+            error: 'None of the provided category IDs are valid.',
+          });
+        }
       }
 
-      updateData.projectManagementRollId = filteredProjectManagementRollId;
+      if (updateFields.projectManagementRollId) {
+        if (!Array.isArray(updateFields.projectManagementRollId)) {
+          return res.status(400).json({
+            error: 'projectManagementRollId must be an array.',
+          });
+        }
+
+        const validRoles = await ProjectManagementRole.findAll({
+          attributes: ['id'],
+          where: { id: updateFields.projectManagementRollId },
+        });
+
+        const validRoleIds = validRoles.map((role) => role.id);
+        updateFields.projectManagementRollId =
+          updateFields.projectManagementRollId.filter((id) =>
+            validRoleIds.includes(id)
+          );
+
+        if (updateFields.projectManagementRollId.length === 0) {
+          return res.status(400).json({
+            error:
+              'None of the provided project management role IDs are valid.',
+          });
+        }
+      }
+
+      if (updateFields.roleId) {
+        const validRoll = await Roll.findOne({
+          where: { id: updateFields.roleId },
+        });
+
+        if (!validRoll) {
+          return res.status(400).json({
+            error: 'The provided roleId is invalid.',
+          });
+        }
+      }
+
+      updatedCompany = await company.update(updateFields);
     }
 
-    if (Object.keys(updateData).length === 0) {
-      return res.status(400).json({
-        error: "No valid fields to update.",
-      });
+    if (users && Array.isArray(users)) {
+      for (const user of users) {
+        const {
+          userId,
+          managerName,
+          managerSurname,
+          email,
+          mobilePhone,
+          address,
+          postalcode,
+          roleId,
+        } = user;
+
+        if (!userId) {
+          return res.status(400).json({
+            error: 'User ID is required for updating user details.',
+          });
+        }
+
+        const existingUser = await User.findOne({ where: { id: userId } });
+
+        if (!existingUser) {
+          return res.status(404).json({
+            error: `User with ID ${userId} not found.`,
+          });
+        }
+
+        const userUpdateFields = {};
+
+        if (managerName) userUpdateFields.Name = managerName;
+        if (managerSurname) userUpdateFields.Surname = managerSurname;
+        if (email) userUpdateFields.email = email;
+        if (mobilePhone) userUpdateFields.Mobilephone = mobilePhone;
+        if (address) userUpdateFields.address = address;
+        if (postalcode) userUpdateFields.postalcode = postalcode;
+        if (roleId) {
+          const validUserRole = await Roll.findOne({ where: { id: roleId } });
+          if (!validUserRole) {
+            return res.status(400).json({
+              error: `Invalid role ID: ${roleId} for user with ID ${userId}.`,
+            });
+          }
+          userUpdateFields.roleId = roleId;
+        }
+
+        const updatedUser = await existingUser.update(userUpdateFields);
+        updatedUsers.push(updatedUser);
+      }
     }
-
-    await company.update(updateData);
-
-    const updatedCategories =
-      updateData.categoryId && updateData.categoryId.length > 0
-        ? await Category.findAll({
-            where: {
-              id: updateData.categoryId,
-            },
-          })
-        : [];
-
-    const updatedRoles =
-      updateData.projectManagementRollId &&
-      updateData.projectManagementRollId.length > 0
-        ? await ProjectManagementRole.findAll({
-            where: {
-              id: updateData.projectManagementRollId,
-            },
-          })
-        : [];
-
-    const updatedCompanyWithDetails = {
-      ...company.toJSON(),
-      categoryNames: updatedCategories.map((cat) => cat.name),
-      projectManagementRoleNames: updatedRoles.map((role) => role.name),
-    };
 
     return res.status(200).json({
-      message: "Company updated successfully.",
-      company: updatedCompanyWithDetails,
+      success: true,
+      message: 'Details updated successfully.',
+      data: {
+        updatedCompany,
+        updatedUsers,
+      },
     });
   } catch (error) {
     return res.status(500).json({
-      error: "Internal Server Error",
-    });
-  }
-};
-
-const deleteCompany = async (req, res) => {
-  try {
-    const { id } = req.params;
-
-    // Fetch the company by ID without associations
-    const company = await RegisterCompany.findByPk(id);
-
-    if (!company) {
-      return res.status(404).json({
-        error: "Company not found.",
-      });
-    }
-
-    await company.destroy();
-
-    return res.status(200).json({
-      message: "Company deleted successfully.",
-    });
-  } catch (error) {
-    return res.status(500).json({
-      error: "Internal Server Error",
+      error: 'Internal Server Error',
     });
   }
 };
@@ -396,12 +378,11 @@ const getCompaniesByJobTypes = async (req, res) => {
       });
     }
 
-    // Query to fetch companies by job type using JSON_CONTAINS for MySQL
     const companies = await RegisterCompany.findAll({
       where: Sequelize.where(
         Sequelize.fn(
-          "JSON_CONTAINS",
-          Sequelize.col("jobTypes"),
+          'JSON_CONTAINS',
+          Sequelize.col('jobTypes'),
           Sequelize.literal(`'["${jobTypes}"]'`)
         ),
         true
@@ -432,7 +413,6 @@ const getCompaniesByJobTypes = async (req, res) => {
       },
     });
 
-    // Attach category and role data to companies manually
     const companiesWithDetails = companies.map((company) => {
       const companyCategories = categories.filter((category) =>
         company.categoryId.includes(category.id)
@@ -462,17 +442,159 @@ const getCompaniesByJobTypes = async (req, res) => {
   } catch (error) {
     return res.status(500).json({
       success: false,
-      message: "Failed to fetch companies by job type.",
+      message: 'Failed to fetch companies by job type.',
       error: error.message,
+    });
+  }
+};
+
+const getCompanies = async (req, res) => {
+  try {
+    const { jobTypes } = req.body;
+
+    // If jobTypes is provided, fetch companies with the specified job type
+    let companies;
+    if (jobTypes) {
+      // Fetch companies with the given job type
+      companies = await RegisterCompany.findAll({
+        where: Sequelize.where(
+          Sequelize.fn(
+            'JSON_CONTAINS',
+            Sequelize.col('jobTypes'),
+            Sequelize.literal(`'["${jobTypes}"]'`)
+          ),
+          true
+        ),
+      });
+
+      if (companies.length === 0) {
+        return res.status(404).json({
+          success: false,
+          message: `No companies found with job type: ${jobTypes}`,
+        });
+      }
+    } else {
+      // If no jobTypes are provided, fetch all companies
+      companies = await RegisterCompany.findAll();
+    }
+
+    // Extract category IDs and role IDs from the companies
+    const categoryIds = companies.map((company) => company.categoryId).flat();
+    const roleIds = companies
+      .map((company) => company.projectManagementRollId)
+      .flat();
+
+    // Fetch categories and roles based on extracted IDs
+    const categories = await Category.findAll({
+      where: {
+        id: categoryIds,
+      },
+    });
+
+    const roles = await ProjectManagementRole.findAll({
+      where: {
+        id: roleIds,
+      },
+    });
+
+    const companiesWithDetails = companies.map((company) => {
+      const companyCategories = categories.filter((category) =>
+        company.categoryId.includes(category.id)
+      );
+      const companyRoles = roles.filter((role) =>
+        company.projectManagementRollId.includes(role.id)
+      );
+
+      return {
+        ...company.toJSON(),
+        categoryDetails: companyCategories.map((cat) => ({
+          id: cat.id,
+          name: cat.name,
+        })),
+        projectManagementRoleDetails: companyRoles.map((role) => ({
+          id: role.id,
+          name: role.name,
+        })),
+      };
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: jobTypes
+        ? `Companies with job type ${jobTypes} fetched successfully!`
+        : 'All companies fetched successfully!',
+      data: companiesWithDetails,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: 'Failed to fetch companies.',
+      error: error.message,
+    });
+  }
+};
+
+const deleteCompany = async (req, res) => {
+  try {
+    const { companyId } = req.params;
+
+    const company = await RegisterCompany.findOne({ where: { id: companyId } });
+
+    if (!company) {
+      return res.status(404).json({
+        error: 'Company not found.',
+      });
+    }
+
+    await company.destroy();
+
+    await User.destroy({
+      where: { companyId: companyId },
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: 'Company and associated users deleted successfully.',
+    });
+  } catch (error) {
+    return res.status(500).json({
+      error: 'Internal Server Error',
+    });
+  }
+};
+
+const getCompanyById = async (req, res) => {
+  try {
+    const { companyId } = req.params;
+    console.log(`Fetching company with ID: ${companyId}`);
+
+    const company = await RegisterCompany.findOne({
+      where: { id: companyId },
+    });
+
+    if (!company) {
+      return res.status(404).json({
+        error: 'Company not found.',
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      company,
+    });
+  } catch (error) {
+    console.error('Error fetching company:', error);
+    return res.status(500).json({
+      error: 'Internal Server Error',
     });
   }
 };
 
 module.exports = {
   createCompany,
-  getCompanies,
-  getCompanyById,
   updateCompany,
-  deleteCompany,
   getCompaniesByJobTypes,
+  getCompanies,
+  deleteCompany,
+  getCompanyById,
 };
