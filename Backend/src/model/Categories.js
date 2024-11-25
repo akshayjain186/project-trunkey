@@ -8,7 +8,7 @@ const Category = sequelize.define('Category', {
   },
 }, {
   timestamps: true, 
-  tableName: 'categories', 
+  tableName: 'Categories', 
 });
 
 module.exports = Category;
