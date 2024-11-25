@@ -32,8 +32,8 @@ const register = async (req, res, next) => {
     const existingUser = await UserAccount.findOne({ where: { email } });
     if (existingUser) {
       return res.status(400).json({
-        message: 'Email address already exists',
-        status: 'error',
+        message: "Email address already exists",
+        status: "error",
       });
     }
 
@@ -61,8 +61,8 @@ const register = async (req, res, next) => {
     });
 
     res.status(201).json({
-      message: 'User account created successfully',
-      status: 'success',
+      message: "User account created successfully",
+      status: "success",
     });
   } catch (error) {
     res.status(400).json({
@@ -80,8 +80,8 @@ const login = async (req, res, next) => {
       const userAccount = await UserAccount.findOne({ where: { email } });
       if (!userAccount) {
         return res.status(400).send({
-          message: 'Invalid email or password.',
-          status: 'error',
+          message: "Invalid email or password.",
+          status: "error",
         });
       }
 
@@ -101,8 +101,8 @@ const login = async (req, res, next) => {
       const role = await Role.findByPk(userAccount.roleId);
       if (!role) {
         return res.status(400).json({
-          message: 'Role not found',
-          status: 'error',
+          message: "Role not found",
+          status: "error",
         });
       }
 
@@ -115,14 +115,14 @@ const login = async (req, res, next) => {
 
       res.json({
         message: `${role.name} account logged in successfully`,
-        status: 'success',
+        status: "success",
         access_token: accessToken,
         refresh_token: refreshToken,
       });
     } else {
       res.status(400).send({
-        message: 'Email/Password or Phone number is required.',
-        status: 'error',
+        message: "Email/Password or Phone number is required.",
+        status: "error",
       });
     }
   } catch (err) {

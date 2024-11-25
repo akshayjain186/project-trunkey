@@ -12,6 +12,24 @@
 // );
 // module.exports = sequelize;
 
+
+///   kajal ///
+
+// const { Sequelize } = require('sequelize');
+// const config = require('./config');
+
+// // Use the correct database settings based on NODE_ENV
+// const { db } = config;
+
+// const sequelize = new Sequelize(db.name, db.user, db.password, {
+//   host: db.host,
+//   dialect: 'mysql',
+//   logging:false
+// });
+
+// module.exports = sequelize;
+
+
 const { Sequelize } = require('sequelize');
 const config = require('./config');
 
@@ -24,4 +42,18 @@ const sequelize = new Sequelize(db.name, db.user, db.password, {
   logging: false,
 });
 
+// Test the database connection
+async function testConnection() {
+  try {
+    await sequelize.authenticate(); // Authenticate the connection
+    console.log('Database connection established successfully.');
+  } catch (error) {
+    console.error('Unable to connect to the database:', error);
+  }
+}
+
+// Run the connection test
+testConnection();
+
 module.exports = sequelize;
+

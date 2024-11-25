@@ -1,10 +1,9 @@
-// src/seeders/seed.js
-
 const seedRoles = require('./role-seeder');
 const seedAdmin = require('./admin-seeder');
 const seedprojectManageRole = require('./projectrole-seeder');
+const seedCategoriesAndSubcategories = require('./category-subcategory-seeder');
+const seedProjectManageRole = require('./projectManagementRoll');
 const sequelize = require('../config/databaseConfig');
-
 
 (async () => {
   try {
@@ -12,17 +11,20 @@ const sequelize = require('../config/databaseConfig');
     await sequelize.authenticate();
     console.log('MySQL connected');
 
-    // Sync all models to the database
-    await sequelize.sync({ force: true }); // Use { force: true } to drop and recreate tables if needed
+    // Sync the database schema
+    await sequelize.sync({ force: true });
 
     // Run seeders in sequence
     await seedRoles();
     await seedAdmin();
     await seedprojectManageRole();
+    await seedCategoriesAndSubcategories();
+    await seedProjectManageRole();
 
     console.log('Seeding completed');
+    
   } catch (error) {
-    console.error('MySQL connection error:', error);
+    console.error('Error during seeding:', error);
   } finally {
     await sequelize.close();
   }

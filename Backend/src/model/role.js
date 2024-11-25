@@ -18,7 +18,7 @@ const Role = sequelize.define('Role', {
     allowNull: true,
   },
   permissions: {
-    type: DataTypes.TEXT, // Store permissions as a JSON string
+    type: DataTypes.TEXT, 
     allowNull: true,
   },
 });

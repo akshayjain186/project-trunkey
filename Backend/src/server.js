@@ -1,12 +1,18 @@
 // Import required modules
 const userAccountRoutes = require('./routes/User');
 const rolesRoutes = require('./routes/Roles');
+<<<<<<< HEAD
 const categoriesRoutes = require('./routes/CategoriesRoutes');
 const subcategoriesRoutes = require('./routes/SubcategoriesRoutes');
 const projectRoutes = require('./routes/ProjectRoutes');
 const projectmanageroleRoutes = require('./routes/ProjectmanageroleRoutes');
 // const projectSubcategoryRoutes = require('./routes/ProjectSubcategory');
 const bigprojectRoutes = require('./routes/BigProjectRoutes');
+=======
+
+require('dotenv').config();  // Make sure dotenv is loaded at the top
+
+>>>>>>> dev-kajal-verma
 
 // Import required modules
 const express = require('express');
@@ -35,10 +41,29 @@ const sessionStore = new SequelizeStore({
   tableName: 'sessions',
 });
 
+
+///  job 
+
+const jobRoutes = require('./routes/jobRoutes');
+const offerRoutes = require('./routes/offerRoutes') /// offer Routes
+const acceptedRoutes = require('./routes/acceptedRoutes');
+
+const leadempolyeeRoutes = require('./routes/leadempolyeeRoutes');
+const leadsourceRoutes =  require('./routes/leadsourceRoutes')
+
+const categories = require('./routes/categoryRoutes');
+
+const registerCompanyRoutes = require('./routes/registercompanyRoutes');
+const subcategoryRoutes = require('./routes/subcategoryRoutes'); 
+
+const licenseRoutes = require('./routes/licensesRoutes')
 // Session configuration
+
+console.log("Session secret: ", process.env.SESSION_SECRET); // Check if it's loaded
+
 app.use(
   session({
-    secret: process.env.SESSION_SECRET,
+    secret: process.env.SESSION_SECRET || 'defaultSecret' ,
     resave: false,
     saveUninitialized: false,
     store: sessionStore,
@@ -51,6 +76,7 @@ sessionStore.sync(); // Sync Sequelize session table
 // Passport setup
 app.use(passport.initialize());
 app.use(passport.session());
+
 
 // Middleware setup
 app.use(helmet());
@@ -106,6 +132,20 @@ app.use('/api/v1/project', projectRoutes);
 app.use('/api/v1/projectmanagerole', projectmanageroleRoutes);
 // app.use('/api/v1/projectsubcategory', projectSubcategoryRoutes);
 app.use('/api/v1/bigproject', bigprojectRoutes);
+
+app.use('/api/v1/jobs', jobRoutes)
+app.use('/api/v1/offer', offerRoutes)
+app.use('/api/v1/acceptedJobs', acceptedRoutes)
+
+app.use('/api/v1/empolyeeleads', leadempolyeeRoutes);
+
+app.use('/api/v1/leadSource',leadsourceRoutes)
+app.use('/api/v1/registerCompany', registerCompanyRoutes);
+app.use('/api/v1/categories', categories);
+
+app.use('/api/v1/categories/subcategories', subcategoryRoutes);
+
+app.use('/api/v1/licenses',licenseRoutes)
 
 // Example route
 app.get('/', (req, res) => {
