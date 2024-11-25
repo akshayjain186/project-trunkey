@@ -42,25 +42,25 @@ const BigProject = sequelize.define(
         len: [0, 500],
       },
     },
-    contactName: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    contactSurname: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    contactEmail: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        isEmail: true,
-      },
-    },
-    contactMobile: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
+    // contactName: {
+    //   type: DataTypes.STRING,
+    //   allowNull: false,
+    // },
+    // contactSurname: {
+    //   type: DataTypes.STRING,
+    //   allowNull: false,
+    // },
+    // contactEmail: {
+    //   type: DataTypes.STRING,
+    //   allowNull: false,
+    //   validate: {
+    //     isEmail: true,
+    //   },
+    // },
+    // contactMobile: {
+    //   type: DataTypes.STRING,
+    //   allowNull: false,
+    // },
   },
   {
     tableName: 'big_projects',

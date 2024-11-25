@@ -32,6 +32,36 @@ const roles = [
       modifySourceCode: false,
     }),
   },
+  {
+    name: 'SuperAdmin',
+    machineName: 'SuperAdmin',
+    description: 'Full access to all functionalities',
+    permissions: JSON.stringify({
+      manageUsers: true,
+      manageRoles: true,
+      manageContent: true,
+      manageStores: true,
+      manageTickets: true,
+      viewAllData: true,
+      sendNotifications: true,
+      modifySourceCode: true,
+    }),
+  },
+  {
+    name: 'Manager',
+    machineName: 'Manager',
+    description: 'Full access to all functionalities',
+    permissions: JSON.stringify({
+      manageUsers: true,
+      manageRoles: true,
+      manageContent: false,
+      manageStores: false,
+      manageTickets: false,
+      viewAllData: true,
+      sendNotifications: false,
+      modifySourceCode: false,
+    }),
+  },
 ];
 
 const seedRoles = async () => {

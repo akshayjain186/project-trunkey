@@ -1,5 +1,5 @@
 const RegisterCompany = require("../model/registerCompanyModel");
-const Category = require("../model/categoryModel");
+const Category = require("../model/Categories");
 const { Sequelize } = require("sequelize");
 
 const ProjectManagementRole = require("../model/projectmanagementRole");

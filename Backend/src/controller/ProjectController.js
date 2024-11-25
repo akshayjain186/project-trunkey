@@ -4,147 +4,8 @@ const Category = require('../model/Categories');
 const Subcategory = require('../model/Subcategories');
 const Projectmanagerole = require('../model/Projectmanagerole');
 const User = require('../model/User');
-
-const crypto = require('crypto'); // To hash passwords
-const nodemailer = require('nodemailer'); // To send emails
-
-
-//this method with projectsubcategory access
-// const createProject = async (req, res) => {
-//     try {
-//         const {
-//             name,
-//             typeOfProject,
-//             categoryId,
-//             subcategoryId,
-//             projectmanageroleId,
-//             typeOfHome,
-//             projectAddress,
-//             city,
-//             generalComment,
-//             // contactName,
-//             // contactSurname,
-//             // contactEmail,
-//             // contactMobile,
-//             selectsubcategory, // Subcategories with attachments
-//         } = req.body;
-
-//         // Validate required fields
-//         if (
-//             !name ||
-//             !typeOfProject ||
-//             !categoryId ||
-//             !subcategoryId ||
-//             !projectmanageroleId ||
-//             !typeOfHome ||
-//             !projectAddress ||
-//             !city ||
-//             // !contactName ||
-//             // !contactSurname ||
-//             // !contactEmail ||
-//             // !contactMobile ||
-//             !selectsubcategory || !Array.isArray(selectsubcategory)
-//         ) {
-//             return res.status(400).json({
-//                 message: 'All fields are required.',
-//                 status: 'error',
-//             });
-//         }
-
-//         // Email validation
-//         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-//         if (!emailRegex.test(contactEmail)) {
-//             return res.status(400).json({
-//                 message: 'Invalid email format.',
-//                 status: 'error',
-//             });
-//         }
-
-//         // Validate categoryIds
-//         const categories = await Category.findAll({
-//             where: {
-//                 id: categoryId,
-//             },
-//         });
-//         console.log(categories);
-//         const categoryNames = categories.map(category => category.title);
-
-//         // Validate subcategoryIds
-//         const subcategories = await Subcategory.findAll({
-//             where: {
-//                 id: subcategoryId,
-//             },
-//         });
-//         const subcategoryNames = subcategories.map(subcategory => subcategory.name);
-
-//         // Validate projectmanageroleIds
-//         const projectManagerRoles = await Projectmanagerole.findAll({
-//             where: {
-//                 id: projectmanageroleId,
-//             },
-//         });
-//         const projectManagerRoleNames = projectManagerRoles.map(role => role.name);
-
-//         // Create the SmallProject
-//         const smallproject = await SmallProject.create({
-//             name,
-//             typeOfProject,
-//             categoryId: categoryId,
-//             subcategoryId: subcategoryId,
-//             projectmanageroleId: projectmanageroleId,
-//             typeOfHome,
-//             projectAddress,
-//             city,
-//             generalComment,
-//             // contactName,
-//             // contactSurname,
-//             // contactEmail,
-//             // contactMobile,
-//         });
-
-//         // Process and validate subcategories with attachments
-//         const createdSubcategories = [];
-//         for (const subcategory of selectsubcategory) {
-//             const { id, description, attachment, floor } = subcategory;
-
-//             if (!id || !description || !attachment || !floor) {
-//                 return res.status(400).json({
-//                     message: 'Each subcategory must have id, description, attachment, and floor.',
-//                     status: 'error',
-//                 });
-//             }
-
-//             const newSubcategory = await ProjectSubcategory.create({
-//                 smallprojectId: smallproject.id,
-//                 subcategoryId: id,
-//                 description,
-//                 attachment,
-//                 floor,
-//             });
-
-//             createdSubcategories.push(newSubcategory);
-//         }
-
-//         return res.status(201).json({
-//             message: 'Project created successfully',
-//             project: {
-//                 ...smallproject.toJSON(),
-//                 categoryNames: categoryNames, // Array of category names
-//                 subcategoryNames: subcategoryNames, // Array of subcategory names
-//                 projectManagerRoleNames: projectManagerRoleNames, // Array of project manager role names
-//             },
-//             subcategories: createdSubcategories,
-//             status: 'success',
-//         });
-//     } catch (error) {
-//         console.error('Error creating project:', error);
-//         return res.status(500).json({
-//             message: 'An error occurred while creating the project',
-//             error: error.message,
-//             status: 'error',
-//         });
-//     }
-// };
+const crypto = require('crypto'); 
+const nodemailer = require('nodemailer'); 
 
 //new function of generate password by email
 
@@ -265,10 +126,10 @@ const createProject = async (req, res) => {
     const createdUsers = [];
     if (users && Array.isArray(users)) {
       for (const user of users) {
-        const { Name, Surname, email, Mobilephone } = user;
+        const { Name, Surname, email, Mobilephone ,roleId} = user;
 
         // Validate user fields
-        if (!Name || !Surname || !email || !Mobilephone) {
+        if (!Name || !Surname || !email || !Mobilephone || !roleId) {
           return res.status(400).json({
             message: 'User details are incomplete.',
             status: 'error',
@@ -290,6 +151,7 @@ const createProject = async (req, res) => {
           Surname,
           email,
           Mobilephone,
+          roleId,
           password: hashedPassword, // Save hashed password
           smallprojectId: smallproject.id,
         });
@@ -297,7 +159,7 @@ const createProject = async (req, res) => {
         // Send the password via email
         await transporter.sendMail({
           from: 'kv2334779@gmail.com',
-          to:'kv2334779@gmail.com', // User's email
+          to:user.email, // User's email
           subject: 'Your Account Details',
           text: `Hi ${Name},\n\nYour account has been created successfully.\nHere are your login details:\nEmail: ${email}\nPassword: ${password}\n\nPlease keep this information secure.\n\nThank you!`,
         });
@@ -325,149 +187,57 @@ const createProject = async (req, res) => {
   }
 };
 
-//function only user registered done..
-
-// const createProject = async (req, res) => {
+// const getAllProject = async (req, res) => {
 //   try {
-//     const {
-//       name,
-//       typeOfProject,
-//       categoryId,
-//       subcategoryId,
-//       projectmanageroleId,
-//       typeOfHome,
-//       projectAddress,
-//       city,
-//       generalComment,
-//       selectsubcategory,
-//       users,
-//     } = req.body;
+//     // Fetch all projects
+//     const projects = await SmallProject.findAll();
 
-//     // Validate main fields
-//     const requiredFields = {
-//       name,
-//       typeOfProject,
-//       categoryId,
-//       subcategoryId,
-//       projectmanageroleId,
-//       typeOfHome,
-//       projectAddress,
-//       city,
-//     };
-
-//     for (const [key, value] of Object.entries(requiredFields)) {
-//       if (!value) {
-//         return res.status(400).json({
-//           message: `${key} is required.`,
-//           status: 'error',
-//         });
-//       }
-//     }
-
-//     // Validate foreign keys
-//     const [categories, subcategories, projectManagerRoles] = await Promise.all([
-//       Category.findAll({ where: { id: categoryId } }),
-//       Subcategory.findAll({ where: { id: subcategoryId } }),
-//       Projectmanagerole.findAll({ where: { id: projectmanageroleId } }),
-//     ]);
-
-//     if (!categories.length) {
-//       return res.status(400).json({
-//         message: 'Invalid categoryId.',
+//     if (!projects.length) {
+//       return res.status(404).json({
+//         message: 'No projects found',
 //         status: 'error',
 //       });
 //     }
 
-//     if (!subcategories.length) {
-//       return res.status(400).json({
-//         message: 'Invalid subcategoryId.',
-//         status: 'error',
-//       });
-//     }
+//     // Fetch related data manually
+//     const smallProjectIds = projects.map((project) => project.id);
 
-//     if (!projectManagerRoles.length) {
-//       return res.status(400).json({
-//         message: 'Invalid projectmanageroleId.',
-//         status: 'error',
-//       });
-//     }
-
-//     // Create the SmallProject
-//     const smallproject = await SmallProject.create({
-//       name,
-//       typeOfProject,
-//       categoryId,
-//       subcategoryId,
-//       projectmanageroleId,
-//       typeOfHome,
-//       projectAddress,
-//       city,
-//       generalComment,
+//     // Fetch project subcategories with their attachments
+//     const projectSubcategories = await ProjectSubcategory.findAll({
+//       where: {
+//         smallprojectId: smallProjectIds,
+//       },
+//       attributes: [
+//         'smallprojectId',
+//         'subcategoryId',
+//         'description',
+//         'attachment',
+//         'floor',
+//       ],
 //     });
 
-//     // Process and validate subcategories with attachments
-//     const createdSubcategories = [];
-//     if (Array.isArray(selectsubcategory)) {
-//       for (const subcategory of selectsubcategory) {
-//         const { id, description, attachment, floor } = subcategory;
-//         if (!id || !description || !attachment || !floor) {
-//           return res.status(400).json({
-//             message:
-//               'Each subcategory must have id, description, attachment, and floor.',
-//             status: 'error',
-//           });
-//         }
-//         const newSubcategory = await ProjectSubcategory.create({
-//           smallprojectId: smallproject.id,
-//           subcategoryId: id,
-//           description,
-//           attachment,
-//           floor,
-//         });
-//         createdSubcategories.push(newSubcategory);
-//       }
-//     }
+//     // Map the related data to the projects
+//     const projectsWithDetails = projects.map((project) => ({
+//       ...project.toJSON(),
+//       subcategories: projectSubcategories
+//         .filter((psc) => psc.smallprojectId === project.id)
+//         .map((psc) => ({
+//           subcategoryId: psc.subcategoryId,
+//           description: psc.description,
+//           attachment: psc.attachment,
+//           floor: psc.floor,
+//         })),
+//     }));
 
-//     // If users are provided in the form, create them and associate them with the project
-//     const createdUsers = []; // Initialize createdUsers
-//     if (users && Array.isArray(users)) {
-//       for (const user of users) {
-//         const { Name, Surname, email, Mobilephone } = user;
-
-//         // Validate user fields
-//         if (!Name || !Surname || !email || !Mobilephone) {
-//           return res.status(400).json({
-//             message: 'User details are incomplete.',
-//             status: 'error',
-//           });
-//         }
-
-//         // Create the user and associate with smallprojectId
-//         const newUser = await User.create({
-//           Name,
-//           Surname,
-//           email,
-//           Mobilephone,
-//           smallprojectId: smallproject.id,
-//         });
-
-//         createdUsers.push(newUser);
-//       }
-//     }
-
-//     return res.status(201).json({
-//       message: 'Project and users created successfully',
-//       project: {
-//         ...smallproject.toJSON(),
-//       },
-//       subcategories: createdSubcategories,
-//       users: createdUsers,
+//     res.status(200).json({
+//       message: 'Fetched all projects successfully',
+//       data: projectsWithDetails,
 //       status: 'success',
 //     });
 //   } catch (error) {
-//     console.error('Error creating project:', error);
-//     return res.status(500).json({
-//       message: 'An error occurred while creating the project.',
+//     console.error('Error fetching projects:', error);
+//     res.status(500).json({
+//       message: 'Error fetching projects',
 //       error: error.message,
 //       status: 'error',
 //     });
@@ -503,6 +273,14 @@ const getAllProject = async (req, res) => {
       ],
     });
 
+    // Fetch users associated with each project
+    const projectUsers = await User.findAll({
+      where: {
+        smallprojectId: smallProjectIds,
+      },
+      attributes: ['Name', 'Surname', 'email', 'Mobilephone', 'roleId'],
+    });
+
     // Map the related data to the projects
     const projectsWithDetails = projects.map((project) => ({
       ...project.toJSON(),
@@ -513,6 +291,15 @@ const getAllProject = async (req, res) => {
           description: psc.description,
           attachment: psc.attachment,
           floor: psc.floor,
+        })),
+      users: projectUsers
+        .filter((user) => user.smallprojectId === project.id)
+        .map((user) => ({
+          Name: user.Name,
+          Surname: user.Surname,
+          email: user.email,
+          Mobilephone: user.Mobilephone,
+          roleId: user.roleId,
         })),
     }));
 
