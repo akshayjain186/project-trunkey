@@ -8,6 +8,10 @@ const Subcategory = sequelize.define('Subcategory', {
         type: DataTypes.STRING,
         allowNull: false,
     },
+    subcategory_type: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
     CategoryId: {
         type: DataTypes.INTEGER,
         allowNull: false,

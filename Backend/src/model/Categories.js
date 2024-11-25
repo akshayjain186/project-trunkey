@@ -4,11 +4,11 @@ const sequelize = require ('../config/databaseConfig');
 const Category = sequelize.define('Category', {
   title: {
     type: DataTypes.STRING,
-    allowNull: false,  // equivalent to `required: true` in Mongoose
+    allowNull: false,  
   },
 }, {
   timestamps: true, 
-//   tableName: 'categories', 
+  tableName: 'categories', 
 });
 
 module.exports = Category;

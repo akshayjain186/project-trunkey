@@ -1,5 +1,11 @@
 const express = require('express');
-const { createSubcategory, getAllSubcategory, getSubcategory, updateSubcategory, deleteSubcategory } = require('../controller/SubcategoriesController.js');
+const {
+  createSubcategory,
+  getAllSubcategory,
+  getSubcategory,
+  updateSubcategory,
+  deleteSubcategory,
+} = require('../controller/SubcategoriesController.js');
 
 const router = express.Router();
 

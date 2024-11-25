@@ -1,8 +1,8 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/databaseConfig');
 
-const SmallProject = sequelize.define(
-  'SmallProject',
+const BigProject = sequelize.define(
+  'BigProject',
   {
     name: {
       type: DataTypes.STRING,
@@ -42,30 +42,30 @@ const SmallProject = sequelize.define(
         len: [0, 500],
       },
     },
-    // contactName: {
-    //     type: DataTypes.STRING,
-    //     allowNull: false,
-    // },
-    // contactSurname: {
-    //     type: DataTypes.STRING,
-    //     allowNull: false,
-    // },
-    // contactEmail: {
-    //     type: DataTypes.STRING,
-    //     allowNull: false,
-    //     validate: {
-    //         isEmail: true,
-    //     },
-    // },
-    // contactMobile: {
-    //     type: DataTypes.STRING,
-    //     allowNull: false,
-    // },
+    contactName: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    contactSurname: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    contactEmail: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        isEmail: true,
+      },
+    },
+    contactMobile: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
   },
   {
-    tableName: 'small_projects',
+    tableName: 'big_projects',
     timestamps: true,
   }
 );
 
-module.exports = SmallProject;
+module.exports = BigProject;

@@ -5,16 +5,20 @@ const crypto = require('crypto');
 const sequelize = require('../config/databaseConfig');
 
 const User = sequelize.define('User', {
-  firstName: { type: DataTypes.STRING, allowNull: false },
+  Name: { type: DataTypes.STRING, allowNull: false },
   roleId: {
     type: DataTypes.INTEGER,
-    allowNull: false,
+    allowNull: true,
   },
+  smallprojectId: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+},
   address: { type: DataTypes.STRING, defaultValue: '' },
-  lastName: { type: DataTypes.STRING, allowNull: false },
+  Surname: { type: DataTypes.STRING, allowNull: false },
   email: { type: DataTypes.STRING, allowNull: false, unique: true },
   password: { type: DataTypes.STRING},
-  phone: { type: DataTypes.STRING },
+  Mobilephone: { type: DataTypes.STRING },
   postalcode: { type: DataTypes.STRING },
   resetPasswordToken: { type: DataTypes.STRING, defaultValue: null },
   resetPasswordExpires: { type: DataTypes.DATE, defaultValue: null },

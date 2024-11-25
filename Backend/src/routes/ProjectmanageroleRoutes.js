@@ -1,12 +1,15 @@
 const express = require('express');
 const router = express.Router();
-const {createProjectManagerRole,getAllProjectManagerRoles,getProjectManagerRoleById,
-    updateProjectManagerRole,
-    deleteProjectManagerRole,
+const {
+  createProjectManagerRole,
+  getAllProjectManagerRoles,
+  getProjectManagerRoleById,
+  updateProjectManagerRole,
+  deleteProjectManagerRole,
 } = require('../controller/ProjectmanageroleController'); // Import the controller methods
 
 // Create a new role
-router.post('/add',createProjectManagerRole);
+router.post('/add', createProjectManagerRole);
 
 // Get all roles
 router.get('/fetch', getAllProjectManagerRoles);

@@ -3,7 +3,15 @@ const Category = require('../model/Categories'); // Sequelize model
 
 const createSubcategory = async (req, res, next) => {
     try {
-        const { name, CategoryId } = req.body;
+        const { name, subcategory_type, CategoryId } = req.body;
+
+        // Check if subcategory_type is provided
+        if (!subcategory_type) {
+            return res.status(400).json({
+                message: 'Subcategory type is required.',
+                status: 'error',
+            });
+        }
 
         // Check if the parent category exists
         const parentCategory = await Category.findByPk(CategoryId); // `findByPk` is used for finding by primary key
@@ -16,7 +24,7 @@ const createSubcategory = async (req, res, next) => {
 
         // Check if the subcategory with the same name already exists under the parent category
         const existingSubcategory = await Subcategory.findOne({
-            where: { name, CategoryId },
+            where: { name, subcategory_type, CategoryId },
         });
         if (existingSubcategory) {
             return res.status(400).json({
@@ -28,6 +36,7 @@ const createSubcategory = async (req, res, next) => {
         // Create a new subcategory
         const newSubcategory = await Subcategory.create({
             name,
+            subcategory_type,
             CategoryId,
         });
 
@@ -110,6 +119,7 @@ const updateSubcategory = async (req, res, next) => {
     try {
         const { id } = req.params;
         const { name } = req.body;
+        const{subcategory_type}=req.body;
 
         const subcategory = await Subcategory.findByPk(id);
         if (!subcategory) {
@@ -122,7 +132,7 @@ const updateSubcategory = async (req, res, next) => {
         // Update the name if provided
         if (name) {
             const existingSubcategory = await Subcategory.findOne({
-                where: { name, CategoryId: subcategory.CategoryId },
+                where: { name,subcategory_type, CategoryId: subcategory.CategoryId },
             });
             if (existingSubcategory && existingSubcategory.id !== id) {
                 return res.status(400).json({
