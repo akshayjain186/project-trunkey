@@ -45,8 +45,9 @@ const leadsourceRoutes =  require('./routes/leadsourceRoutes')
 const categories = require('./routes/categoryRoutes');
 
 const registerCompanyRoutes = require('./routes/registercompanyRoutes');
-const subcategoryRoutes = require('./routes/subcategoryRoutes'); // Adjust the path
+const subcategoryRoutes = require('./routes/subcategoryRoutes'); 
 
+const licenseRoutes = require('./routes/licensesRoutes')
 // Session configuration
 
 console.log("Session secret: ", process.env.SESSION_SECRET); // Check if it's loaded
@@ -126,10 +127,7 @@ app.use('/api/v1/categories', categories);
 
 app.use('/api/v1/categories/subcategories', subcategoryRoutes);
 
-
-
-
-
+app.use('/api/v1/licenses',licenseRoutes)
 
 // Example route
 app.get('/', (req, res) => {
