@@ -10,10 +10,10 @@ const User = sequelize.define('User', {
     type: DataTypes.INTEGER,
     allowNull: true,
   },
-  smallprojectId: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-},
+//   smallprojectId: {
+//     type: DataTypes.INTEGER,
+//     allowNull: false,
+// },
   address: { type: DataTypes.STRING, defaultValue: '' },
   Surname: { type: DataTypes.STRING, allowNull: false },
   email: { type: DataTypes.STRING, allowNull: false, unique: true },

@@ -50,8 +50,6 @@ const leadsourceRoutes =  require('./routes/leadsourceRoutes')
 
 const registerCompanyRoutes = require('./routes/registercompanyRoutes');
 
-
-
 // Session configuration
 
 console.log("Session secret: ", process.env.SESSION_SECRET); // Check if it's loaded

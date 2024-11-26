@@ -38,32 +38,31 @@ const RegisterCompany = sequelize.define('RegisterCompany', {
         type: DataTypes.JSON, 
         allowNull: false,
     },
-    managerName: {
-        type: DataTypes.STRING,
-        allowNull: false,
-    },
-    managersurname: {
-        type: DataTypes.STRING,
-        allowNull: false,
-    },
-    email: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-            isEmail: true,
-        },
-    },
-    mobilePhone: {
-        type: DataTypes.STRING,
-        allowNull: false,
-    },
+   
     projectManagementRollId: {
         type: DataTypes.JSON, 
         allowNull: false,
     },
+
+    continent: {
+        type: DataTypes.JSON,
+        allowNull: false,
+    },
+    country: {
+        type: DataTypes.JSON,
+        allowNull: false,
+    },
+    language: {
+        type: DataTypes.JSON,
+        allowNull: false,
+    },
+    currency: {
+        type: DataTypes.JSON,
+        allowNull: false,
+    },
 }, {
     timestamps: true,
-    tableName: 'RegisterCompany',
+    tableName: 'RegisterCompanies',
 });
 
 module.exports = RegisterCompany;
