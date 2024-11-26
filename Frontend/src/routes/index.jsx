@@ -21,11 +21,12 @@ import Signup  from "../pages/Authentication/Signup"
 //import ResetPaassword from "../pages/Authentication/ResetPassward";
 import { element } from "prop-types";
 import PostJobDetails from "../pages/MyJobs/AnswerDetails/PostJobDetails";
-import InternationalLogin from "../pages/Controlpannel/InternationalLogin";
 import { components } from "react-select";
 import ResetPassward from  "../pages/Authentication/ResetPassward"
-import { fromPairs } from "lodash";
 import BigJobForm from "../pages/Authentication/Ragister/BigJobForm";
+import AddNew from "../pages/Controlpannel/AddNew";
+import UserDetails from "../pages/Controlpannel/UserDetails";
+import License from "../pages/Controlpannel/Licenses";
 
 const authProtectedRoutes = [
   { path: "/dashboard", component: <Dashboard /> },
@@ -46,10 +47,16 @@ const publicRoutes = [
   { path: "/ragister", component: < Ragisterpage/>},
 
   { path: "/bigjob", component: < BigJobForm/>},
-  { path: "/internationallogin", component: <InternationalLogin/> },
+  { path: "/Licenses", component: <License/> },
+  { path: "/addnew", component: <AddNew/> },
+  { path: "/userdetails", component: <UserDetails/> },
+  
+
  
   { path: "/home", component: <Home/> },
   { path: "/reset-password", component: <ResetPassward/> },
+  { path: "/reset-password", component: <ResetPassward/> },
+
 ];
 
 // export { authProtectedRoutes, publicRoutes };
