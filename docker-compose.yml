@@ -50,6 +50,8 @@ services:
     image: mysql:8
     env_file:
       - ./shared/config/.env  # Path to the shared .env file
+    environment:
+      - DB_HOST=mysql  # Set DB_HOST to mysql when inside Docker
     ports:
       - "3306:3306"  # Expose MySQL port for local access (optional for testing)
     networks:
