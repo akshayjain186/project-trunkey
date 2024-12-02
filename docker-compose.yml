@@ -1,0 +1,68 @@
+version: '3.8'
+
+services:
+  # User service container
+  user-service:
+    build:
+      context: ./backend/user-service  # Path to your user service directory
+    env_file:
+      - ./shared/config/.env  # Path to the shared .env file
+    environment:
+      - DB_HOST=mysql  # Set DB_HOST to mysql when inside Docker
+    networks:
+      - turnkey-network
+    ports:
+      - "3001:3001"  # Expose port 3001 for local access
+    depends_on:
+      - mysql  # Ensure MySQL is ready before user-service starts
+
+  # Product service container
+  product-service:
+    build:
+      context: ./backend/services  # Path to your product service directory
+    env_file:
+      - ./shared/config/.env  # Path to the shared .env file
+    environment:
+      - DB_HOST=mysql  # Set DB_HOST to mysql when inside Docker
+    networks:
+      - turnkey-network
+    ports:
+      - "3002:3002"  # Expose port 3002 for local access (adjust as needed)
+    depends_on:
+      - mysql  # Ensure MySQL is ready before product-service starts
+      - user-service  # Ensure user-service is ready before product-service starts
+
+  # Frontend container
+  gui_tky:
+    build:
+      context: ./frontend/GUI_TKY
+    image: turnkey-gui_tky
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - PORT=3000
+    networks:
+      - turnkey-network
+
+  # MySQL container
+  mysql:
+    image: mysql:8
+    env_file:
+      - ./shared/config/.env  # Path to the shared .env file
+    ports:
+      - "3306:3306"  # Expose MySQL port for local access (optional for testing)
+    networks:
+      - turnkey-network
+    volumes:
+      - mysql-data:/var/lib/mysql  # Persistent MySQL data storage
+
+# Network configuration
+networks:
+  turnkey-network:
+    driver: bridge
+
+# Volumes for persistent data
+volumes:
+  mysql-data:
+    driver: local
