@@ -8,13 +8,12 @@ services:
     env_file:
       - ./shared/config/.env  # Path to the shared .env file
     environment:
-      - DB_HOST=mysql  # Set DB_HOST to mysql when inside Docker
+      - DB_TYPE=${DB_TYPE:-sqlite}  # Default to SQLite if DB_TYPE is not specified
+      - DB_NAME=${DB_NAME:-./backend/user-service/database.sqlite}  # Default SQLite path
     networks:
       - turnkey-network
     ports:
       - "3001:3001"  # Expose port 3001 for local access
-    depends_on:
-      - mysql  # Ensure MySQL is ready before user-service starts
 
   # Product service container
   product-service:
@@ -23,14 +22,14 @@ services:
     env_file:
       - ./shared/config/.env  # Path to the shared .env file
     environment:
-      - DB_HOST=mysql  # Set DB_HOST to mysql when inside Docker
+      - DB_TYPE=${DB_TYPE:-sqlite}  # Default to SQLite if DB_TYPE is not specified
+      - DB_NAME=${DB_NAME:-./backend/services/database.sqlite}  # Default SQLite path
     networks:
       - turnkey-network
     ports:
-      - "3002:3002"  # Expose port 3002 for local access (adjust as needed)
+      - "3002:3002"  # Expose port 3002 for local access
     depends_on:
-      - mysql  # Ensure MySQL is ready before product-service starts
-      - user-service  # Ensure user-service is ready before product-service starts
+      - user-service  # Only this direction remains
 
   # Frontend container
   gui_tky:
@@ -45,26 +44,7 @@ services:
     networks:
       - turnkey-network
 
-  # MySQL container
-  mysql:
-    image: mysql:8
-    env_file:
-      - ./shared/config/.env  # Path to the shared .env file
-    environment:
-      - DB_HOST=mysql  # Set DB_HOST to mysql when inside Docker
-    ports:
-      - "3306:3306"  # Expose MySQL port for local access (optional for testing)
-    networks:
-      - turnkey-network
-    volumes:
-      - mysql-data:/var/lib/mysql  # Persistent MySQL data storage
-
 # Network configuration
 networks:
   turnkey-network:
     driver: bridge
-
-# Volumes for persistent data
-volumes:
-  mysql-data:
-    driver: local
