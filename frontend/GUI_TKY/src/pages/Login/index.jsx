@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { loginUser } from '@/store/auth/login/action';
 import PropTypes from 'prop-types';
 //redux
-import withRouter from '@/components/common/withRouter';
+import withRouter from '@/components/Common/withRouter';
 import trunkeylogo from '../../assets/images/turnkey-logo.png';
 import { createSelector } from 'reselect';
 // Formik validation

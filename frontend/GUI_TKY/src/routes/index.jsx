@@ -1,9 +1,9 @@
 import { Navigate } from 'react-router-dom';
-import { Home, Login, SignUp } from '@/pages';
+import {  Login, SignUp,Dashboard } from '@/pages';
 
 const authProtectedRoutes = [
-  { path: '/home', component: <Home /> },
-  { path: '/', exact: true, component: <Navigate to="/Home" /> },
+  { path: '/dashboard', component: <Dashboard /> },
+  { path: '/', exact: true, component: <Navigate to="/dashboard" /> },
 ];
 const publicRoutes = [
   { path: '/login', component: <Login /> },

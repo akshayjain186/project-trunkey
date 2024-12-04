@@ -1,6 +1,8 @@
 import { all, fork } from 'redux-saga/effects';
 import authSaga from './auth/login/saga';
+import LayoutSaga from "./layout/saga";
 
+//import LayoutSaga from "../store/layout/saga"
 /**
  * Root saga for the application.
  * 
@@ -17,5 +19,8 @@ import authSaga from './auth/login/saga';
  * @yields {Array} - An array of forked sagas to be run concurrently.
  */
 export default function* rootSaga() {
-  yield all([fork(authSaga)]);
+  yield all([
+    fork(authSaga),
+    fork(LayoutSaga),
+  ]);
 }
