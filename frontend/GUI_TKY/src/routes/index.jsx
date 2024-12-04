@@ -1,8 +1,5 @@
 import { Navigate } from 'react-router-dom';
-import {  Login, SignUp,Dashboard } from '@/pages';
-import AddnewPage from '@/pages/ControlPanel/InternationalAdmin/AddnewPage';
-import LicensesPage from '@/pages/ControlPanel/InternationalAdmin/LicensesPage';
-import OwnerPage from '@/pages/ControlPanel/InternationalAdmin/OwnerPage';
+import {  Login, SignUp,Dashboard ,AddnewPage,LicensesPage,OwnerPage} from '@/pages';
 
 const authProtectedRoutes = [
   { path: '/dashboard', component: <Dashboard /> },

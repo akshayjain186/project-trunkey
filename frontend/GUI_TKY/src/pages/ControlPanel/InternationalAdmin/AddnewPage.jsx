@@ -2,31 +2,15 @@ import React from "react";
 import { Col, Label, Row, Input, InputGroup, InputGroupText } from "reactstrap";
 
 //  logo image
-import logo from '../../../assets/images/turnkey logo.png';
 import'../controlpaneladmin.scss'
+import  InternationalHeader  from "./InternationalHeader";
 
 const AddnewPage = () => {
+    
     return (
         <React.Fragment>
             {/* Navigation bar */}
-            <nav className="navbar navbar-expand-lg navbar-dark" style={{ background: "#41619A" }}>
-                <div className="container-fluid ms-3">
-                    {/* Logo image */}
-                    <img
-                        src={logo}
-                        alt="Company Logo"
-                        style={{ height: "25px" }}
-                    />
-                    {/* User Avatar */}
-                    <div className="d-flex me-3">
-                        <img
-                            src="https://via.placeholder.com/40"
-                            alt="User Avatar"
-                            className="rounded-circle"
-                        />
-                    </div>
-                </div>
-            </nav>
+            <InternationalHeader />
             {/* Main content */}
             <Row>
                 {/* Left Column for General Information */}
@@ -102,6 +86,7 @@ const AddnewPage = () => {
                                             <option value="DI">Discover</option>
                                         </select>
                                     </div>
+
 
                                     {/* Organisation Number */}
                                     <div className="mb-3 templating-select select2-container ">

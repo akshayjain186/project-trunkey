@@ -173,12 +173,12 @@ const TableContainer = ({
 
       <div className={divClassName ? divClassName : "table-responsive"}>
         <Table hover className={tableClass} bordered={isBordered}>
-          <thead className={theadClass}>
+          <thead  className={theadClass}>
             {getHeaderGroups().map(headerGroup => (
               <tr key={headerGroup.id}>
                 {headerGroup.headers.map(header => {
                   return (
-                    <th key={header.id} colSpan={header.colSpan} className={`${header.column.columnDef.enableSorting ? "sorting sorting_desc" : ""}`}>
+                    <th key={header.id} colSpan={header.colSpan} className={`${header.column.columnDef.enableSorting ? "sorting sorting_desc" : ""}`} style={{backgroundColor:"#F4F8FC",border:"none", fontWeight:"normal"}}>
                       {header.isPlaceholder ? null : (
                         <React.Fragment>
                           <div
@@ -214,13 +214,13 @@ const TableContainer = ({
             ))}
           </thead>
 
-          <tbody>
+          <tbody >
             {getRowModel().rows.map(row => {
               return (
-                <tr key={row.id}>
+                <tr key={row.id} >
                   {row.getVisibleCells().map(cell => {
                     return (
-                      <td key={cell.id}>
+                      <td key={cell.id} style={{backgroundColor:"transparent",width:"20%",}}>
                         {flexRender(
                           cell.column.columnDef.cell,
                           cell.getContext()

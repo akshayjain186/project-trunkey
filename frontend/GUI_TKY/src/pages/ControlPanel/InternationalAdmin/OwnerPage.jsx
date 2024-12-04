@@ -1,16 +1,16 @@
 import React from "react";
 import { useState, useMemo } from "react";
 import { Col, Row, } from "reactstrap";
-import logo from '../../../assets/images/turnkey logo.png'
 import flag from '../../../assets/images/flag-round.png'
 import user from '../../../assets/images/user.png'
 import location from '../../../assets/images/location.png'
-//  import TableContainer from "../../../components/Common/TableContainer";
+  import TableContainer from "../../../components/Common/TableContainer";
 import customer from '../../../assets/images/customers.png'
 import companies from '../../../assets/images/companies.png'
 import product from '../../../assets/images/product.png'
 import portaluser from '../../../assets/images/portaluser.png'
 import'../controlpaneladmin.scss'
+import InternationalHeader from "./InternationalHeader";
 
 const OwnerPage = () => {
     const [ActivateLink, setActivateLink] = useState(null);
@@ -24,19 +24,19 @@ const OwnerPage = () => {
 
             {
                 header: "Name",
-                accessorKey: "Name",
+                accessorKey: "name",
                 enableColumnFilter: false,
                 enableSorting: true,
             },
             {
                 header: "Main manager",
-                accessorKey: "Main manager",
+                accessorKey: "main_manager",
                 enableColumnFilter: false,
                 enableSorting: true,
             },
             {
                 header: "Employees",
-                accessorKey: "Employees",
+                accessorKey: "employees",
                 enableColumnFilter: false,
                 enableSorting: true,
             },
@@ -51,6 +51,7 @@ const OwnerPage = () => {
                 accessorKey: "customers",
                 enableColumnFilter: false,
                 enableSorting: true,
+               
             },
             {
                 header: 'Action',
@@ -59,7 +60,7 @@ const OwnerPage = () => {
                 accessorKey: "status",
                 cell: (cell) => {
                     return (
-                        <div className="text-danger d-flex align-items-center">
+                        <div className="text-danger d-flex text-end">
                             <i className="bx bx-show me-2" style={{ color: "#41619A" }}></i>
                             {/* Vertical Line */}
                             <div
@@ -81,188 +82,174 @@ const OwnerPage = () => {
     );
     const users = [
         {
-            "Name": "Baderom Pluss AS",
-            "Main manager": "Camilla Larson",
-            "Employees": 50,
+            "name": "Baderom Pluss AS",
+            "main_manager": "Camilla Larson",
+            "employees": 50,
             "admins": 3,
             "customers": 120,
             "status": "Activate"
         },
         {
-            "Name": "Build Forum",
-            "Main manager": "Christopher Main",
-            "Employees": 30,
+            "name": "Build Forum",
+            "main_manager": "Christopher Main",
+            "employees": 30,
             "admins": 2,
             "customers": 75,
             "status": "Deactivate"
         },
         {
-            "Name": "Baderom Pluss AS",
-            "Main manager": "Camilla Larson",
-            "Employees": 75,
+            "name": "Baderom Pluss AS",
+            "main_manager": "Camilla Larson",
+            "employees": 75,
             "admins": 5,
             "customers": 200,
             "status": "Activate"
         },
         {
-            "Name": "Baderom Pluss AS",
-            "Main manager": "Camilla Larson",
-            "Employees": 12,
+            "name": "Baderom Pluss AS",
+            "main_manager": "Camilla Larson",
+            "employees": 12,
             "admins": 1,
             "customers": 40,
             "status": "Activate"
         },
         {
-            "Name": "Build Forum",
-            "Main manager": "Christopher Main",
-            "Employees": 90,
+            "name": "Build Forum",
+            "main_manager": "Christopher Main",
+            "employees": 90,
             "admins": 4,
             "customers": 250,
             "status": "Deactivate"
         },
         {
-            "Name": "Build Forum",
-            "Main manager": "Camilla Larson",
-            "Employees": 20,
+            "name": "Build Forum",
+            "main_manager": "Camilla Larson",
+            "employees": 20,
             "admins": 2,
             "customers": 60,
             "status": "Activate"
         },
         {
-            "Name": "Company G",
-            "Main manager": "Christopher Main",
-            "Employees": 55,
+            "name": "Company G",
+            "main_manager": "Christopher Main",
+            "employees": 55,
             "admins": 3,
             "customers": 150,
             "status": "Activate"
-        },
-        {
-            "Name": "Company H",
-            "Main manager": "David Harris",
-            "Employees": 35,
-            "admins": 2,
-            "customers": 100,
-            "status": "Deactivate"
-        },
-        {
-            "Name": "Company I",
-            "Main manager": "Jessica Taylor",
-            "Employees": 65,
-            "admins": 4,
-            "customers": 180,
-            "status": "Activate"
-        },
-        {
-            "Name": "Company J",
-            "Main manager": "Daniel Lewis",
-            "Employees": 40,
-            "admins": 2,
-            "customers": 110,
-            "status": "Deactivate"
-        },
-        {
-            "Name": "Company K",
-            "Main manager": "Emily King",
-            "Employees": 22,
-            "admins": 1,
-            "customers": 80,
-            "status": "Activate"
-        },
-        {
-            "Name": "Company L",
-            "Main manager": "Robert Scott",
-            "Employees": 50,
-            "admins": 3,
-            "customers": 130,
-            "status": "Deactivate"
-        },
-        {
-            "Name": "Company M",
-            "Main manager": "Olivia Adams",
-            "Employees": 80,
-            "admins": 5,
-            "customers": 210,
-            "status": "Activate"
-        },
-        {
-            "Name": "Company N",
-            "Main manager": "Benjamin Carter",
-            "Employees": 18,
-            "admins": 2,
-            "customers": 55,
-            "status": "Deactivate"
-        },
-        {
-            "Name": "Company O",
-            "Main manager": "Sophia Evans",
-            "Employees": 65,
-            "admins": 4,
-            "customers": 160,
-            "status": "Activate"
-        },
-        {
-            "Name": "Company P",
-            "Main manager": "William Wilson",
-            "Employees": 40,
-            "admins": 3,
-            "customers": 90,
-            "status": "Deactivate"
-        },
-        {
-            "Name": "Company Q",
-            "Main manager": "James Martinez",
-            "Employees": 72,
-            "admins": 5,
-            "customers": 210,
-            "status": "Activate"
-        },
-        {
-            "Name": "Company R",
-            "Main manager": "Mia White",
-            "Employees": 25,
-            "admins": 2,
-            "customers": 70,
-            "status": "Deactivate"
-        },
-        {
-            "Name": "Company S",
-            "Main manager": "Elijah Thomas",
-            "Employees": 90,
-            "admins": 6,
-            "customers": 300,
-            "status": "Deactivate"
-        },
-        {
-            "Name": "Company T",
-            "Main manager": "Charlotte Roberts",
-            "Employees": 52,
-            "admins": 3,
-            "customers": 150,
-            "status": "Deactivate"
-        }
+         },
+        // {
+        //     "name": "Company H",
+        //     "main_manager": "David Harris",
+        //     "employees": 35,
+        //     "admins": 2,
+        //     "customers": 100,
+        //     "status": "Deactivate"
+        // },
+        // {
+        //     "name": "Company I",
+        //     "main_manager": "Jessica Taylor",
+        //     "employees": 65,
+        //     "admins": 4,
+        //     "customers": 180,
+        //     "status": "Activate"
+        // },
+        // {
+        //     "name": "Company J",
+        //     "main_manager": "Daniel Lewis",
+        //     "employees": 40,
+        //     "admins": 2,
+        //     "customers": 110,
+        //     "status": "Deactivate"
+        // },
+        // {
+        //     "name": "Company K",
+        //     "main_manager": "Emily King",
+        //     "employees": 22,
+        //     "admins": 1,
+        //     "customers": 80,
+        //     "status": "Activate"
+        // },
+        // {
+        //     "name": "Company L",
+        //     "main_manager": "Robert Scott",
+        //     "employees": 50,
+        //     "admins": 3,
+        //     "customers": 130,
+        //     "status": "Deactivate"
+        // },
+        // {
+        //     "name": "Company M",
+        //     "main_manager": "Olivia Adams",
+        //     "employees": 80,
+        //     "admins": 5,
+        //     "customers": 210,
+        //     "status": "Activate"
+        // },
+        // {
+        //     "name": "Company N",
+        //     "main_manager": "Benjamin Carter",
+        //     "employees": 18,
+        //     "admins": 2,
+        //     "customers": 55,
+        //     "status": "Deactivate"
+        // },
+        // {
+        //     "name": "Company O",
+        //     "main_manager": "Sophia Evans",
+        //     "employees": 65,
+        //     "admins": 4,
+        //     "customers": 160,
+        //     "status": "Activate"
+        // },
+        // {
+        //     "name": "Company P",
+        //     "main_manager": "William Wilson",
+        //     "employees": 40,
+        //     "admins": 3,
+        //     "customers": 90,
+        //     "status": "Deactivate"
+        // },
+        // {
+        //     "name": "Company Q",
+        //     "main_manager": "James Martinez",
+        //     "employees": 72,
+        //     "admins": 5,
+        //     "customers": 210,
+        //     "status": "Activate"
+        // },
+        // {
+        //     "name": "Company R",
+        //     "main_manager": "Mia White",
+        //     "employees": 25,
+        //     "admins": 2,
+        //     "customers": 70,
+        //     "status": "Deactivate"
+        // },
+        // {
+        //     "name": "Company S",
+        //     "main_manager": "Elijah Thomas",
+        //     "employees": 90,
+        //     "admins": 6,
+        //     "customers": 300,
+        //     "status": "Deactivate"
+        // },
+        // {
+        //     "name": "Company T",
+        //     "main_manager": "Charlotte Roberts",
+        //     "employees": 52,
+        //     "admins": 3,
+        //     "customers": 150,
+        //     "status": "Deactivate"
+        // }
     ]
   return (
     <>
-    <nav className="navbar navbar-expand-lg " style={{ background: "#41619A" }}>
-        <div className="container-fluid ms-3">
-            <img src={logo}
-                alt="logo"
-                style={{ height: "25px" }}
-            />
-            <div className="d-flex me-3">
-                <img
-                    src="https://via.placeholder.com/40"
-                    alt="User Avatar"
-                    className="rounded-circle"
-                />
-            </div>
-        </div>
-    </nav>
+      <InternationalHeader />
     <div className="m-5 ">
         <div className=" mt-4">
             <div className="mb-4">
                 <p>
-                    <strong>Licenses</strong> ^ <span>Norway</span>
+                    <strong>Norway</strong> ^ <span>Licenses</span>
                 </p>
             </div>
             <Row className="d-flex justify-content ">
@@ -279,9 +266,9 @@ const OwnerPage = () => {
                         </div>
                     </div>
                     <div className="mt-4" style={{ lineHeight: "2.0" }}>
-                        <span className="fw semi-bold">Language:<span className="ms-2 fw-normal text-black">Norwegian</span></span><br />
-                        <span className="fw semi-bold">Currency:<span className="ms-2 text-black">Norwegian Krone</span></span><br />
-                        <span className="fw semi-bold">Organisation number:<span className="ms-2 text-black">817158722</span></span>
+                        <span className="fw-bold">Language:<span className="ms-2 fw-normal">Norwegian</span></span><br />
+                        <span className="fw-bold">Currency:<span className="ms-2 fw-normal">Norwegian Krone</span></span><br />
+                        <span className="fw-bold">Organisation number:<span className="ms-2 fw-normal">817158722</span></span>
                     </div>
                 </Col>
                 <Col className="justify-content-end">
@@ -289,10 +276,10 @@ const OwnerPage = () => {
                     <Col className="d-flex gap-4 w-100 justify-content-end">
                         <div className="box-design">
 
-                            <div className=" border border-2 p-2 d-flex justify-content-between">
+                            <div className=" border border-2 p-2 d-flex justify-content-between rounded-3">
                                 <div>
-                                    <span className="">PORTAL USERS</span>
-                                    <p className="fs-4 fw-bold" style={{ color: "#41619A" }}>4,566</p>
+                                    <span className="text-muted">PORTAL USERS</span>
+                                    <p className="fs-3 fw-bold" style={{ color: "#41619A" }}>4,566</p>
                                 </div>
                                 <div className="d-flex justify-content-end ">
                                     <img src={portaluser} alt="" style={{ height: "15px", width: "15px" }} className="me-2 " />
@@ -301,10 +288,10 @@ const OwnerPage = () => {
 
                         </div>
                         <div className="box-design">
-                            <div className=" border border-2 p-2 d-flex justify-content-between">
+                            <div className=" border border-2 p-2 d-flex justify-content-between rounded-3">
                                 <div>
-                                    <span className="">CUSTOMERS</span>
-                                    <p className="fs-4 fw-bold" style={{ color: "#41619A" }}>1,546</p>
+                                    <span className="text-muted">CUSTOMERS</span>
+                                    <p className="fs-3 fw-bold" style={{ color: "#41619A" }}>1,546</p>
                                 </div>
                                 <div className="d-flex justify-content-end ">
                                     <img src={customer} alt="" style={{ height: "15px", width: "15px" }} className="me-2 " />
@@ -315,10 +302,10 @@ const OwnerPage = () => {
                     </Col>
                     <Col className="d-flex gap-4 w-100 justify-content-end mt-3">
                         <div className="box-design">
-                            <div className=" border border-2 p-2  d-flex justify-content-between">
+                            <div className=" border border-2 p-2  d-flex justify-content-between rounded-3">
                                 <div>
-                                    <span className="">COMPANIES</span>
-                                    <p className="fs-4 fw-bold" style={{ color: "#41619A" }}>587</p>
+                                    <span className="text-muted">COMPANIES</span>
+                                    <p className="fs-3 fw-bold" style={{ color: "#41619A" }}>587</p>
                                 </div>
                                 <div className="d-flex justify-content-end ">
                                     <img src={companies} alt="" style={{ height: "15px", width: "15px" }} className="me-2 " />
@@ -328,10 +315,10 @@ const OwnerPage = () => {
                         </div>
                         <div className="box-design">
 
-                            <div className=" border border-2 p-2  d-flex justify-content-between">
+                            <div className=" border border-2 p-2  d-flex justify-content-between rounded-3">
                                 <div>
-                                    <span className="">PRODUCTS</span>
-                                    <p className="fs-4 fw-bold" style={{ color: "#41619A" }}>5,445</p>
+                                    <span className="text-muted">PRODUCTS</span>
+                                    <p className="fs-3 fw-bold" style={{ color: "#41619A" }}>5,445</p>
                                 </div>
                                 <div className="d-flex justify-content-end ">
                                     <img src={product} alt="" style={{ height: "15px", width: "15px" }} className="me-2 " />
@@ -354,7 +341,7 @@ const OwnerPage = () => {
                         className="rounded-circle me-3"
                         style={{ width: "50px", height: "50px" }}
                     />
-                    {/* User Name and Email */}
+                    {/* User name and Email */}
                     <div>
                         <h5 className="mb-1">Harry Stone</h5>
                         <p className="mb-0 text-muted">harry.stone@gmail.com</p>
@@ -435,7 +422,7 @@ const OwnerPage = () => {
             </Row>
 
 
-            {/* <TableContainer
+            <TableContainer
                 columns={columns}
                 data={users || []}
                 isGlobalFilter={false}
@@ -443,13 +430,13 @@ const OwnerPage = () => {
                 SearchPlaceholder="Search..."
                 isCustomPageSize={false}
                 isAddButton={false}
-                buttonClass="btn btn-success btn-rounded waves-effect waves-light addContact-modal mb-2"
+                buttonClass="btn btn-success waves-effect waves-light addContact-modal mb-2"
                 buttonName="New Contact"
-                tableClass="align-middle table-nowrap table-hover dt-responsive nowrap w-100 dataTable no-footer dtr-inline"
+                tableClass=" table-nowrap  dt-responsive nowrap w-100  no-footer dtr-inline"
                 theadClass="table-light"
                 paginationWrapper="dataTables_paginate paging_simple_numbers pagination-rounded"
                 pagination="pagination"
-            /> */}
+            />
         </div>
     </div>
 </>
