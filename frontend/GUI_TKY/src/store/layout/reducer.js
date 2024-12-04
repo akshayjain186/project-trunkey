@@ -42,7 +42,20 @@ const INIT_STATE = {
   leftMenu: false,
 };
 
-const Layout = (state = INIT_STATE, action) => {
+/**
+ * Reducer function to manage the layout state of the application.
+ *
+ * This function handles various actions related to the layout, sidebar, topbar, and user profile. It updates
+ * the state based on the type of action and the payload associated with the action.
+ *
+ * @param {Object} action - The action dispatched, containing the `type` and `payload`.
+ * @param {string} action.type - The type of action (e.g., CHANGE_LAYOUT, CHANGE_LAYOUT_MODE).
+ * @param {any} action.payload - The data associated with the action (e.g., layout type, theme, etc.).
+ * @param {Object} [state=INIT_STATE] - The current state of the layout. Defaults to `INIT_STATE` if not provided.
+ *
+ * @returns {Object} The new state after applying the action, including updates to layout type, sidebar, topbar, and user profile.
+ */
+const Layout = (state = INIT_STATE,action) => {
   switch (action.type) {
     case CHANGE_LAYOUT:
       return {
@@ -115,10 +128,6 @@ const Layout = (state = INIT_STATE, action) => {
         ...state,
         error: action.payload,
       };
-    // case GET_USER_PROFILE:
-    //     state = { ...state, error: action.payload };
-    //     break;
-
     default:
       return state;
   }
