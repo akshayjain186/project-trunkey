@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  # User service container
+  user-service:
+    build:
+      context: ./backend/user-service  # Path to your user service directory
+    env_file:
+      - ./shared/config/.env  # Path to the shared .env file
+    environment:
+      - DB_TYPE=${DB_TYPE:-sqlite}  # Default to SQLite if DB_TYPE is not specified
+      - DB_NAME=${DB_NAME:-./backend/user-service/database.sqlite}  # Default SQLite path
+    networks:
+      - turnkey-network
+    ports:
+      - "3001:3001"  # Expose port 3001 for local access
+
+  # Product service container
+  product-service:
+    build:
+      context: ./backend/services  # Path to your product service directory
+    env_file:
+      - ./shared/config/.env  # Path to the shared .env file
+    environment:
+      - DB_TYPE=${DB_TYPE:-sqlite}  # Default to SQLite if DB_TYPE is not specified
+      - DB_NAME=${DB_NAME:-./backend/services/database.sqlite}  # Default SQLite path
+    networks:
+      - turnkey-network
+    ports:
+      - "3002:3002"  # Expose port 3002 for local access
+    depends_on:
+      - user-service  # Only this direction remains
+
+  # Frontend container
+  gui_tky:
+    build:
+      context: ./frontend/GUI_TKY
+    image: turnkey-gui_tky
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - PORT=3000
+    networks:
+      - turnkey-network
+
+# Network configuration
+networks:
+  turnkey-network:
+    driver: bridge
