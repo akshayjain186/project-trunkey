@@ -1,5 +1,5 @@
 const express = require('express');
-const { registerUser, loginUser } = require('../controllers/userController');
+const { registerUser, loginUser,forgotPassword } = require('../controllers/userController');
 const { verifyToken } = require('../utils/verifyToken');
 const router = express.Router();
 
@@ -14,5 +14,8 @@ router.post('/verify', verifyToken, (req, res) => {
     // If the token is valid, the user's ID will be available in req.user from the verifyToken middleware
     res.status(200).json({ message: 'Token is valid', userId: req.userId });
   });
+
+  //Forgot Password
+  router.post('/forgot-password',forgotPassword)
 
 module.exports = router;

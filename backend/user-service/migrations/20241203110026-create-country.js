@@ -2,44 +2,34 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('Users', {
+    await queryInterface.createTable('Countries', {
       id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
       },
+      code: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        unique: true,
+      },
       name: {
         type: Sequelize.STRING,
         allowNull: false,
-        unique: true,
       },
-      surname: {
+      emoji: {
         type: Sequelize.STRING,
-        allowNull: false,
-        unique: true,
+        allowNull: true,
       },
-      email: {
-        type: Sequelize.STRING,
-        allowNull: false,
-        unique: true,
-      },
-      password: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      mobile_no:{
+      continentId: {
         type: Sequelize.INTEGER,
         allowNull: false,
-      },
-      roleId:{
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      isActive:{
-        type: Sequelize.BOOLEAN, 
-        allowNull: false,        
-        defaultValue: true, 
+        references: {
+          model: 'Continents', // References the 'Continents' table
+          key: 'id', // Foreign key to the 'id' column of the 'Continents' table
+        },
+        onDelete: 'CASCADE', // If a continent is deleted, its related countries are also deleted
       },
       createdAt: {
         type: Sequelize.DATE,
@@ -54,7 +44,7 @@ module.exports = {
     });
   },
 
-  down: async (queryInterface) => {
-    await queryInterface.dropTable('Users');
+  down: async (queryInterface, Sequelize) => {
+    await queryInterface.dropTable('Countries');
   },
 };

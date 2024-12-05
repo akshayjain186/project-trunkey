@@ -4,6 +4,12 @@ const express = require('express');
 const cors = require('cors');
 const userRoutes = require('./routes/userRoutes');
 const { sequelize } = require('../config/database');
+const continentRoutes = require('./routes/continentRoutes');
+const countryRoutes = require('./routes/countriesRoutes'); // Import the routes
+const currencyRoutes = require('./routes/currencyRoutes'); // Adjust path if necessary
+const languageRoutes = require('./routes/languagesRoutes')
+
+
 
 const app = express();
 
@@ -15,6 +21,10 @@ app.use(cors());
 
 // Routes
 app.use('/api/users', userRoutes);
+app.use('/api/continents', continentRoutes);
+app.use('/api/countries', countryRoutes);
+app.use('/api/currencies', currencyRoutes); 
+app.use('/api/languages',languageRoutes)
 
 // Test DB connection and log directly in the chain
 sequelize.authenticate()
