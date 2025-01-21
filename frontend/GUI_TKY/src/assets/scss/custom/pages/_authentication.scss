@@ -12,18 +12,18 @@
 
 // auth 2
 
-.auth-logo{
-    .auth-logo-dark{
-        display: var(--#{$prefix}display-block);
-    }
-    .auth-logo-light{
-        display: var(--#{$prefix}display-none);
-    }
-}
+// .auth-logo{
+//     .auth-logo-dark{
+//         display: var(--#{$prefix}display-block);
+//     }
+//     .auth-logo-light{
+//         display: var(--#{$prefix}display-none);
+//     }
+// }
 
-.auth-body-bg{
-    background-color: var(--#{$prefix}secondary-bg);
-}
+// .auth-body-bg{
+//     background-color: var(--#{$prefix}secondary-bg);
+// }
 
 
 // auth-pass-inputgroup
@@ -39,7 +39,7 @@
 // authentication full page
 
 .auth-full-bg{
-    background-color: rgba($primary, 0.25);
+    // background-color: rgba($primary, 0.25);
     display: flex;
 
     @media (min-width: 1200px){
@@ -55,12 +55,12 @@
         border-radius: 50%;
     }
 
-    .bg-overlay{
-        background: url("../../../images/bg-auth-overlay.png");
-        background-size: cover;
-        background-repeat: no-repeat;
-        background-position: center;
-    }
+    // .bg-overlay{
+    //     background: url("../../../images/bg-auth-overlay.png");
+    //     background-size: cover;
+    //     background-repeat: no-repeat;
+    //     background-position: center;
+    // }
 }
 
 .auth-full-page-content{
@@ -75,14 +75,14 @@
     &.owl-theme {
         .owl-dots {
             .owl-dot{
-                span{
-                    background-color: rgba($primary, 0.25);
-                }
-                &.active, &:hover{
-                    span{
-                        background-color: $primary;
-                    }
-                }
+                // span{
+                //     background-color: rgba($primary, 0.25);
+                // }
+                // &.active, &:hover{
+                //     span{
+                //         background-color: $primary;
+                //     }
+                // }
             }
         }
     }

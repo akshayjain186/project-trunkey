@@ -1,7 +1,6 @@
 require('dotenv').config({ path: '../../shared/config/.env' });
 const { Sequelize } = require('sequelize');
 
-
 let sequelize = null; // Initialize with a placeholder value
 
 if (process.env.DB_TYPE === 'sqlite') {
@@ -33,4 +32,4 @@ if (process.env.DB_TYPE === 'sqlite') {
   }
 })();
 
-module.exports = {sequelize} ;
+module.exports = { sequelize };

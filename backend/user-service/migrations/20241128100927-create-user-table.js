@@ -9,12 +9,7 @@ module.exports = {
         autoIncrement: true,
         primaryKey: true,
       },
-      name: {
-        type: Sequelize.STRING,
-        allowNull: false,
-        unique: true,
-      },
-      surname: {
+      username: {
         type: Sequelize.STRING,
         allowNull: false,
         unique: true,
@@ -27,19 +22,6 @@ module.exports = {
       password: {
         type: Sequelize.STRING,
         allowNull: false,
-      },
-      mobile_no:{
-        type: Sequelize.INTEGER,
-        allowNull: false,
-      },
-      roleId:{
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      isActive:{
-        type: Sequelize.BOOLEAN, 
-        allowNull: false,        
-        defaultValue: true, 
       },
       createdAt: {
         type: Sequelize.DATE,

@@ -1,18 +1,13 @@
 import { Navigate } from 'react-router-dom';
-import {  Login, SignUp,Dashboard ,AddnewPage,LicensesPage,OwnerPage} from '@/pages';
+import { Home, Login, SignUp } from '@/pages';
 
 const authProtectedRoutes = [
-  { path: '/dashboard', component: <Dashboard /> },
-  { path: '/', exact: true, component: <Navigate to="/dashboard" /> },
+  { path: '/home', component: <Home /> },
+  { path: '/', exact: true, component: <Navigate to="/Home" /> },
 ];
 const publicRoutes = [
   { path: '/login', component: <Login /> },
   { path: '/signUp', component: <SignUp /> },
-  { path: '/addnew', component: <AddnewPage /> },
-  { path: '/licenses', component: <LicensesPage /> },
-  { path: '/owner', component: <OwnerPage /> },
-
-
 ];
 
 export { authProtectedRoutes, publicRoutes };
