@@ -1,3 +1,7 @@
 # Ignore node_modules in specific backend services
 backend/user-service/node_modules/
 backend/services/node_modules/
+frontend/GUI_TKY/node_modules/
+
+shared/config/.env
+
